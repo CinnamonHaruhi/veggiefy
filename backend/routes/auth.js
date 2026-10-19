@@ -1,0 +1,92 @@
+import express from 'express';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import pool from '../config/db.js';
+import { protect } from '../middleware/auth.js';
+
+const router = express.Router();
+
+const cookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV || 'production',
+    sameSite: 'Strict',
+    maxAge: 30 * 24 * 60 * 60 * 1000
+};
+
+const generateToken = (user_id) => {
+    return jwt.sign({user_id}, process.env.JWT_SECRET, {
+        expiresIn: '30d'
+    });
+}
+
+router.post('/register', async (req, res) => {
+    const { username, full_name, email, phone_no, password } = req.body;
+
+    if (!username || !full_name || !email || !phone_no || !password) {
+        return res.status(400).json({ message: 'Please provide all fields' });
+    }
+
+    const usernameExists = await pool.query("SELECT * FROM users WHERE username = $1",
+        [username]);
+    if (usernameExists.rows.length > 0) {
+        return res.status(400).json({ message: 'Username already exists' });
+    }
+
+    const emailInUse = await pool.query("SELECT * FROM users WHERE email = $1", 
+        [email]);
+    if (emailInUse.rows.length > 0  ) {
+        return res.status(400).json({ message: 'Email already in use' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await pool.query("INSERT INTO users (username, full_name, email, phone_no, password) VALUES ($1, $2, $3, $4, $5) RETURNING user_id, username, email",
+        [username, full_name, email, phone_no, hashedPassword]);
+
+    const token = generateToken(newUser.rows[0].user_id);
+    res.cookie('token', token, cookieOptions);
+    
+    return res.status(200).json({ user: newUser.rows[0] });
+});
+
+router.post('/login', async (req, res) => {
+    const { emailuser, password } = req.body;   
+    if (!emailuser || !password) {
+        return res.status(400).json({ message: 'Please fill in all fields' });
+    }
+
+    const userExists = await pool.query("SELECT * FROM users WHERE email ILIKE $1 OR username ILIKE $2", 
+        [emailuser, emailuser]);
+    if (userExists.rows.length === 0) {
+        return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    const userData = userExists.rows[0];
+    const passwordCorrect = await bcrypt.compare(password, userData.password);
+
+    if (!passwordCorrect) {
+        return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    const token = generateToken(userData.user_id);
+    res.cookie('token', token, cookieOptions);
+
+    res.json({
+    user: {
+        user_id: userData.user_id,
+        username: userData.username,
+        email: userData.email,
+        role_id: userData.role_id
+    }
+    });
+});
+
+router.get('/me', protect, async (req, res) => {
+    res.json(req.user);
+});
+
+router.post('/logout', (req, res) => {
+    res.cookie('token', '', {...cookieOptions, maxAge: 1});
+    res.json({ message: 'Logged out successfully' });
+});
+
+export default router;
