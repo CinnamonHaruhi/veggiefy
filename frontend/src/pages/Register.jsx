@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { isValidEmail, isValidUsername, isValidPhoneNumber, isValidPassword, isValidConfirmPassword } from '../utils/validators';
 
-const Register = ({ setUser }) => {
+const Register = () => {
   const [ form, setForm ] = useState({
     username: "",
     email: "",
@@ -11,19 +12,44 @@ const Register = ({ setUser }) => {
     confirmPassword: "",
   });
 
-  const [ error, setError ] = useState("");
+  const [ errors, setErrors ] = useState({});
   const navigate = useNavigate();
+
+  const validate = () => {
+    const errors = {};
+    errors.username = isValidUsername(form.username);
+    errors.email = isValidEmail(form.email);
+    errors.phoneNo = isValidPhoneNumber(form.phoneNo);
+    errors.password = isValidPassword(form.password);
+    errors.confirmPassword = isValidConfirmPassword(form.password, form.confirmPassword);
+
+    return errors;
+  }
+
+  const errorsExist = (errors) => {
+    if (Object.values(errors).every(x => x === null || x === '')) {
+      return false;
+    }
+
+    return true;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try { 
-      //const res = await axios.post("http://localhost:5000/register", form);
-      console.log(form);
+      setErrors("");
+      const errors = validate();
+      console.log(errors);
+      if (errorsExist(errors)) {
+        setErrors(errors);
+        return;
+      }
 
+      const res = await axios.post("http://localhost:5000/register", form);
       navigate("/login");
     
     } catch (err) {
-      console.log(err);
+      console.log(err.response.data);
     }
   }
   
@@ -48,7 +74,7 @@ const Register = ({ setUser }) => {
                 onChange={(e) => setForm({...form, username: e.target.value})}
               />
             </div>
-            <span className="error-msg"></span>
+            <span className="error-msg">{errors.username}</span>
           </div>
 
         <div className="field">
@@ -61,7 +87,7 @@ const Register = ({ setUser }) => {
               onChange={(e) => setForm({...form, email: e.target.value})}
               />
           </div>
-          <span className="error-msg"></span>
+          <span className="error-msg">{errors.email}</span>
         </div>
 
         <div className="field">
@@ -74,7 +100,7 @@ const Register = ({ setUser }) => {
               onChange={(e) => setForm({...form, phoneNo: e.target.value})}
             />
           </div>
-          <span className="error-msg" id="phoneError" role="alert"></span>
+          <span className="error-msg">{errors.phoneNo}</span>
         </div>
 
         <div className="field">
@@ -87,8 +113,7 @@ const Register = ({ setUser }) => {
               onChange={(e) => setForm({...form, password: e.target.value})}
             />
           </div>
-          <span className="hint">At least 8 characters, with letters and numbers.</span>
-          <span className="error-msg"></span>
+          <span className="error-msg">{errors.password}</span>
         </div>
 
         <div className="field">
@@ -101,7 +126,7 @@ const Register = ({ setUser }) => {
               onChange={(e) => setForm({...form, confirmPassword: e.target.value})}
             />
           </div>
-          <span className="error-msg"></span>
+          <span className="error-msg">{errors.confirmPassword}</span>
         </div>
 
         <button type="submit" className="btn-primary">Register</button>

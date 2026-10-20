@@ -21,6 +21,8 @@ const LoginForm = ({ setUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    clearErrors();
+
     try { 
       const res = await axios.post("http://localhost:5000/login", form);
       const userData = res.data;
@@ -33,8 +35,8 @@ const LoginForm = ({ setUser }) => {
       }
 
     } catch (err) {
+      console.log(err);
       const responseData = err.response.data;
-      clearErrors();
 
       if (responseData.subject === "emailOrUsername") {
         setEmailOrUsernameError(responseData.message);
