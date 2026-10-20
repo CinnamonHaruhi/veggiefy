@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LoginForm = ({ setUser }) => {
   const [ form, setForm ] = useState({
@@ -34,19 +34,17 @@ const LoginForm = ({ setUser }) => {
 
     } catch (err) {
       const responseData = err.response.data;
+      clearErrors();
 
       if (responseData.subject === "emailOrUsername") {
-        clearErrors();
         setEmailOrUsernameError(responseData.message);
       }
 
       if (responseData.subject === "password") {
-        clearErrors();
         setPassError(responseData.message);
       }
 
       if (!responseData.subject) {
-        clearErrors();
         setError(responseData.message);
       }
 
@@ -99,6 +97,8 @@ const LoginForm = ({ setUser }) => {
 
           <button type="submit" className="btn-primary btn-lg">Log In</button>
         </form>
+
+        <p className="switch-page">Don't have an account? <Link to="/register" className="text-link">Sign Up</Link></p>
       </div>
     </section>
   )
