@@ -1,3 +1,342 @@
-.header {
-    background-color: lightblue;
+/* ==========================================================
+   Veggiefy - shared styles for Login and Registration pages
+   ========================================================== */
+
+/* ---------- 1. Variables & reset ---------- */
+:root {
+  --gray-bg: #d4d4d4;      /* gray background from the reference */
+  --white: #ffffff;
+  --black: #000000;
+  --text: #111111;
+  --muted: #444444;
+  --error: #c62828;
+  --success: #1b5e20;
+  --font-body: "Montserrat", Arial, sans-serif;
+  --font-brand: "Rozha One", Georgia, serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--gray-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+
+/* ---------- 2. Shared pieces ---------- */
+.wordmark {
+  font-family: var(--font-brand);
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  line-height: 1;
+  margin: 0;
+}
+
+.text-link {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.text-link:hover { opacity: 0.7; }
+
+/* Input box (icon + input) */
+.field { margin-bottom: 18px; }
+
+.input-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--white);
+  border-radius: 14px;
+  padding: 0 16px;
+  height: 56px;
+  border: 2px solid transparent;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input-box:focus-within {
+  border-color: var(--black);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+}
+.input-box .icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  fill: var(--black);
+}
+.input-box input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--text);
+}
+.input-box input::placeholder { color: #333; opacity: 0.85; }
+
+/* Field in error state */
+.field.has-error .input-box { border-color: var(--error); }
+.error-msg {
+  display: block;
+  min-height: 0;
+  margin: 6px 6px 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--error);
+}
+.error-msg:empty { display: none; }
+.hint {
+  display: block;
+  margin: 5px 6px 0;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+/* Show/hide password button */
+.toggle-pw {
+  background: none;
+  border: 0;
+  padding: 4px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+}
+.toggle-pw:focus-visible { outline: 2px solid var(--black); }
+.toggle-pw svg { width: 20px; height: 20px; fill: #333; }
+.toggle-pw .eye-closed { display: none; }
+.toggle-pw.is-visible .eye-open { display: none; }
+.toggle-pw.is-visible .eye-closed { display: block; }
+
+/* Black button */
+.btn-primary {
+  width: 100%;
+  background: var(--black);
+  color: var(--white);
+  border: 0;
+  border-radius: 0;
+  height: 44px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-primary:hover { background: #222; }
+.btn-primary:active { transform: translateY(1px); }
+.btn-primary:focus-visible { outline: 3px solid rgba(0,0,0,0.35); outline-offset: 2px; }
+.btn-primary:disabled { opacity: 0.6; cursor: wait; }
+.btn-lg { height: 56px; font-size: 1.25rem; }
+
+/* Status message under the button */
+.form-status {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  display: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+.form-status.show { display: block; }
+.form-status.success { background: #e3f4e5; color: var(--success); }
+.form-status.info    { background: #fff7d6; color: #6b5300; }
+.form-status.error   { background: #fde7e7; color: var(--error); }
+
+/* ---------- 3. LOGIN PAGE ---------- */
+.login-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+.form-panel {
+  background: var(--gray-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 5vw;
+}
+.form-panel-inner { width: 100%; max-width: 440px; }
+
+.welcome-title {
+  font-family: var(--font-body);
+  font-weight: 900;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  letter-spacing: -1.5px;
+  margin: 0 0 6px;
+  line-height: 1.05;
+}
+.welcome-sub {
+  margin: 0 0 48px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.page-login form { padding: 0 34px; }
+
+.options-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 8px 0 34px;
+  font-size: 0.95rem;
+}
+
+/* Toggle-style "Remember me" */
+.switch-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.switch-label input { position: absolute; opacity: 0; width: 0; height: 0; }
+.switch {
+  width: 34px;
+  height: 22px;
+  border-radius: 20px;
+  background: var(--white);
+  position: relative;
+  transition: background 0.2s;
+  flex-shrink: 0;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.15);
+}
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #bbb;
+  transition: transform 0.2s, background 0.2s;
+}
+.switch-label input:checked + .switch { background: var(--black); }
+.switch-label input:checked + .switch::after { transform: translateX(12px); background: var(--white); }
+.switch-label input:focus-visible + .switch { outline: 2px solid var(--black); outline-offset: 2px; }
+
+.switch-page {
+  text-align: center;
+  margin: 48px 0 0;
+  font-size: 0.95rem;
+}
+.switch-page.small { font-size: 0.8rem; margin-top: 18px; }
+
+/* Right brand panel */
+.brand-panel {
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 4vw;
+}
+.brand-inner { text-align: center; max-width: 440px; }
+.brand-logo { width: clamp(150px, 16vw, 210px); margin: 0 auto 8px; }
+.wordmark-xl { font-size: clamp(3.4rem, 6vw, 5rem); margin-bottom: 26px; }
+.brand-tagline {
+  margin: 0 auto;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 1.6px;
+  line-height: 1.55;
+  text-transform: uppercase;
+  color: #333;
+}
+
+/* Small logo for mobile (hidden on desktop) */
+.mobile-brand { display: none; }
+
+/* ---------- 4. REGISTRATION PAGE ---------- */
+.register-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background: var(--gray-bg);
+}
+
+.register-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--white);
+  border-radius: 18px;
+  padding: 34px 40px 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.card-brand { text-align: center; }
+.card-brand img { width: 62px; margin: 0 auto 4px; }
+.card-brand .wordmark { font-size: 1.7rem; }
+
+.card-title {
+  font-family: var(--font-brand);
+  font-weight: 400;
+  text-align: center;
+  font-size: 1.15rem;
+  margin: 20px 0 4px;
+  text-transform: uppercase;
+}
+.card-sub {
+  text-align: center;
+  margin: 0 0 24px;
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--muted);
+}
+
+/* Pill-shaped inputs for the registration card */
+.input-box.pill {
+  border-radius: 30px;
+  height: 46px;
+  background: var(--white);
+  border: 1.5px solid var(--black);
+  padding: 0 16px;
+  gap: 10px;
+}
+.input-box.pill:focus-within { box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12); }
+.input-box.pill .icon { width: 16px; height: 16px; }
+.input-box.pill input { font-size: 0.85rem; }
+.input-box.pill .toggle-pw svg { width: 18px; height: 18px; }
+.field.has-error .input-box.pill { border-color: var(--error); }
+.page-register .field { margin-bottom: 14px; }
+.page-register .btn-primary { margin-top: 20px; }
+
+/* ---------- 5. RESPONSIVE ---------- */
+
+/* Tablet: stack panels, form first */
+@media (max-width: 900px) {
+  .login-layout { grid-template-columns: 1fr; }
+  .form-panel { min-height: 100vh; padding: 40px 24px; }
+  .brand-panel { display: none; }          /* logo moves to the top of the form */
+  .mobile-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .mobile-brand img { width: 56px; }
+  .mobile-brand .wordmark { font-size: 2rem; }
+  .welcome-sub { margin-bottom: 32px; }
+}
+
+/* Mobile */
+@media (max-width: 520px) {
+  .page-login form { padding: 0; }
+  .options-row { margin-bottom: 26px; }
+  .btn-lg { height: 52px; font-size: 1.1rem; }
+  .register-card { padding: 28px 22px 24px; border-radius: 14px; }
+  .switch-page { margin-top: 32px; }
 }
