@@ -50,8 +50,12 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     const { emailuser, password } = req.body;   
-    if (!emailuser || !password) {
-        return res.status(400).json({ message: 'Please fill in all fields' });
+    if (!emailuser) {
+        return res.status(400).json({ subject: 'emailuser', message: 'Please enter your email or username' });
+    }
+
+    if (!password) {
+        return res.status(400).json({ subject: 'password', message: 'Please enter your password' });
     }
 
     const userExists = await pool.query("SELECT * FROM users WHERE email ILIKE $1 OR username ILIKE $2", 
