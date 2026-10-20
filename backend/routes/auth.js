@@ -49,9 +49,9 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-    const { emailuser, password } = req.body;   
-    if (!emailuser) {
-        return res.status(400).json({ subject: 'emailuser', message: 'Please enter your email or username' });
+    const { emailOrUsername, password } = req.body;   
+    if (!emailOrUsername) {
+        return res.status(400).json({ subject: 'emailOrUsername', message: 'Please enter your email or username' });
     }
 
     if (!password) {
@@ -59,7 +59,7 @@ router.post('/login', async (req, res) => {
     }
 
     const userExists = await pool.query("SELECT * FROM users WHERE email ILIKE $1 OR username ILIKE $2", 
-        [emailuser, emailuser]);
+        [emailOrUsername, emailOrUsername]);
     if (userExists.rows.length === 0) {
         return res.status(400).json({ message: 'Invalid credentials' });
     }

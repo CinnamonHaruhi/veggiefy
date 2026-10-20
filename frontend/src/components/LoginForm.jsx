@@ -4,19 +4,19 @@ import { useNavigate } from 'react-router-dom';
 
 const LoginForm = ({ setUser }) => {
   const [ form, setForm ] = useState({
-    emailuser: "",
+    emailOrUsername: "",
     password: "",
   });
 
   const [ error, setError ] = useState("");
   const [ passError, setPassError ] = useState("");
-  const [ emailUserError, setEmailUserError ] = useState("");
+  const [ emailOrUsernameError, setEmailOrUsernameError ] = useState("");
   const navigate = useNavigate();
 
   const clearErrors = () => {
     setError("");
     setPassError("");
-    setEmailUserError("");
+    setEmailOrUsernameError("");
   }
 
   const handleSubmit = async (e) => {
@@ -35,9 +35,9 @@ const LoginForm = ({ setUser }) => {
     } catch (err) {
       const responseData = err.response.data;
 
-      if (responseData.subject === "emailuser") {
+      if (responseData.subject === "emailOrUsername") {
         clearErrors();
-        setEmailUserError(responseData.message);
+        setEmailOrUsernameError(responseData.message);
       }
 
       if (responseData.subject === "password") {
@@ -67,11 +67,11 @@ const LoginForm = ({ setUser }) => {
             <input 
               type='text' 
               placeholder='Email or Username' 
-              value={form.emailuser} 
-              onChange={(e) => setForm({...form, emailuser: e.target.value})}
+              value={form.emailOrUsername} 
+              onChange={(e) => setForm({...form, emailOrUsername: e.target.value})}
             />
             </div>
-            <span className="error-msg">{emailUserError}</span>
+            <span className="error-msg">{emailOrUsernameError}</span>
           </div>
 
           <div className="field">
