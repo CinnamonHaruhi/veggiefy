@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import adminRoute from './routes/admin/admin.js';
+import memberRoute from './routes/member/member.js';
 import authRoute from './routes/auth.js';
 import { verifyToken } from './middleware/auth.js';
 import { isAdmin } from './middleware/auth.js';
@@ -18,8 +19,8 @@ app.use(cors({
     credentials: true
 }));
 
-
 app.use('/', authRoute);
+app.use('/', verifyToken, memberRoute);
 app.use('/admin', verifyToken, isAdmin, adminRoute);
 
 app.get('/', (req, res) => {

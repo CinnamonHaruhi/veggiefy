@@ -39,7 +39,6 @@ const Register = () => {
     try { 
       setErrors("");
       const errors = validate();
-      console.log(errors);
       if (errorsExist(errors)) {
         setErrors(errors);
         return;
