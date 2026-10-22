@@ -49,7 +49,24 @@ const Register = () => {
       navigate("/registerSuccess");
     
     } catch (err) {
-      console.log(err.response.data);
+      const responseData = err.response.data;
+      const errors = {};
+
+      if (responseData.subject === "username") { 
+        errors.username = responseData.message;
+      }
+
+      if (responseData.subject === "email") {
+        errors.email = responseData.message;
+      }
+
+      if (responseData.subject === "phoneNo") {
+        errors.phoneNo = responseData.message;
+      }
+
+      console.log(responseData);
+      console.log(errors);
+      setErrors(errors);
     }
   }
   

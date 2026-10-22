@@ -26,16 +26,22 @@ router.post('/register', async (req, res) => {
         return res.status(400).json({ message: 'Please provide all fields' });
     }
 
-    const usernameExists = await pool.query("SELECT * FROM users WHERE username = $1",
+    const usernameExists = await pool.query("SELECT * FROM users WHERE username ILIKE $1",
         [username]);
     if (usernameExists.rows.length > 0) {
-        return res.status(400).json({ message: 'Username already exists' });
+        return res.status(400).json({ subject: 'username', message: 'Username already exists' });
     }
 
-    const emailInUse = await pool.query("SELECT * FROM users WHERE email = $1", 
+    const emailInUse = await pool.query("SELECT * FROM users WHERE email ILIKE $1", 
         [email]);
     if (emailInUse.rows.length > 0  ) {
-        return res.status(400).json({ message: 'Email already in use' });
+        return res.status(400).json({ subject: 'email', message: 'Email already in use' });
+    }
+
+    const phoneNoInUse = await pool.query("SELECT phone_no FROM users WHERE phone_no = $1",
+        [phoneNo]);
+    if (phoneNoInUse.rows.length > 0) {
+        return res.status(400).json({ subject: 'phoneNo', message: 'Phone number already in use' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);

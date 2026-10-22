@@ -24,6 +24,11 @@ const LoginForm = ({ setUser }) => {
     clearErrors();
 
     try { 
+      if (form.emailOrUsername.length === 0 ||  form.password.length === 0) {
+        setError("Please fill in all fields");
+        return;
+      }
+      
       const res = await axios.post("http://localhost:5000/login", form);
       const userData = res.data;
       setUser(userData);

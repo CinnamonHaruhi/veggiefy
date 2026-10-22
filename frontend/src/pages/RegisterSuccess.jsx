@@ -23,7 +23,7 @@ const RegisterSuccess = () => {
           <h1 className="card-title">Registration Successful</h1>
           <p className="card-sub">Thank you for registering! Your account is ready. You can now log in and place your advance orders.</p>
 
-          <Link to="/Login"><button type="button" className="btn-primary">Log In</button></Link>
+          <Link to="/Login"><button type="button" className="btn-primary">Go to login page</button></Link>
       </section>
     </main>
   </>
