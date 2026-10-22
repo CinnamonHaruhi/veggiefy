@@ -7,6 +7,7 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import ProtectedRoutes from './utils/ProtectedRoutes.jsx';
+import RegisterSuccess from './pages/RegisterSuccess.jsx';
 
 axios.defaults.withCredentials = true;
 
@@ -40,6 +41,7 @@ function App() {
         <Route path='/' element={<Home/>}/>
         <Route path='/login' element={<Login setUser={setUser}/>}/>
         <Route path='/register' element={<Register/>}/>
+        <Route path='/registerSuccess' element={<RegisterSuccess/>}/>
 
         <Route element={<ProtectedRoutes user={user}/>}>
           <Route path='/admin/dashboard' element={ <AdminDashboard/>}/>

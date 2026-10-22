@@ -4,8 +4,15 @@ import { getOrderTotalAmount } from '../../utils/calc.js';
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.send("ORDERS PAGE");
+router.get('/', async (req, res) => {
+    const userId = parseInt(req.user.user_id);
+    const orders = await pool.query("SELECT * FROM orders WHERE user_id = $1", 
+        [userId]);
+
+    return res.status(200).json(orders.rows);
+})
+
+router.put('/:id', async (req, res) => {
 });
 
 router.post('/confirm', async (req, res) => {

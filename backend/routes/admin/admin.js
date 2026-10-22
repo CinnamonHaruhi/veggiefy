@@ -3,7 +3,7 @@ import productRouter from './product.js';
 import testRouter from './test.js';
 
 const router = express.Router();
-router.use('/product', productRouter);
+router.use('/products', productRouter);
 router.use('/test', testRouter);
 
 router.get('/', async (req, res) => {
