@@ -8,7 +8,6 @@ import authRoute from './routes/auth.js';
 import { verifyToken } from './middleware/auth.js';
 import { isAdmin } from './middleware/auth.js';
 
-
 dotenv.config();
 
 const app = express();
@@ -23,8 +22,8 @@ app.use('/', authRoute);
 app.use('/', verifyToken, memberRoute);
 app.use('/admin', verifyToken, isAdmin, adminRoute);
 
-app.get('/', (req, res) => {
-    res.send("VEGGIEFYYYYYYYYYYYYYYYYYYYYYYYYOYOOYYO");
+app.get('{*splat}', (req, res) => {
+    res.status(404).json({"message": "Route not found"});
 });
 
 const PORT = process.env.PORT || 5000;
