@@ -4,7 +4,7 @@ import { isAdmin } from '../../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/', isAdmin, async (req, res) => {
+router.get('/', async (req, res) => {
     const products = await pool.query("SELECT * FROM products");
     return res.status(200).json(products.rows);
 });
@@ -16,7 +16,7 @@ router.post('/add', async (req, res) => {
         return res.status(400).json({ message: 'Please fill in all fields' });
     }
 
-    const productExists = await pool.query('SELECT * FROM products WHERE product_name = $1',
+    const productExists = await pool.query('SELECT * FROM products WHERE product_name ILIKE $1',
         [product_name]);
 
     if (productExists.rows.length > 0) {
