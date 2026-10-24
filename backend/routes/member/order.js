@@ -12,18 +12,6 @@ router.get('/', async (req, res) => {
     return res.status(200).json(orders.rows);
 })
 
-router.get('/test', async (req, res) => {
-    const orderId = 38;
-    const quantitiesLeft = await pool.query(
-        `SELECT products.product_id, products.quantity - order_items.quantity AS quantity_left
-        FROM products INNER JOIN order_items ON products.product_id = order_items.product_id
-        WHERE order_id = $1`,
-        [orderId]);
-    
-    console.log(quantitiesLeft);
-    return res.status(200).json(quantitiesLeft.rows);
-});
-
 router.get('/:id', async (req, res) => {
     const parsedId = parseInt(req.params.id);
 

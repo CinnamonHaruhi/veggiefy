@@ -7,6 +7,7 @@ import memberRoute from './routes/member/member.js';
 import authRoute from './routes/auth.js';
 import { verifyToken } from './middleware/auth.js';
 import { isAdmin } from './middleware/auth.js';
+import { errorHandler } from './middleware/error-handler.js';
 
 dotenv.config();
 
@@ -17,6 +18,8 @@ app.use(cors({
     origin: process.env.CLIENT_URL || "http://localhost:5173",
     credentials: true
 }));
+
+app.use(errorHandler);
 
 app.use('/', authRoute);
 app.use('/', verifyToken, memberRoute);
