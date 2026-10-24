@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const errorHandler = (err, res, req, next) => {
+export const errorHandler = (err, req, res, next) => {
     if (res.headersSent || process.env.debug) {
         next(err); //default error handler
         return;

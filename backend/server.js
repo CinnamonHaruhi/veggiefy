@@ -19,11 +19,13 @@ app.use(cors({
     credentials: true
 }));
 
-app.use(errorHandler);
-
 app.use('/', authRoute);
-app.use('/', verifyToken, memberRoute);
-app.use('/admin', verifyToken, isAdmin, adminRoute);
+
+app.use(verifyToken);
+app.use('/', memberRoute);
+app.use('/admin', isAdmin, adminRoute);
+
+app.use(errorHandler);
 
 app.get('{*splat}', (req, res) => {
     res.status(404).json({"message": "Route not found"});
