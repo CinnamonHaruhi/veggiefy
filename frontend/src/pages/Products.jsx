@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import Product from '../components/Product';
+import Sidebar from '../components/sidebar/Sidebar';
+import Searchbar from '../components/searchbar/Searchbar';
+import FontLinks from  '../components/FontLinks'
 
 const Products = () => {
   const [ loading, setLoading ] = useState(false);
@@ -28,14 +31,39 @@ const Products = () => {
   const productComponents = [];
 
   for (const product of products) {
-    productComponents.push(<Product key={product.product_id} id={product.product_id} name={product.product_name} unit={product.unit} price={product.price} image={null}/>);
+    productComponents.push(<Product key={product.product_id} id={product.product_id} name={product.product_name} unit={product.unit} price={product.price} image={null} quantity={product.quantity}/>);
   }
 
   return (
     <>
-      <h2 style={{margin: "10px"}}>Products</h2>
-      <div style={{display: "flex"}}>
-        {productComponents}
+      <FontLinks/>
+      <div className="products-page">
+        <div className="main-app">
+          <Sidebar/>
+          <main className="main-content">
+            <h1 className="main-title">Product Catalog</h1>
+            <Searchbar/>
+
+            <div className="main-table-wrap" id="tableWrap">
+              <table className="main-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Image</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Unit</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="productBody">
+                  {productComponents}
+                </tbody>
+              </table>
+            </div>
+            <p name="products-no-results" id="noResults" hidden>No products found</p>
+          </main>
+        </div>
       </div>
     </>
   )

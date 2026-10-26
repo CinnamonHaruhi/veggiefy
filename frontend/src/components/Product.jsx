@@ -2,15 +2,14 @@ import React from 'react'
 
 const Product = (props) => {
   return (
-    <div style={{border: "1px solid black", margin: "10px", padding:"10px", width: "20%", display: "flex", backgroundColor: "white"}}>
-      <div>
-        <p>ID: {props.id}</p>
-        <p>Image: {props.image || "No image"}</p>
-        <p>Product name: {props.name}</p>
-        <p>Unit: {props.unit}</p>
-        <p>Price: {props.price}</p>
-      </div>
-    </div>
+    <tr>
+      <td><div className="img-ph" role="img" aria-label="No image for Kamatis"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="2.2"/><path d="M2 21 9 11l4 5 3-3 6 8Z"/></svg></div></td>
+      <td>{props.name}</td>
+      <td>{props.unit}</td>
+      <td>{props.price}</td>
+      <td>{props.quantity}</td>
+      <td><button type="button" className="dots-btn" aria-haspopup="menu">…</button></td>
+    </tr>
   )
 }
 

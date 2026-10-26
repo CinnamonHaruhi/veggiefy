@@ -1,0 +1,19 @@
+.brand-panel {
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 4vw;
+}
+.brand-inner { text-align: center; max-width: 440px; }
+.brand-logo { width: clamp(150px, 16vw, 210px); margin: 0 auto 8px; }
+.wordmark-xl { font-size: clamp(3.4rem, 6vw, 5rem); margin-bottom: 26px; }
+.brand-tagline {
+  margin: 0 auto;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 1.6px;
+  line-height: 1.55;
+  text-transform: uppercase;
+  color: #333;
+}

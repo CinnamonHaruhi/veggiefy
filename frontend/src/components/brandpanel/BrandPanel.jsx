@@ -1,4 +1,5 @@
 import React from 'react'
+import './brandpanel.css'
 
 const BrandPanel = () => {
   return (
@@ -12,4 +13,4 @@ const BrandPanel = () => {
   )
 }
 
-export default BrandPanel
+export default BrandPanel 

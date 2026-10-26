@@ -1,10 +1,6 @@
-/* ==========================================================
-   Veggiefy - shared styles for Login and Registration pages
-   ========================================================== */
-
 /* ---------- 1. Variables & reset ---------- */
 :root {
-  --gray-bg: #d4d4d4;      /* gray background from the reference */
+  --gray-bg: #d4d4d4;     
   --white: #ffffff;
   --black: #000000;
   --text: #111111;
@@ -13,6 +9,12 @@
   --success: #1b5e20;
   --font-body: "Montserrat", Arial, sans-serif;
   --font-brand: "Rozha One", Georgia, serif;
+
+  --sidebar-w: 240px;
+  --main-th-bg: #ebebeb;      
+  --main-line: #dcdcdc;      
+  --main-divider: #9a9a9a;    
+  background: var(--white);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -234,27 +236,6 @@ img { max-width: 100%; display: block; }
 }
 .switch-page.small { font-size: 0.8rem; margin-top: 18px; }
 
-/* Right brand panel */
-.brand-panel {
-  background: var(--white);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 48px 4vw;
-}
-.brand-inner { text-align: center; max-width: 440px; }
-.brand-logo { width: clamp(150px, 16vw, 210px); margin: 0 auto 8px; }
-.wordmark-xl { font-size: clamp(3.4rem, 6vw, 5rem); margin-bottom: 26px; }
-.brand-tagline {
-  margin: 0 auto;
-  font-size: 0.78rem;
-  font-weight: 500;
-  letter-spacing: 1.6px;
-  line-height: 1.55;
-  text-transform: uppercase;
-  color: #333;
-}
-
 /* Small logo for mobile (hidden on desktop) */
 .mobile-brand { display: none; }
 
@@ -340,3 +321,87 @@ img { max-width: 100%; display: block; }
   .register-card { padding: 28px 22px 24px; border-radius: 14px; }
   .switch-page { margin-top: 32px; }
 }
+
+/* to be renamed */
+.main-app { width: 100%; }
+.main-app { display: flex; min-height: 100vh; }
+.main-content { position: relative; z-index: 1; display: block; }
+
+.products-page {
+
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  padding: 36px 44px 48px;
+  background: var(--white);
+}
+
+.main-title {
+  margin: 0 0 34px;
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: -1.2px;
+  line-height: 1.1;
+}
+
+/* table stuff */
+.main-table-wrap {
+  width: 100%;
+  overflow-x: auto;         
+}
+
+.main-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 0.78rem;
+}
+
+.main-table th {
+  background: var(--main-th-bg);
+  font-size: 0.66rem;
+  font-weight: 700;
+  padding: 10px 6px;
+  text-align: center;
+  border: 1px solid var(--main-line);
+}
+
+.main-table td {
+  height: 38px;
+  padding: 3px 6px;
+  text-align: center;
+  font-weight: 700;
+  border: 1px solid var(--main-line);
+  vertical-align: middle;
+}
+.main-table tbody tr:hover { background: #fafafa; }
+
+.img-ph {
+  width: 30px;
+  height: 28px;
+  margin: 0 auto;
+  border: 2px solid #333;
+  border-radius: 2px;
+  display: grid;
+  place-items: center;
+}
+.img-ph svg { width: 22px; height: 22px; fill: #333; }
+
+.dots-btn {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 4px 10px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  line-height: 1;
+  border-radius: 6px;
+  color: var(--black);
+}
+.dots-btn:hover { background: var(--main-th-bg); }
+.dots-btn:focus-visible { outline: 2px solid var(--black); }

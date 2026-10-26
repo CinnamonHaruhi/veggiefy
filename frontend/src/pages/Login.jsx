@@ -1,6 +1,6 @@
 import React from 'react'
 import LoginForm from '../components/LoginForm'
-import BrandPanel from '../components/BrandPanel'
+import BrandPanel from '../components/brandpanel/BrandPanel'
 import FontLinks from '../components/FontLinks'
 
 const Login = ({setUser}) => {
