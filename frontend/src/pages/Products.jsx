@@ -4,10 +4,17 @@ import Product from '../components/Product';
 import Sidebar from '../components/sidebar/Sidebar';
 import Searchbar from '../components/searchbar/Searchbar';
 import FontLinks from  '../components/FontLinks'
+import EditDialog from '../components/edit_dialog/EditDialog';
 
 const Products = () => {
   const [ loading, setLoading ] = useState(false);
   const [ products, setProducts ] = useState([]);
+  const [ product, setProduct ] = useState({
+    product_name: "",
+    unit: "",
+    price: "",
+    quantity: ""
+  });
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -29,9 +36,25 @@ const Products = () => {
   }
 
   const productComponents = [];
-
   for (const product of products) {
-    productComponents.push(<Product key={product.product_id} id={product.product_id} name={product.product_name} unit={product.unit} price={product.price} image={null} quantity={product.quantity}/>);
+    productComponents.push(<Product 
+      key={product.product_id} 
+      id={product.product_id} 
+      name={product.product_name} 
+      unit={product.unit} 
+      price={product.price} 
+      image={null} 
+      quantity={product.quantity}
+      showModal={() => {
+        document.getElementById("productDialog").showModal();
+        setProduct({
+          product_name: product.product_name,
+          unit: product.unit,
+          price: product.price,
+          quantity: product.quantity
+        });
+      }}
+      />);
   }
 
   return (
@@ -65,6 +88,8 @@ const Products = () => {
           </main>
         </div>
       </div>
+
+      <EditDialog setProduct={setProduct} product={product}/>
     </>
   )
 }

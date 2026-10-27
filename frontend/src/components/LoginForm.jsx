@@ -73,7 +73,7 @@ const LoginForm = ({ setUser }) => {
               type='text' 
               placeholder='Email or Username' 
               value={form.emailOrUsername} 
-              onChange={(e) => setForm({...form, emailOrUsername: e.target.value})}
+              onChange={(e) => setProduct({...product, product_name: e.target.value})}
             />
             </div>
             <span className="error-msg">{emailOrUsernameError}</span>
