@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import axios from 'axios';
-  import Home from './pages/Home.jsx';
+import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
@@ -49,6 +50,7 @@ function App() {
         </Route>
         
       </Routes>
+      <ToastContainer/>
     </Router>
   )
 }

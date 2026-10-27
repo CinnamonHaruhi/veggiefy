@@ -1,10 +1,23 @@
 import React from 'react'
 import './edit-dialog.css'
+import axios from 'axios'
 
-const EditDialog = ({ setProduct, product }) => {
+const EditDialog = ({ setProduct, product, setMessage }) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.put(`http://localhost:5000/admin/products/${product.product_id}`, product);
+      console.log(res.data);
+      localStorage.setItem("message", "Item updated successfully");
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+    }
+  } 
+
   return (
     <dialog className="products-dialog" id="productDialog" aria-labelledby="dialogTitle">
-      <form id="dialogForm" noValidate>
+      <form id="dialogForm" onSubmit={handleSubmit} noValidate>
         <h2 id="dialogTitle">Product</h2>
 
           <div id="dialogFields">
@@ -26,8 +39,8 @@ const EditDialog = ({ setProduct, product }) => {
             onChange={(e) => setProduct({...product, price: e.target.value})}
             />
           </label>
-          <label>Stock
-            <input type="number" id="fStock" step="1" min="0"
+          <label>Quantity
+            <input type="number" id="fQuantity" step="1" min="0"
             value={product.quantity}
             onChange={(e) => setProduct({...product, quantity: e.target.value})}           
             />

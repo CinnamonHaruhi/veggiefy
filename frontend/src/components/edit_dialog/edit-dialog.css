@@ -51,7 +51,7 @@
 .products-btn-danger { background: var(--error); border-color: var(--error); color: var(--white); }
 
 /* ---------- Toast message ---------- */
-.products-toast {
+.toast {
   position: fixed;
   left: 50%;
   bottom: 24px;
@@ -69,7 +69,7 @@
   max-width: 90vw;
   text-align: center;
 }
-.products-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+.toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
 
 /* ---------- Mobile top bar + overlay (hidden on desktop) ---------- */
 .products-topbar { display: none; }

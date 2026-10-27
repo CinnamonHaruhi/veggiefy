@@ -3,8 +3,9 @@ import axios from 'axios';
 import Product from '../components/Product';
 import Sidebar from '../components/sidebar/Sidebar';
 import Searchbar from '../components/searchbar/Searchbar';
-import FontLinks from  '../components/FontLinks'
+import FontLinks from  '../components/FontLinks';
 import EditDialog from '../components/edit_dialog/EditDialog';
+import { toast, Slide } from 'react-toastify';
 
 const Products = () => {
   const [ loading, setLoading ] = useState(false);
@@ -14,14 +15,14 @@ const Products = () => {
     unit: "",
     price: "",
     quantity: ""
-  });
+  });  
+  const [ message, setMessage ] = useState(localStorage.getItem("message"));
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const res = await axios.get("http://localhost:5000/admin/products");
         setProducts(res.data);
-        console.log(res.data);
       } catch (err) {
         setProducts(null);
       } finally {
@@ -31,10 +32,31 @@ const Products = () => {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    const showToast = () => {
+      if (message) {
+        toast.success(message, {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Slide,
+        });
+        localStorage.removeItem("message");
+        setMessage("");
+      }
+    }
+    showToast();
+  }, [])
+
   if (loading) {
     return <div>Loading...</div>
   }
-
+  
   const productComponents = [];
   for (const product of products) {
     productComponents.push(<Product 
@@ -48,6 +70,7 @@ const Products = () => {
       showModal={() => {
         document.getElementById("productDialog").showModal();
         setProduct({
+          product_id: product.product_id,
           product_name: product.product_name,
           unit: product.unit,
           price: product.price,
@@ -75,7 +98,7 @@ const Products = () => {
                     <th scope="col">Product Name</th>
                     <th scope="col">Unit</th>
                     <th scope="col">Price</th>
-                    <th scope="col">Stock</th>
+                    <th scope="col">Quantity</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -89,7 +112,7 @@ const Products = () => {
         </div>
       </div>
 
-      <EditDialog setProduct={setProduct} product={product}/>
+      <EditDialog setProduct={setProduct} product={product} />
     </>
   )
 }
