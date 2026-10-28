@@ -8,7 +8,7 @@ const AdminDashboard = () => {
   return (
     <>
       <FontLinks/>
-      <div className="products-page">
+      <div className="main-page">
         <div className="main-app">
           <Sidebar/>
           <main className="main-content">
