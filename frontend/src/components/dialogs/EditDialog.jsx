@@ -1,5 +1,5 @@
 import React from 'react'
-import './edit-dialog.css'
+import './dialog.css'
 import axios from 'axios'
 
 const EditDialog = ({ setProduct, product, setMessage }) => {
@@ -16,11 +16,11 @@ const EditDialog = ({ setProduct, product, setMessage }) => {
   } 
 
   return (
-    <dialog className="products-dialog" id="productDialog" aria-labelledby="dialogTitle">
+    <dialog className="dialog" id="productDialog" aria-labelledby="dialogTitle">
       <form id="dialogForm" onSubmit={handleSubmit} noValidate>
         <h2 id="dialogTitle">Product</h2>
 
-          <div id="dialogFields">
+        <div id="dialogFields">
           <label>Product Name
             <input type="text" id="fName" 
             value={product.product_name}
@@ -47,12 +47,12 @@ const EditDialog = ({ setProduct, product, setMessage }) => {
           </label>
         </div>
 
-        <p id="dialogMessage" className="products-dialog-message" hidden></p>
-        <p id="dialogError" className="products-dialog-error" role="alert"></p>
+        <p id="dialogMessage" className="dialog-message" hidden></p>
+        <p id="dialogError" className="dialog-error" role="alert"></p>
 
-        <div className="products-dialog-actions">
-          <button type="button" className="products-btn products-btn-light" id="dialogCancel" onClick={() => {document.getElementById("productDialog").close()}}>Cancel</button>
-          <button type="submit" className="products-btn products-btn-dark" id="dialogSubmit">Save</button>
+        <div className="dialog-actions">
+          <button type="button" className="dialog-btn dialog-btn-light" id="dialogCancel" onClick={() => {document.getElementById("productDialog").close()}}>Cancel</button>
+          <button type="submit" className="dialog-btn dialog-btn-dark" id="dialogSubmit">Save</button>
         </div>
       </form>
     </dialog>

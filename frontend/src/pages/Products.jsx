@@ -4,7 +4,7 @@ import Product from '../components/Product';
 import Sidebar from '../components/sidebar/Sidebar';
 import Searchbar from '../components/searchbar/Searchbar';
 import FontLinks from  '../components/FontLinks';
-import EditDialog from '../components/edit_dialog/EditDialog';
+import EditDialog from '../components/dialogs/EditDialog';
 import { toast, Slide } from 'react-toastify';
 
 const Products = () => {

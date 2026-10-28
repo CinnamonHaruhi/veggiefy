@@ -1,0 +1,48 @@
+.dialog {
+  border: 2px solid var(--black);
+  border-radius: 14px;
+  padding: 0;
+  width: min(92vw, 380px);
+  font-family: var(--font-body);
+  color: var(--text);
+}
+.dialog::backdrop { background: rgba(0, 0, 0, 0.45); }
+.dialog form { padding: 22px; }
+.dialog h2 { margin: 0 0 16px; font-size: 1.15rem; font-weight: 800; }
+
+.dialog label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.dialog input {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  height: 36px;
+  padding: 0 10px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  border: 1.5px solid var(--black);
+  border-radius: 8px;
+}
+.dialog input[readonly] { background: var(--products-th-bg); border-color: var(--products-line); }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+.dialog-btn {
+  height: 36px;
+  padding: 0 18px;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 8px;
+  border: 1.5px solid var(--black);
+  cursor: pointer;
+}
+.dialog-btn-dark { background: var(--black); color: var(--white); }
+.dialog-btn-dark:hover { background: #222; }
+.dialog-btn-light { background: var(--white); color: var(--black); }
+.dialog-btn-light:hover { background: var(--products-th-bg); }
+.dialog-btn-danger { background: var(--error); border-color: var(--error); color: var(--white); }
+

@@ -4,18 +4,25 @@ import FontLinks from '../components/FontLinks.jsx';
 import axios from 'axios';
 import Order from '../components/Order.jsx';
 import Searchbar from '../components/searchbar/Searchbar.jsx';
+import ItemsDialog from '../components/dialogs/ItemsDialog.jsx';
 
 const Orders = () => {
   const [ loading, setLoading ] = useState(false);
   const [ orders, setOrders ] = useState([]);
+  const [ allOrderItems, setAllOrderItems ] = useState([]);
+  const [ orderItems, setOrderItems ] = useState([]);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/admin/orders");
-        setOrders(res.data);
+        const orders = await axios.get("http://localhost:5000/admin/orders");
+        setOrders(orders.data);
+
+        const orderItems = await axios.get("http://localhost:5000/admin/orders/items");
+        setAllOrderItems(orderItems.data);
       } catch (err) {
-        setOrders(null);
+        setOrders([]);
+        setAllOrderItems([]);
       } finally {
         setLoading(false);
       }
@@ -37,6 +44,13 @@ const Orders = () => {
       totalAmout={order.total_amount}
       status={order.status_name}
       username={order.username}
+      showModal={() => {
+        document.getElementById('itemsDialog').showModal();
+        const items = allOrderItems.filter((i) => {
+          return i.order_id == order.order_id;
+        });
+        setOrderItems(items);
+      }}
     />);
   }
 
@@ -46,7 +60,7 @@ const Orders = () => {
       <div className="main-page">
         <div className="main-app">
 
-            <Sidebar/>
+          <Sidebar/>
 
           <main className="main-content">
             <h1 className="main-title">Orders</h1>
@@ -72,6 +86,8 @@ const Orders = () => {
           </main>
         </div>
       </div>
+      
+      <ItemsDialog orderItems={orderItems}/>
     </>
   )
 }

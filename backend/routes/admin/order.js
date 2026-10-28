@@ -11,4 +11,22 @@ router.get('/', async (req, res) => {
     return res.status(200).json(orders.rows);
 });
 
+router.get('/items', async (req, res) => {
+    const items = await pool.query(`
+        SELECT order_item_id, order_id, product_name, order_items.quantity
+        FROM order_items INNER JOIN products ON order_items.product_id = products.product_id;`);
+    return res.status(200).json(items.rows);  
+});
+
+router.get('/:id/items', async (req, res) => {
+    const orderId = req.params.id;
+    const items = await pool.query(`
+        SELECT order_item_id, order_id, product_name, order_items.quantity
+        FROM order_items INNER JOIN products ON order_items.product_id = products.product_id
+        WHERE order_id = $1;
+;
+    `, [orderId]);
+    return res.status(200).json(items.rows);  
+})
+
 export default router;
