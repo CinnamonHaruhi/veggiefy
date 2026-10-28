@@ -45,7 +45,9 @@ const Orders = () => {
       <FontLinks/>
       <div className="main-page">
         <div className="main-app">
-          <Sidebar/>
+
+            <Sidebar/>
+
           <main className="main-content">
             <h1 className="main-title">Orders</h1>
             <Searchbar/>

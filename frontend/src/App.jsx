@@ -10,6 +10,7 @@ import ProtectedRoutes from './utils/ProtectedRoutes.jsx';
 import RegisterSuccess from './pages/RegisterSuccess.jsx';
 import Products from './pages/Products.jsx';
 import Orders from './pages/Orders.jsx';
+import { UserContext } from './contexts/authContext.jsx';
 
 axios.defaults.withCredentials = true;
 
@@ -38,22 +39,24 @@ function App() {
   }
 
   return (
-    <Router>
-      <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='/login' element={<Login setUser={setUser}/>}/>
-        <Route path='/register' element={<Register/>}/>
-        <Route path='/registerSuccess' element={<RegisterSuccess/>}/>
+    <UserContext.Provider value={user}>
+      <Router>
+        <Routes>
+          <Route path='/' element={<Home/>}/>
+          <Route path='/login' element={<Login setUser={setUser}/>}/>
+          <Route path='/register' element={<Register/>}/>
+          <Route path='/registerSuccess' element={<RegisterSuccess/>}/>
 
-        <Route element={<ProtectedRoutes user={user}/>}>
-          <Route path='/admin/dashboard' element={ <AdminDashboard/>}/>
-          <Route path='/admin/products' element={ <Products/> }/>
-          <Route path='/admin/orders' element={<Orders />}/>
-        </Route>
-        
-      </Routes>
-      <ToastContainer/>
-    </Router>
+          <Route element={<ProtectedRoutes user={user}/>}>
+              <Route path='/admin/dashboard' element={ <AdminDashboard/>}/>
+              <Route path='/admin/products' element={ <Products/> }/>
+              <Route path='/admin/orders' element={<Orders />}/>
+          </Route>
+          
+        </Routes>
+        <ToastContainer/>
+      </Router>
+    </UserContext.Provider>
   )
 }
 

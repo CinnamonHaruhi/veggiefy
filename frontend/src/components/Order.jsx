@@ -5,7 +5,7 @@ const Order = (props) => {
     <tr>
       <td>{props.orderNo}</td>
       <td>{props.orderDate}</td>
-      <td>{props.totalAmout}</td>
+      <td>₱{props.totalAmout}</td>
       <td>{props.status}</td>
       <td>{props.username}</td>
       <td>
