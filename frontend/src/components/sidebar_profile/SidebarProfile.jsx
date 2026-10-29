@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './sidebar-profile.css';
 import { UserContext } from '../../contexts/authContext.jsx';
 
 const SidebarProfile = () => {
   const user = useContext(UserContext);
-
+    
   return (
     <div className="products-admin-wrap">
       <div className="products-admin">

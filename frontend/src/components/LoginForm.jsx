@@ -33,7 +33,7 @@ const LoginForm = ({ setUser }) => {
       const userData = res.data;
       setUser(userData);
 
-      if (parseInt(userData.user.role_id) === 1) {
+      if (parseInt(userData.role_id) === 1) {
         navigate("/admin/dashboard");
       } else {
         navigate("/");

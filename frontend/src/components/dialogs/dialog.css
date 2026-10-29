@@ -1,5 +1,6 @@
 .dialog {
-  border: 2px solid var(--black);
+  border: 2px solid white;
+  box-shadow: 2px 2px 5px;
   border-radius: 14px;
   padding: 0;
   width: min(92vw, 380px);
@@ -41,7 +42,7 @@
   cursor: pointer;
 }
 .dialog-btn-dark { background: var(--black); color: var(--white); }
-.dialog-btn-dark:hover { background: #222; }
+.dialog-btn-dark:hover { background: #28344E; }
 .dialog-btn-light { background: var(--white); color: var(--black); }
 .dialog-btn-light:hover { background: var(--products-th-bg); }
 .dialog-btn-danger { background: var(--error); border-color: var(--error); color: var(--white); }

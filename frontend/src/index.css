@@ -1,8 +1,8 @@
 /* ---------- 1. Variables & reset ---------- */
 :root {
-  --gray-bg: #d4d4d4;     
+  --gray-bg: #E5E5E5;     
   --white: #ffffff;
-  --black: #000000;
+  --black: #14213D;
   --text: #111111;
   --muted: #444444;
   --error: #c62828;
@@ -132,7 +132,7 @@ img { max-width: 100%; display: block; }
   cursor: pointer;
   transition: background 0.2s, transform 0.1s;
 }
-.btn-primary:hover { background: #222; }
+.btn-primary:hover { background: #28344E; }
 .btn-primary:active { transform: translateY(1px); }
 .btn-primary:focus-visible { outline: 3px solid rgba(0,0,0,0.35); outline-offset: 2px; }
 .btn-primary:disabled { opacity: 0.6; cursor: wait; }
@@ -403,5 +403,3 @@ img { max-width: 100%; display: block; }
   border-radius: 6px;
   color: var(--black);
 }
-.dots-btn:hover { background: var(--main-th-bg); }
-.dots-btn:focus-visible { outline: 2px solid var(--black); }

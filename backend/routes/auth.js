@@ -51,7 +51,7 @@ router.post('/register', async (req, res) => {
     const token = generateToken(newUser.rows[0].user_id);
     res.cookie('token', token, cookieOptions);
     
-    return res.status(200).json({ user: newUser.rows[0] });
+    return res.status(200).json(newUser.rows[0]);
 });
 
 router.post('/login', async (req, res) => {
@@ -81,12 +81,10 @@ router.post('/login', async (req, res) => {
     res.cookie('token', token, cookieOptions);
 
     res.json({
-    user: {
         user_id: userData.user_id,
         username: userData.username,
         email: userData.email,
         role_id: userData.role_id
-    }
     });
 });
 
