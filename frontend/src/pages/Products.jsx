@@ -24,6 +24,7 @@ const Products = () => {
         const res = await axios.get("http://localhost:5000/admin/products");
         setProducts(res.data);
       } catch (err) {
+        console.log(err);
         setProducts(null);
       } finally {
         setLoading(false);

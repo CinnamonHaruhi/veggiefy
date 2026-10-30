@@ -5,30 +5,11 @@ import axios from 'axios';
 import Order from '../components/Order.jsx';
 import Searchbar from '../components/searchbar/Searchbar.jsx';
 import ItemsDialog from '../components/dialogs/ItemsDialog.jsx';
+import useFetchOrders from '../hooks/useFetchOrders.js';
 
 const Orders = () => {
-  const [ loading, setLoading ] = useState(false);
-  const [ orders, setOrders ] = useState([]);
-  const [ allOrderItems, setAllOrderItems ] = useState([]);
+  const { loading, orders, allOrderItems } = useFetchOrders();
   const [ orderItems, setOrderItems ] = useState([]);
-
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const orders = await axios.get("http://localhost:5000/admin/orders");
-        setOrders(orders.data);
-
-        const orderItems = await axios.get("http://localhost:5000/admin/orders/items");
-        setAllOrderItems(orderItems.data);
-      } catch (err) {
-        setOrders([]);
-        setAllOrderItems([]);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchOrders();
-  }, []);
 
   if (loading) {
     return <div>Loading...</div>

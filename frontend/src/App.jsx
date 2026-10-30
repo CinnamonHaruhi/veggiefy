@@ -25,6 +25,7 @@ function App() {
         const res = await axios.get("http://localhost:5000/me");
         setUser(res.data);
       } catch (err) {
+        console.log(err);
         setUser(null);
       } finally {
         setLoading(false);
