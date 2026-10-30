@@ -24,9 +24,17 @@ router.get('/:id/items', async (req, res) => {
         SELECT order_item_id, order_id, product_name, order_items.quantity
         FROM order_items INNER JOIN products ON order_items.product_id = products.product_id
         WHERE order_id = $1;
-;
     `, [orderId]);
     return res.status(200).json(items.rows);  
 })
+
+router.put('/:id/prepare', (req, res) => {
+    const orderId = req.params.id;
+    const preparingStatusId = 2;
+
+    pool.query("UPDATE orders SET status_id = $1 WHERE order_id = $2", 
+        [preparingStatusId, orderId]);
+    return res.status(200).json({ message: "Status set to preparing" });
+});
 
 export default router;

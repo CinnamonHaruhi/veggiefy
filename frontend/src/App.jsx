@@ -10,6 +10,7 @@ import ProtectedRoutes from './utils/ProtectedRoutes.jsx';
 import RegisterSuccess from './pages/RegisterSuccess.jsx';
 import Products from './pages/Products.jsx';
 import Orders from './pages/Orders.jsx';
+import Preparation from './pages/Preparation.jsx';
 import { UserContext } from './contexts/authContext.jsx';
 
 axios.defaults.withCredentials = true;
@@ -51,6 +52,7 @@ function App() {
               <Route path='/admin/dashboard' element={ <AdminDashboard/>}/>
               <Route path='/admin/products' element={ <Products/> }/>
               <Route path='/admin/orders' element={<Orders />}/>
+              <Route path='/admin/preparation' element={<Preparation />}/>
           </Route>
           
         </Routes>
