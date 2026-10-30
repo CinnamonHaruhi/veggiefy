@@ -3,16 +3,18 @@ import Sidebar from '../components/sidebar/Sidebar';
 import FontLinks from '../components/FontLinks';
 import OrderCard from '../components/order_card/OrderCard';
 import useFetchOrders from '../hooks/useFetchOrders.js';
+import axios from 'axios';
 
 const Preparation = () => {
   const [ status, setStatus ] = useState(["ready", "preparing"]);
   const { loading, orders, allOrderItems } = useFetchOrders(status);
-  
+
   const orderCardComponents = [];
   for (const order of orders) {
     const date = new Date(order.order_date);
     orderCardComponents.push(<OrderCard
       key={order.order_id}
+      orderId={order.order_id}
       orderNo={order.order_no}
       date={date.toLocaleDateString()}
       user={order.username}

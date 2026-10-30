@@ -14,7 +14,7 @@ const Orders = () => {
   if (loading) {
     return <div>Loading...</div>
   }
-
+  
   const orderComponents = [];
   for (const order of orders) {
     const date = new Date(order.order_date);

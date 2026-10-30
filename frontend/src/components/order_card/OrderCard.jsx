@@ -1,7 +1,28 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
+import axios from "axios";
 import './order-card.css';
 
 const OrderCard = (props) => {
+  const [ items, setItems ] = useState([]); 
+
+  useEffect(() => {
+    const fetchItems = async(orderId) => {
+      const items = await axios.get(`http://localhost:5000/admin/orders/${orderId}/items`);
+      setItems(items.data); 
+    }
+    fetchItems(props.orderId);
+  }, []);
+
+  const itemComponents =[];
+  for (const item of items) {
+    itemComponents.push(
+      <li key={item.order_item_id}>
+        <label className="item">{item.product_name} ({item.quantity} kg)<input type="checkbox"/>
+        <span className="box"></span>
+        </label>
+      </li>);
+  }
+
   return (
     <article className="order-card" data-order="ORD001">
       <div className="order-head">
@@ -13,8 +34,7 @@ const OrderCard = (props) => {
         <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4.400 0-8 2.200-8 5v1h16v-1c0-2.800-3.600-5-8-5Z"/></svg>{props.user}</span>
       </div>
       <ul className="items">
-        <li><label className="item">Kamatis (1 kg)<input type="checkbox"/><span className="box"></span></label></li>
-        <li><label className="item">Patatas (2 kg)<input type="checkbox"/><span className="box"></span></label></li>
+        {itemComponents}
       </ul>
       <div className="order-foot">
         <span className="order-total">₱{props.total}</span>
