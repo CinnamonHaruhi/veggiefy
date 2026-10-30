@@ -4,10 +4,33 @@ import pool from '../../config/db.js';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
+    const status = req.query["status[]"];
+
+    //This basically checks if there is more than one status
+    if (Array.isArray(status)) {
+        const orders = await pool.query(`
+            SELECT order_id, order_no, order_date, total_amount, status_name, username
+            FROM orders INNER JOIN statuses ON orders.status_id = statuses.status_id
+            INNER JOIN users ON orders.user_id = users.user_id
+            WHERE LOWER(status_name) = ANY($1);`,
+        [status]);
+        return res.status(200).json(orders.rows);
+    }
+
+    if (!status) {
+        const orders = await pool.query(`
+            SELECT order_id, order_no, order_date, total_amount, status_name, username
+            FROM orders INNER JOIN statuses ON orders.status_id = statuses.status_id
+            INNER JOIN users ON orders.user_id = users.user_id;`);
+        return res.status(200).json(orders.rows);
+    }
+    
     const orders = await pool.query(`
-        SELECT order_id, order_no, order_date, total_amount, status_name, username
-        FROM orders INNER JOIN statuses ON orders.status_id = statuses.status_id
-        INNER JOIN users ON orders.user_id = users.user_id;`);
+            SELECT order_id, order_no, order_date, total_amount, status_name, username
+            FROM orders INNER JOIN statuses ON orders.status_id = statuses.status_id
+            INNER JOIN users ON orders.user_id = users.user_id
+            WHERE status_name ILIKE $1;`,
+        [status]);
     return res.status(200).json(orders.rows);
 });
 
