@@ -8,7 +8,7 @@ import ItemsDialog from '../components/dialogs/ItemsDialog.jsx';
 import useFetchOrders from '../hooks/useFetchOrders.js';
 
 const Orders = () => {
-  const { loading, orders, allOrderItems } = useFetchOrders();
+  const { loading, orders, allOrderItems } = useFetchOrders(null);
   const [ orderItems, setOrderItems ] = useState([]);
 
   if (loading) {

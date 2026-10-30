@@ -2,8 +2,6 @@ import React from 'react';
 import './order-card.css';
 
 const OrderCard = (props) => {
-  
-
   return (
     <article className="order-card" data-order="ORD001">
       <div className="order-head">

@@ -34,10 +34,36 @@ router.get('/', async (req, res) => {
     return res.status(200).json(orders.rows);
 });
 
-router.get('/items', async (req, res) => {
+router.get('/items', async (req, res) => {    
+    const status = req.query["status[]"];
+
+    if (Array.isArray(status)) {
+        const items = await pool.query(`
+            SELECT order_item_id, order_items.order_id, product_name, order_items.quantity, status_name
+            FROM order_items INNER JOIN products ON order_items.product_id = products.product_id
+            INNER JOIN orders ON order_items.order_id = orders.order_id
+            INNER JOIN statuses ON orders.status_id = statuses.status_id
+            WHERE LOWER(status_name) = ANY ($1);`, 
+        [status]);
+        return res.status(200).json(items.rows);  
+    }
+
+    if (!status) {
+        const items = await pool.query(`
+            SELECT order_item_id, order_items.order_id, product_name, order_items.quantity, status_name
+            FROM order_items INNER JOIN products ON order_items.product_id = products.product_id
+            INNER JOIN orders ON order_items.order_id = orders.order_id
+            INNER JOIN statuses ON orders.status_id = statuses.status_id`);
+        return res.status(200).json(items.rows);  
+    }
+
     const items = await pool.query(`
-        SELECT order_item_id, order_id, product_name, order_items.quantity
-        FROM order_items INNER JOIN products ON order_items.product_id = products.product_id;`);
+        SELECT order_item_id, order_items.order_id, product_name, order_items.quantity, status_name
+        FROM order_items INNER JOIN products ON order_items.product_id = products.product_id
+        INNER JOIN orders ON order_items.order_id = orders.order_id
+        INNER JOIN statuses ON orders.status_id = statuses.status_id
+        WHERE status_name ILIKE $1`, 
+        [status]);
     return res.status(200).json(items.rows);  
 });
 
