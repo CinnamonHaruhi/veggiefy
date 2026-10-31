@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function useFetchOrders(statuses) {
-  const [ loading, setLoading ] = useState(false);
+  const [ loading, setLoading ] = useState(true);
   const [ orders, setOrders ] = useState([]);
   const [ allOrderItems, setAllOrderItems ] = useState([]);
 

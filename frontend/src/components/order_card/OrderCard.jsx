@@ -4,14 +4,26 @@ import './order-card.css';
 
 const OrderCard = (props) => {
   const [ items, setItems ] = useState([]); 
+  const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
     const fetchItems = async(orderId) => {
-      const items = await axios.get(`http://localhost:5000/admin/orders/${orderId}/items`);
-      setItems(items.data); 
+      try {
+        const items = await axios.get(`http://localhost:5000/admin/orders/${orderId}/items`);
+        setItems(items.data); 
+      } catch (err) {
+        console.log(err);
+        setItems([]);
+      } finally {
+        setLoading(false);
+      }
     }
     fetchItems(props.orderId);
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
 
   const itemComponents =[];
   for (const item of items) {

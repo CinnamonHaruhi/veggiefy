@@ -4,6 +4,7 @@ import FontLinks from '../components/FontLinks';
 import OrderCard from '../components/order_card/OrderCard';
 import useFetchOrders from '../hooks/useFetchOrders.js';
 import axios from 'axios';
+import FilterButton from '../components/filter_button/FilterButton.jsx';
 
 const Preparation = () => {
   const [ status, setStatus ] = useState(["ready", "preparing"]);
@@ -31,9 +32,9 @@ const Preparation = () => {
           <main className="main-content">
             <h1 className="main-title">Preparation Checklist</h1>
             <div className="filters" role="tablist" aria-label="Filter orders">
-              <button type="button" className="filter active" data-filter="all" role="tab" aria-selected="true" onClick={() => {setStatus(["ready", "preparing"])}}>All</button>
-              <button type="button" className="filter" data-filter="ready" role="tab" aria-selected="false" onClick={() => {setStatus(["ready"])}}>Ready</button>
-              <button type="button" className="filter" data-filter="preparing" role="tab" aria-selected="false" onClick={() => {setStatus(["preparing"])}}>Preparing</button>
+              <FilterButton status={status} filterValue="all" filterName="All" onClick={() => {setStatus(["preparing", "ready"])}}/>
+              <FilterButton status={status} filterValue="preparing" filterName="Preparing" onClick={() => {setStatus(["preparing"])}}/>
+              <FilterButton status={status} filterValue="ready" filterName="Ready" onClick={() => {setStatus(["ready"])}}/>
           </div>
 
           <section className="orders-grid" id="ordersGrid">
