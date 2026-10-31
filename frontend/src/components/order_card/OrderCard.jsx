@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import axios from "axios";
 import './order-card.css';
+import OrderCardItem from './OrderCardItem';
 
 const OrderCard = (props) => {
   const [ items, setItems ] = useState([]); 
   const [ loading, setLoading ] = useState(true);
+  const [ itemComponents, setItemComponents] = useState([]);
 
   useEffect(() => {
     const fetchItems = async(orderId) => {
@@ -21,22 +23,41 @@ const OrderCard = (props) => {
     fetchItems(props.orderId);
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>
-  }
+  const setButtonState = useCallback(async () => {
+      const pickUpButton = document.getElementById("btn-pick");
+      const allItemsReady = await axios.get(`http://localhost:5000/admin/orders/${props.orderId}/items/ready`);
+      if (allItemsReady.data === true) {
+        pickUpButton.disabled = false;
+      } else { 
+        pickUpButton.disabled = true;
+      }
+    });
 
-  const itemComponents =[];
-  for (const item of items) {
-    itemComponents.push(
-      <li key={item.order_item_id}>
-        <label className="item">{item.product_name} ({item.quantity} kg)<input type="checkbox"/>
-        <span className="box"></span>
-        </label>
-      </li>);
-  }
+  useEffect(() => {
+    setButtonState();
+  }, []);
+
+  useEffect(() => {
+    const addItemComponents = () => {
+      const itemComponents =[];
+      for (const item of items) {
+        itemComponents.push(<OrderCardItem
+          key={item.order_item_id}
+          orderId={item.order_id}
+          orderItemId={item.order_item_id}
+          productName={item.product_name}
+          quantity={item.quantity}
+          statusId={item.status_id}
+          onCheckboxClick={setButtonState}
+        />);
+      }
+      setItemComponents(itemComponents);
+    }
+    addItemComponents();
+  }, [items]);
 
   return (
-    <article className="order-card" data-order="ORD001">
+    <article className="order-card">
       <div className="order-head">
         <h2 className="order-id">{props.orderNo}</h2>
         <button type="button" className="kebab" aria-label="Order options" aria-haspopup="true"><span></span><span></span><span></span></button>
@@ -46,11 +67,11 @@ const OrderCard = (props) => {
         <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4.400 0-8 2.200-8 5v1h16v-1c0-2.800-3.600-5-8-5Z"/></svg>{props.user}</span>
       </div>
       <ul className="items">
-        {itemComponents}
+        {loading ? <div>Loading...</div> : itemComponents}
       </ul>
       <div className="order-foot">
         <span className="order-total">₱{props.total}</span>
-        <button type="button" className="btn-pick">Picked Up</button>
+        <button type="button" className="btn-pick" id='btn-pick' disabled>Picked Up</button>
       </div>
       <div className="menu" role="menu">
         <button type="button" role="menuitem" data-action="view">View</button>

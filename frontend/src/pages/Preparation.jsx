@@ -4,7 +4,7 @@ import FontLinks from '../components/FontLinks';
 import OrderCard from '../components/order_card/OrderCard';
 import useFetchOrders from '../hooks/useFetchOrders.js';
 import axios from 'axios';
-import FilterButton from '../components/filter_button/FilterButton.jsx';
+import FilterButton from '../components/FilterButton.jsx';
 
 const Preparation = () => {
   const [ status, setStatus ] = useState(["ready", "preparing"]);
@@ -38,9 +38,9 @@ const Preparation = () => {
           </div>
 
           <section className="orders-grid" id="ordersGrid">
-            {orderCardComponents}
+            {loading ? <div>Loading...</div> : orderCardComponents}
           </section>
-
+    
           </main>
         </div>
       </div>

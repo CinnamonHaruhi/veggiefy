@@ -70,20 +70,32 @@ router.get('/items', async (req, res) => {
 router.get('/:id/items', async (req, res) => {
     const orderId = req.params.id;
     const items = await pool.query(`
-        SELECT order_item_id, order_id, product_name, order_items.quantity
+        SELECT order_item_id, order_id, product_name, order_items.quantity, order_items.status_id
         FROM order_items INNER JOIN products ON order_items.product_id = products.product_id
         WHERE order_id = $1;
     `, [orderId]);
     return res.status(200).json(items.rows);  
 })
 
-router.put('/:id/prepare', (req, res) => {
+router.get('/:id/items/ready', async (req, res) => {
     const orderId = req.params.id;
-    const preparingStatusId = 2;
-
-    pool.query("UPDATE orders SET status_id = $1 WHERE order_id = $2", 
-        [preparingStatusId, orderId]);
-    return res.status(200).json({ message: "Status set to preparing" });
+    const noOfItemsBeingPrepared = await pool.query(
+        `SELECT COUNT(order_item_id) FROM order_items WHERE status_id = 2 AND order_id = $1;`, 
+        [orderId]);
+    const parsedNumber = parseInt(noOfItemsBeingPrepared.rows[0].count);
+    if (parsedNumber === 0) {
+        return res.status(200).json(true);
+    }
+    return res.status(200).json(false);
 });
+
+router.put('/:id/items/:itemId', (req, res) => {
+    const itemId = req.params.itemId;
+    const statusId = req.query.statusId;
+
+    pool.query("UPDATE order_items SET status_id = $1 WHERE order_item_id = $2", [statusId, itemId]);
+    return res.status(200).json({ message: "Item status updated succesfully" });
+});
+
 
 export default router;
