@@ -1,5 +1,6 @@
 import React from 'react'
 import './dialog.css';
+import axios from 'axios';
 
 const ItemsDialog = ({ orderItems }) => {
   const items = orderItems;
@@ -13,6 +14,12 @@ const ItemsDialog = ({ orderItems }) => {
     )
   }
 
+  const handleStartPreparing = async () => {
+    const preparingStatusId = 2;
+    const response = await axios.put(`http://localhost:5000/admin/orders/${items[0].order_id}?statusId=${preparingStatusId}`);
+    console.log(response.data);
+  }
+
   return (
     <dialog className="dialog" id='itemsDialog'>
       <form>
@@ -22,7 +29,7 @@ const ItemsDialog = ({ orderItems }) => {
         </div>
         <div className='dialog-actions'>
           <button type="button" className="dialog-btn dialog-btn-light" id="dialogCancel" onClick={() => {document.getElementById("itemsDialog").close()}}>Close</button>
-          <button type="button" className="dialog-btn dialog-btn-dark">Start preparing</button>
+          <button type="button" className="dialog-btn dialog-btn-dark" onClick={handleStartPreparing}>Start preparing</button>
         </div>
       </form>
     </dialog> 

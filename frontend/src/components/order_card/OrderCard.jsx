@@ -24,22 +24,6 @@ const OrderCard = (props) => {
     fetchItems(props.orderId);
   }, []);
 
-  /*
-  const setButtonState = useCallback(async () => {
-      const pickUpButton = document.getElementById("btn-pick");
-      const allItemsReady = await axios.get(`http://localhost:5000/admin/orders/${props.orderId}/items/ready`);
-      if (allItemsReady.data === true) {
-        pickUpButton.disabled = false;
-      } else { 
-        pickUpButton.disabled = true;
-      }
-    });
-
-  useEffect(() => {
-    setButtonState();
-  }, []);
-  */
-
   useEffect(() => {
     const addItemComponents = () => {
       const itemComponents =[];
