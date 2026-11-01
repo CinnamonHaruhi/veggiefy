@@ -20,6 +20,7 @@ const Preparation = () => {
       date={date.toLocaleDateString()}
       user={order.username}
       total={order.total_amount}
+      statusName={order.status_name}
     />);
   }
 

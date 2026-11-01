@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import axios from "axios";
 import './order-card.css';
 import OrderCardItem from './OrderCardItem';
+import OrderCardButton from './OrderCardButton';
 
 const OrderCard = (props) => {
   const [ items, setItems ] = useState([]); 
@@ -23,6 +24,7 @@ const OrderCard = (props) => {
     fetchItems(props.orderId);
   }, []);
 
+  /*
   const setButtonState = useCallback(async () => {
       const pickUpButton = document.getElementById("btn-pick");
       const allItemsReady = await axios.get(`http://localhost:5000/admin/orders/${props.orderId}/items/ready`);
@@ -36,6 +38,7 @@ const OrderCard = (props) => {
   useEffect(() => {
     setButtonState();
   }, []);
+  */
 
   useEffect(() => {
     const addItemComponents = () => {
@@ -48,7 +51,6 @@ const OrderCard = (props) => {
           productName={item.product_name}
           quantity={item.quantity}
           statusId={item.status_id}
-          onCheckboxClick={setButtonState}
         />);
       }
       setItemComponents(itemComponents);
@@ -71,7 +73,7 @@ const OrderCard = (props) => {
       </ul>
       <div className="order-foot">
         <span className="order-total">₱{props.total}</span>
-        <button type="button" className="btn-pick" id='btn-pick' disabled>Picked Up</button>
+        <OrderCardButton orderId={props.order}/>
       </div>
       <div className="menu" role="menu">
         <button type="button" role="menuitem" data-action="view">View</button>

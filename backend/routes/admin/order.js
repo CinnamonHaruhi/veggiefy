@@ -67,6 +67,15 @@ router.get('/items', async (req, res) => {
     return res.status(200).json(items.rows);  
 });
 
+router.put('/:id', async (req, res) => {
+    const orderId = req.params.id;
+    const statusId = req.query.statusId;
+
+    const orderData = await pool.query("UPDATE orders SET status_id = $1 WHERE order_id = $2 RETURNING *", 
+        [statusId, orderId]);
+    return res.status(200).json(orderData.rows);
+});
+
 router.get('/:id/items', async (req, res) => {
     const orderId = req.params.id;
     const items = await pool.query(`

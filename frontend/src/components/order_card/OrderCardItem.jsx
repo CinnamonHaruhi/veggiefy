@@ -1,9 +1,11 @@
 import {React, useEffect, useState } from 'react';
 import axios from 'axios';
+import useSetButtonState from '../../hooks/useSetButtonState';
 
-const OrderCardItem = ({onCheckboxClick, ...props}) => {
+const OrderCardItem = (props) => {
   const preparingStatusId = 2;
   const readyStatusId = 3;
+  const { setChecklistModified } = useSetButtonState(props.orderId);
 
   const checkboxHandler = async (e) => {
     let statusId = "";
@@ -14,7 +16,7 @@ const OrderCardItem = ({onCheckboxClick, ...props}) => {
     }
     try {
       await axios.put(`http://localhost:5000/admin/orders/${props.orderId}/items/${props.orderItemId}?statusId=${statusId}`);
-      onCheckboxClick();
+      setChecklistModified(true);
     } catch (err) {
       console.log(err);
     }
