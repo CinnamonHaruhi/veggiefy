@@ -6,10 +6,12 @@ import Order from '../components/Order.jsx';
 import Searchbar from '../components/searchbar/Searchbar.jsx';
 import ItemsDialog from '../components/dialogs/ItemsDialog.jsx';
 import useFetchOrders from '../hooks/useFetchOrders.js';
+import FilterButton from '../components/FilterButton.jsx';
 
 const Orders = () => {
-  const { loading, orders, allOrderItems } = useFetchOrders(null);
   const [ orderItems, setOrderItems ] = useState([]);
+  const [ status, setStatus ] = useState(["pending"]);
+  const { loading, orders, allOrderItems } = useFetchOrders(status);
 
   if (loading) {
     return <div>Loading...</div>
@@ -47,6 +49,11 @@ const Orders = () => {
             <h1 className="main-title">Orders</h1>
             <Searchbar/>
 
+            <div className="filters" role="tablist" aria-label="Filter orders">
+              <FilterButton status={status} filterValue="pending" filterName="Pending" onClick={() => {setStatus(["pending"])}}/>
+              <FilterButton status={status} filterValue="completed" filterName="Completed" onClick={() => {setStatus(["completed"])}}/>
+            </div>
+
             <div className="main-table-wrap" id="tableWrap">
               <table className="main-table">
                 <thead>
@@ -60,7 +67,7 @@ const Orders = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {orderComponents}
+                  {orderComponents.length === 0 ? <p>No orders</p> : orderComponents}
                 </tbody>
               </table>
             </div>

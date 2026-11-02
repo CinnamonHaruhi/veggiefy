@@ -64,7 +64,7 @@ const Preparation = () => {
           </div>
 
           <section className="orders-grid" id="ordersGrid">
-            {loading ? <div>Loading...</div> : orderCardComponents}
+            {orderCardComponents.length === 0 ? <p>No orders</p> : orderCardComponents}
           </section>
     
           </main>
