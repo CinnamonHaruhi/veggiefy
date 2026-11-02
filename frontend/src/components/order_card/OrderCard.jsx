@@ -10,6 +10,17 @@ const OrderCard = (props) => {
   const [ itemComponents, setItemComponents] = useState([]);
   const [ allItemsReady, setAllItemsReady ] = useState(false);
 
+  const setButtonState = useCallback(
+    async () => {
+      const allItemsReady =  await axios.get(`http://localhost:5000/admin/orders/${props.orderId}/items/ready`);
+      setAllItemsReady(allItemsReady.data);
+    }
+  );
+
+  useEffect(() => {
+    setButtonState();
+  }, []);
+
   useEffect(() => {
     const fetchItems = async(orderId) => {
       try {
@@ -36,7 +47,7 @@ const OrderCard = (props) => {
           productName={item.product_name}
           quantity={item.quantity}
           statusId={item.status_id}
-          setAllItemsReady={setAllItemsReady}
+          setButtonState={setButtonState}
         />);
       }
       setItemComponents(itemComponents);

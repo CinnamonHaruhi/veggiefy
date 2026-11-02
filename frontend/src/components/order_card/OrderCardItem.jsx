@@ -1,7 +1,7 @@
 import {React, useEffect, useState } from 'react';
 import axios from 'axios';
 
-const OrderCardItem = ({setAllItemsReady, ...props}) => {
+const OrderCardItem = ({setButtonState, ...props}) => {
   const preparingStatusId = 2;
   const readyStatusId = 3;
 
@@ -14,8 +14,7 @@ const OrderCardItem = ({setAllItemsReady, ...props}) => {
     }
     try {
       await axios.put(`http://localhost:5000/admin/orders/${props.orderId}/items/${props.orderItemId}?statusId=${statusId}`);
-      const allItemsReady =  await axios.get(`http://localhost:5000/admin/orders/${props.orderId}/items/ready`);
-      setAllItemsReady(allItemsReady.data);
+      setButtonState();
     } catch (err) {
       console.log(err);
     }
