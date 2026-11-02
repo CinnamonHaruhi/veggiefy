@@ -20,13 +20,16 @@ const Orders = () => {
   const orderComponents = [];
   for (const order of orders) {
     const date = new Date(order.order_date);
+    const completedDate = new Date(order.completed_date);
     orderComponents.push(<Order
       key={order.order_id}
       orderNo={order.order_no}
       orderDate={date.toLocaleDateString()}
-      totalAmout={order.total_amount}
+      completedDate={completedDate.toLocaleDateString()}
+      totalAmount={order.total_amount}
       status={order.status_name}
       username={order.username}
+      filter={status[0]}
       showModal={() => {
         document.getElementById('itemsDialog').showModal();
         const items = allOrderItems.filter((i) => {
@@ -57,17 +60,28 @@ const Orders = () => {
             <div className="main-table-wrap" id="tableWrap">
               <table className="main-table">
                 <thead>
-                  <tr>
-                    <th scope="col">Order No</th>
-                    <th scope="col">Order date</th>
-                    <th scope="col">Total amount</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">User</th>
-                    <th scope="col">Actions</th>
-                  </tr>
+                  {status[0] == "pending" ? 
+                    <tr>
+                      <th scope="col">Order No</th>
+                      <th scope="col">Order date</th>
+                      <th scope="col">Total amount</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">User</th>
+                      <th scope="col">Actions</th>
+                    </tr> 
+                    :
+                    <tr>
+                      <th scope="col">Order No</th>
+                      <th scope="col">Order date</th>
+                      <th scope="col">Completed date</th>
+                      <th scope="col">Total Amount</th>
+                      <th scope="col">User</th>
+                      <th scope="col">Actions</th>
+                    </tr>
+                  }
                 </thead>
                 <tbody>
-                  {orderComponents.length === 0 ? <p>No orders</p> : orderComponents}
+                  {orderComponents.length === 0 ? <tr><td colSpan={6}>No orders</td></tr> : orderComponents}
                 </tbody>
               </table>
             </div>

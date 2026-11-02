@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     //This basically checks if there is more than one status
     if (Array.isArray(status)) {
         const orders = await pool.query(`
-            SELECT order_id, order_no, order_date, total_amount, status_name, username
+            SELECT order_id, order_no, order_date, completed_date, total_amount, status_name, username
             FROM orders INNER JOIN statuses ON orders.status_id = statuses.status_id
             INNER JOIN users ON orders.user_id = users.user_id
             WHERE LOWER(status_name) = ANY($1);`,
@@ -19,14 +19,14 @@ router.get('/', async (req, res) => {
 
     if (!status) {
         const orders = await pool.query(`
-            SELECT order_id, order_no, order_date, total_amount, status_name, username
+            SELECT order_id, order_no, order_date, completed_date, total_amount, status_name, username
             FROM orders INNER JOIN statuses ON orders.status_id = statuses.status_id
             INNER JOIN users ON orders.user_id = users.user_id;`);
         return res.status(200).json(orders.rows);
     }
     
     const orders = await pool.query(`
-            SELECT order_id, order_no, order_date, total_amount, status_name, username
+            SELECT order_id, order_no, order_date, completed_date, total_amount, status_name, username
             FROM orders INNER JOIN statuses ON orders.status_id = statuses.status_id
             INNER JOIN users ON orders.user_id = users.user_id
             WHERE status_name ILIKE $1;`,
@@ -77,6 +77,13 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
     const orderId = req.params.id;
     const statusId = req.query.statusId;
+
+    if (statusId == 4) {
+        const date = new Date();
+        const orderData = await pool.query("UPDATE orders SET status_id = $1, completed_date = $2 WHERE order_id = $3 RETURNING *", 
+        [statusId, date, orderId]);
+        return res.status(200).json(orderData.rows);
+    }
 
     const orderData = await pool.query("UPDATE orders SET status_id = $1 WHERE order_id = $2 RETURNING *", 
         [statusId, orderId]);
