@@ -15,9 +15,21 @@ const OrderCardItem = ({setButtonState, ...props}) => {
     try {
       await axios.put(`http://localhost:5000/admin/orders/${props.orderId}/items/${props.orderItemId}?statusId=${statusId}`);
       setButtonState();
+      setOrderStatus();
     } catch (err) {
       console.log(err);
     }
+  }
+
+  const setOrderStatus = async () => {
+    const allItemsReady =  await axios.get(`http://localhost:5000/admin/orders/${props.orderId}/items/ready`);
+
+    if (allItemsReady.data) {
+      axios.put(`http://localhost:5000/admin/orders/${props.orderId}?statusId=${readyStatusId}`); 
+      return;
+    } 
+
+    axios.put(`http://localhost:5000/admin/orders/${props.orderId}?statusId=${preparingStatusId}`); 
   }
 
   return (
