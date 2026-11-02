@@ -8,6 +8,7 @@ const OrderCard = (props) => {
   const [ items, setItems ] = useState([]); 
   const [ loading, setLoading ] = useState(true);
   const [ itemComponents, setItemComponents] = useState([]);
+  const [ allItemsReady, setAllItemsReady ] = useState(false);
 
   useEffect(() => {
     const fetchItems = async(orderId) => {
@@ -35,6 +36,7 @@ const OrderCard = (props) => {
           productName={item.product_name}
           quantity={item.quantity}
           statusId={item.status_id}
+          setAllItemsReady={setAllItemsReady}
         />);
       }
       setItemComponents(itemComponents);
@@ -57,7 +59,7 @@ const OrderCard = (props) => {
       </ul>
       <div className="order-foot">
         <span className="order-total">₱{props.total}</span>
-        <OrderCardButton orderId={props.order}/>
+        <OrderCardButton orderId={props.orderId} allItemsReady={allItemsReady}/>
       </div>
       <div className="menu" role="menu">
         <button type="button" role="menuitem" data-action="view">View</button>
