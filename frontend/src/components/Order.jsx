@@ -10,7 +10,7 @@ const Order = (props) => {
       <td>₱{props.totalAmount}</td>
       <td>{props.username}</td>
       <td>
-        <button type="button" aria-haspopup="menu" onClick={props.showModal}>View</button>
+        <button type="button" aria-haspopup="menu" onClick={props.showModal}>View items</button>
       </td>
     </tr>
     )

@@ -4,6 +4,10 @@ import axios from 'axios';
 
 const ItemsDialog = ({ orderItems }) => {
   const items = orderItems;
+  let orderStatus = "";
+  if (!items.length === 0) {
+    orderStatus = items[0].status_name.toLowerCase();
+  }
 
   const itemComponents = [];
   for (const item of items) {
@@ -29,7 +33,8 @@ const ItemsDialog = ({ orderItems }) => {
         </div>
         <div className='dialog-actions'>
           <button type="button" className="dialog-btn dialog-btn-light" id="dialogCancel" onClick={() => {document.getElementById("itemsDialog").close()}}>Close</button>
-          <button type="button" className="dialog-btn dialog-btn-dark" onClick={handleStartPreparing}>Start preparing</button>
+          {orderStatus == "Pending" && 
+          <button type="button" className="dialog-btn dialog-btn-dark" onClick={handleStartPreparing}>Start preparing</button>}
         </div>
       </form>
     </dialog> 
