@@ -4,7 +4,7 @@ import './order-card.css';
 import OrderCardItem from './OrderCardItem';
 import OrderCardButton from './OrderCardButton';
 
-const OrderCard = (props) => {
+const OrderCard = ({setMessage, ...props}) => {
   const [ items, setItems ] = useState([]); 
   const [ loading, setLoading ] = useState(true);
   const [ itemComponents, setItemComponents] = useState([]);
@@ -70,7 +70,7 @@ const OrderCard = (props) => {
       </ul>
       <div className="order-foot">
         <span className="order-total">₱{props.total}</span>
-        <OrderCardButton orderId={props.orderId} allItemsReady={allItemsReady}/>
+        <OrderCardButton orderId={props.orderId} allItemsReady={allItemsReady} setMessage={setMessage}/>
       </div>
       <div className="menu" role="menu">
         <button type="button" role="menuitem" data-action="view">View</button>

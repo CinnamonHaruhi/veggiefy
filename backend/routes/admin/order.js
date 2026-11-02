@@ -67,6 +67,13 @@ router.get('/items', async (req, res) => {
     return res.status(200).json(items.rows);  
 });
 
+router.get('/:id', async (req, res) => {
+    const orderId = parseInt(req.params.id);
+    
+    const order = await pool.query("SELECT * FROM orders WHERE order_id = $1", [orderId]);
+    return res.status(200).json(order.rows[0]);
+})
+
 router.put('/:id', async (req, res) => {
     const orderId = req.params.id;
     const statusId = req.query.statusId;
