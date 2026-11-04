@@ -1,11 +1,12 @@
-import React from 'react'
+import { React, useEffect, useState } from 'react'
 import './dialog.css';
 import axios from 'axios';
 
 const ItemsDialog = ({ orderItems }) => {
   const items = orderItems;
   let orderStatus = "";
-  if (!items.length === 0) {
+  
+  if (items.length !== 0) {
     orderStatus = items[0].status_name.toLowerCase();
   }
 
@@ -21,7 +22,9 @@ const ItemsDialog = ({ orderItems }) => {
   const handleStartPreparing = async () => {
     const preparingStatusId = 2;
     const response = await axios.put(`http://localhost:5000/admin/orders/${items[0].order_id}?statusId=${preparingStatusId}`);
-    console.log(response.data);
+
+    localStorage.setItem("ordersMessage", "Order has been sent to the preparation page");
+    window.location.reload();
   }
 
   return (
@@ -33,7 +36,7 @@ const ItemsDialog = ({ orderItems }) => {
         </div>
         <div className='dialog-actions'>
           <button type="button" className="dialog-btn dialog-btn-light" id="dialogCancel" onClick={() => {document.getElementById("itemsDialog").close()}}>Close</button>
-          {orderStatus == "Pending" && 
+          {orderStatus == "pending" && 
           <button type="button" className="dialog-btn dialog-btn-dark" onClick={handleStartPreparing}>Start preparing</button>}
         </div>
       </form>
