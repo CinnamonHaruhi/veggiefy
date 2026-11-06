@@ -3,6 +3,7 @@ import FontLinks from '../components/FontLinks';
 import Sidebar from '../components/sidebar/Sidebar';
 import Searchbar from '../components/searchbar/Searchbar';
 import ProductCard from '../components/product_card/ProductCard';
+import Cart from '../components/cart/Cart';
 
 const PlaceOrder = () => {
   return (
@@ -15,6 +16,7 @@ const PlaceOrder = () => {
             <h1 className="main-title">Place Advance Order</h1>
             <div className="po-toolbar">
               <Searchbar/>
+              <Cart/>
             </div>
 
             <section className="po-grid" id="poGrid" aria-label="Available products">
