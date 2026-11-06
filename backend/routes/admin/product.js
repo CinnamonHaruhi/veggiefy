@@ -4,11 +4,6 @@ import { isAdmin } from '../../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-    const products = await pool.query("SELECT * FROM products");
-    return res.status(200).json(products.rows);
-});
-
 router.post('/add', async (req, res) => {
     const { product_name, unit, price, quantity } = req.body;
     

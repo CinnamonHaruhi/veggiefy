@@ -5,11 +5,12 @@ import Sidebar from '../components/sidebar/Sidebar';
 import Searchbar from '../components/searchbar/Searchbar';
 import FontLinks from  '../components/FontLinks';
 import EditDialog from '../components/dialogs/EditDialog';
+import useFetchProducts from '../hooks/useFetchProducts';
 import { toast, Slide } from 'react-toastify';
 
 const Products = () => {
   const [ loading, setLoading ] = useState(false);
-  const [ products, setProducts ] = useState([]);
+  const { products } = useFetchProducts();
   const [ product, setProduct ] = useState({
     product_name: "",
     unit: "",
@@ -17,21 +18,6 @@ const Products = () => {
     quantity: ""
   });  
   const [ message, setMessage ] = useState(localStorage.getItem("message"));
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000/admin/products");
-        setProducts(res.data);
-      } catch (err) {
-        console.log(err);
-        setProducts(null);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchProducts();
-  }, []);
 
   useEffect(() => {
     const showToast = () => {

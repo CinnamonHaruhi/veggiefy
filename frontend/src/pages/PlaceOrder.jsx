@@ -4,8 +4,12 @@ import Sidebar from '../components/sidebar/Sidebar';
 import Searchbar from '../components/searchbar/Searchbar';
 import ProductCard from '../components/product_card/ProductCard';
 import Cart from '../components/cart/Cart';
+import useFetchProducts from '../hooks/useFetchProducts';
 
 const PlaceOrder = () => {
+  const { products } = useFetchProducts();
+  console.log(products);
+
   return (
     <>
       <FontLinks/>
@@ -20,11 +24,15 @@ const PlaceOrder = () => {
             </div>
 
             <section className="po-grid" id="poGrid" aria-label="Available products">
-              <ProductCard productName="Tomato" price="50" quantity="23"/>
-              <ProductCard productName="Tomato" price="50" quantity="23"/>
-              <ProductCard productName="Tomato" price="50" quantity="23"/>
-              <ProductCard productName="Tomato" price="50" quantity="23"/>
-              <ProductCard productName="Tomato" price="50" quantity="23"/>
+              {products.map((product) => {
+                return <ProductCard 
+                  key={product.product_id}
+                  productName={product.product_name}
+                  price={product.price}
+                  quantity={product.quantity}
+                  unit={product.unit}
+                />;
+              })}
             </section>
           </main>
         </div>
