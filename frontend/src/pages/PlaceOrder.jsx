@@ -6,6 +6,7 @@ import ProductCard from '../components/product_card/ProductCard';
 import Cart from '../components/cart/Cart';
 import useFetchProducts from '../hooks/useFetchProducts';
 import CartDialog from '../components/cart/CartDialog.jsx';
+import CartItem from '../components/cart/CartItem.jsx';
 
 const PlaceOrder = () => {
   const { products } = useFetchProducts();
@@ -39,7 +40,12 @@ const PlaceOrder = () => {
         </div>
       </div>
 
-      <CartDialog cartDialogOpen={cartDialogOpen} setCartDialogOpen={setCartDialogOpen}/>
+      <CartDialog cartDialogOpen={cartDialogOpen} setCartDialogOpen={setCartDialogOpen}>
+        <CartItem/>
+        <CartItem/>
+        <CartItem/>
+        <CartItem/>
+      </CartDialog>
     </>
   )
 }

@@ -1,7 +1,7 @@
 import { React, useRef } from 'react';
 import './cart-dialog.css';
 
-const CartDialog = ({setCartDialogOpen, ...props}) => {
+const CartDialog = ({setCartDialogOpen, children, ...props}) => {
   const cartDialog = useRef(null);
   if (cartDialog.current) {
     if (props.cartDialogOpen) {
@@ -21,8 +21,14 @@ const CartDialog = ({setCartDialogOpen, ...props}) => {
         </div>
       </div>
 
-      <ul className="po-basket-list" id="poBasketList"></ul>
-      <p className="po-basket-empty" id="poBasketEmpty">Your basket is empty.</p>
+      {children ? 
+        <ul className="po-basket-list" id="poBasketList">
+          {children}
+        </ul>
+      :
+        <p className="po-basket-empty" id="poBasketEmpty">Your basket is empty.</p>
+      }
+
 
       <div className="po-basket-total">
         <span>Total</span>
