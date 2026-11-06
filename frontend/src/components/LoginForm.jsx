@@ -36,7 +36,7 @@ const LoginForm = ({ setUser }) => {
       if (parseInt(userData.role_id) === 1) {
         navigate("/admin/dashboard");
       } else {
-        navigate("/");
+        navigate("/place-order");
       }
 
     } catch (err) {

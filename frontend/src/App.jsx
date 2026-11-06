@@ -11,6 +11,7 @@ import RegisterSuccess from './pages/RegisterSuccess.jsx';
 import Products from './pages/Products.jsx';
 import Orders from './pages/Orders.jsx';
 import Preparation from './pages/Preparation.jsx';
+import PlaceOrder from './pages/PlaceOrder.jsx';
 import { UserContext } from './contexts/authContext.jsx';
 
 axios.defaults.withCredentials = true;
@@ -48,6 +49,7 @@ function App() {
           <Route path='/login' element={<Login setUser={setUser}/>}/>
           <Route path='/register' element={<Register/>}/>
           <Route path='/registerSuccess' element={<RegisterSuccess/>}/>
+          <Route path='/place-order' element={<PlaceOrder />}/>
 
           <Route element={<ProtectedRoutes user={user}/>}>
               <Route path='/admin/dashboard' element={ <AdminDashboard/>}/>

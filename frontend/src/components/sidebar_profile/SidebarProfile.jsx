@@ -1,11 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import './sidebar-profile.css';
-import { UserContext } from '../../contexts/authContext.jsx';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const SidebarProfile = () => {
-  const user = useContext(UserContext);
+const SidebarProfile = (props) => {
   const navigate = useNavigate();
 
   const showLogoutDialog = async () => {
@@ -25,7 +23,7 @@ const SidebarProfile = () => {
           <span className="products-avatar" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4.4 0-8 2.2-8 5v2h16v-2c0-2.8-3.6-5-8-5Z"/></svg>
           </span>
-          <span className="products-admin-name">{user.username}</span>
+          <span className="products-admin-name">{props.username}</span>
           <button type="button" className="products-admin-toggle" id="adminToggle" aria-label="Admin menu" aria-expanded="false"
           onClick={showLogoutDialog}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

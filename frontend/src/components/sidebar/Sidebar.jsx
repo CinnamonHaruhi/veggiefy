@@ -1,9 +1,13 @@
-import React from 'react'
+import { React, useContext } from 'react'
 import './sidebar.css'
 import SidebarProfile from '../sidebar_profile/SidebarProfile'
-import SidebarItem from './SidebarItem'
+import SidebarItems from './SidebarItems'
+import { UserContext } from '../../contexts/authContext'
 
 const Sidebar = () => {
+  const user = useContext(UserContext);
+  const isAdmin = user.role_id == 1;
+
   return (
     <aside className="sidebar" id="sidebar">
       <div className="sidebar-brand">
@@ -12,32 +16,10 @@ const Sidebar = () => {
       </div>
 
       <nav className="sidebar-nav" aria-label="Main navigation">
-        <SidebarItem path="/admin/dashboard" class="sidebar-nav-item" label="Dashboard">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path className="products-fill" d="M3 11.5 12 3l9 8.5V21a1 1 0 0 1-1 1h-5.5v-7h-5v7H4a1 1 0 0 1-1-1Z"/></svg>
-        </SidebarItem>
-
-        <SidebarItem path="/admin/orders" class="sidebar-nav-item" label="Orders">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="18" rx="2"/><path d="M9 2h6v4H9zM9 11h6M9 15h6"/></svg>
-        </SidebarItem>
-
-        <SidebarItem path="/admin/products" class="sidebar-nav-item" label="Products">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h3l2.5 12h11L21 7H6"/><circle className="products-fill" cx="9" cy="20" r="1.5"/><circle className="products-fill" cx="17" cy="20" r="1.5"/></svg>
-        </SidebarItem>
-
-        <SidebarItem path="/admin/preparation" class="sidebar-nav-item" label="Preparation">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="19" rx="2"/><circle cx="12" cy="11" r="3"/><path d="M8 18h8"/></svg>
-        </SidebarItem>
-
-        <SidebarItem path="/admin/reports" class="sidebar-nav-item" label="Reports">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18M8 17v-5M13 17V8M18 17v-8"/></svg>
-        </SidebarItem>
-
-        <SidebarItem path="/admin/customers" class="sidebar-nav-item" label="Customers">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path className="products-fill" d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4.4 0-8 2.2-8 5v2h16v-2c0-2.8-3.6-5-8-5Z"/></svg>
-        </SidebarItem>
+        <SidebarItems isAdmin={isAdmin}></SidebarItems>
       </nav>
       
-      <SidebarProfile/>
+      <SidebarProfile username={user.username}/>
     </aside>
   )
 }

@@ -61,7 +61,7 @@ const Preparation = () => {
               <FilterButton status={status} filterValue="all" filterName="All" onClick={() => {setStatus(["preparing", "ready"])}}/>
               <FilterButton status={status} filterValue="preparing" filterName="Preparing" onClick={() => {setStatus(["preparing"])}}/>
               <FilterButton status={status} filterValue="ready" filterName="Ready" onClick={() => {setStatus(["ready"])}}/>
-          </div>
+            </div>
 
           <section className="orders-grid" id="ordersGrid">
             {orderCardComponents.length === 0 ? <p>No orders</p> : orderCardComponents}

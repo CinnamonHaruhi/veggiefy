@@ -1,0 +1,25 @@
+.po-card {
+  position: relative; 
+  background: var(--white); 
+  border: 1px solid var(--black);
+  border-radius: 10px;
+  padding: 14px 12px 36px; 
+}
+.po-card-name { margin: 10px 0 0; font-size: 1rem; font-weight: 800; }
+.po-card-price { margin: 2px 0 14px; font-weight: 700; }
+.po-card-price { font-weight: 500; }
+.po-card-stock { margin: 0; }
+.po-card-add {
+  position: absolute; right: 8px; bottom: 8px; width: 30px; height: 30px;
+  display: grid; place-items: center; padding: 0;
+  background: var(--black); color: var(--white); border: 0; border-radius: 4px;
+  font-size: 1rem; line-height: 1; cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.po-card-add:hover { background: #333; }
+.po-card-add:focus-visible { outline: 3px solid rgba(0, 0, 0, 0.35); outline-offset: 2px; }
+.po-no-results { margin: 24px 0 0; font-style: italic; color: var(--muted); }
+
+.po-img-ph { display: grid; place-items: center; width: 70px; height: 70px; margin: 0 auto; }
+.po-img-ph svg { width: 100%; height: 100%; fill: var(--black); }
+.po-img-lg { width: 110px; height: 110px; margin: 0; flex-shrink: 0; }
