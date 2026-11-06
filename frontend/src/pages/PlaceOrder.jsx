@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import FontLinks from '../components/FontLinks';
 import Sidebar from '../components/sidebar/Sidebar';
 import Searchbar from '../components/searchbar/Searchbar';
 import ProductCard from '../components/product_card/ProductCard';
 import Cart from '../components/cart/Cart';
 import useFetchProducts from '../hooks/useFetchProducts';
+import CartDialog from '../components/cart/CartDialog.jsx';
 
 const PlaceOrder = () => {
   const { products } = useFetchProducts();
-  console.log(products);
+  const [ cartDialogOpen, setCartDialogOpen ] = useState(false);
 
   return (
     <>
@@ -20,7 +21,7 @@ const PlaceOrder = () => {
             <h1 className="main-title">Place Advance Order</h1>
             <div className="po-toolbar">
               <Searchbar/>
-              <Cart/>
+              <Cart setCartDialogOpen={setCartDialogOpen}/>
             </div>
 
             <section className="po-grid" id="poGrid" aria-label="Available products">
@@ -37,6 +38,8 @@ const PlaceOrder = () => {
           </main>
         </div>
       </div>
+
+      <CartDialog cartDialogOpen={cartDialogOpen} setCartDialogOpen={setCartDialogOpen}/>
     </>
   )
 }
