@@ -12,30 +12,8 @@ import { toast, Slide } from 'react-toastify';
 const Orders = () => {
   const [ orderItems, setOrderItems ] = useState([]);
   const [ status, setStatus ] = useState(["pending"]);
-  const { loading, orders, allOrderItems } = useFetchOrders(status);
-  const [ message, setMessage ] = useState(localStorage.getItem("ordersMessage"));
-
-  useEffect(() => {
-    const showToast = async () => {
-      console.log("Hello");
-      if (message) {
-        toast.success(message, {
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Slide,
-        });
-        localStorage.removeItem("ordersMessage");
-        setMessage("");
-      }
-    }
-    showToast();
-  }, []);
+  const [ data, setData ] = useState(null);
+  const { loading, orders, allOrderItems } = useFetchOrders(status, data);
 
   if (loading) {
     return <div>Loading...</div>
@@ -113,7 +91,7 @@ const Orders = () => {
         </div>
       </div>
       
-      <ItemsDialog orderItems={orderItems} />
+      <ItemsDialog orderItems={orderItems} setData={setData}/>
     </>
   )
 }

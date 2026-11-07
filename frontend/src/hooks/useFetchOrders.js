@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function useFetchOrders(statuses) {
+export default function useFetchOrders(statuses, data = null) {
   const [ loading, setLoading ] = useState(true);
   const [ orders, setOrders ] = useState([]);
   const [ allOrderItems, setAllOrderItems ] = useState([]);
@@ -31,7 +31,7 @@ export default function useFetchOrders(statuses) {
       }
     }
     fetchOrders();
-  }, [statuses]);
+  }, [statuses, data]);
 
   return { loading, orders, allOrderItems };
 }

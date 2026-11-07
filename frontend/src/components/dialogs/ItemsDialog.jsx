@@ -1,8 +1,10 @@
-import { React, useEffect, useState } from 'react'
+import { React, useRef } from 'react'
 import './dialog.css';
 import axios from 'axios';
+import { toast, Slide } from 'react-toastify';
 
-const ItemsDialog = ({ orderItems }) => {
+const ItemsDialog = ({ orderItems, setData }) => {
+  const dialog = useRef(null);
   const items = orderItems;
   let orderStatus = "";
   
@@ -21,14 +23,24 @@ const ItemsDialog = ({ orderItems }) => {
 
   const handleStartPreparing = async () => {
     const preparingStatusId = 2;
-    const response = await axios.put(`http://localhost:5000/admin/orders/${items[0].order_id}?statusId=${preparingStatusId}`);
-
-    localStorage.setItem("ordersMessage", "Order has been sent to the preparation page");
-    window.location.reload();
+    const res = await axios.put(`http://localhost:5000/admin/orders/${items[0].order_id}?statusId=${preparingStatusId}`);
+    toast.success("Order has been sent to preparation page", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Slide,
+    });
+    setData(res.data);
+    dialog.current.close();
   }
 
   return (
-    <dialog className="dialog" id='itemsDialog'>
+    <dialog ref={dialog} className="dialog" id='itemsDialog'>
       <form>
         <h2 id="dialogTitle">Order items</h2>
         <div className="dialogFields">

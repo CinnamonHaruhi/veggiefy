@@ -1,4 +1,4 @@
-import {react, useEffect, useState} from 'react';
+import {react, useState} from 'react';
 import Sidebar from '../components/sidebar/Sidebar';
 import FontLinks from '../components/FontLinks';
 import OrderCard from '../components/order_card/OrderCard';
@@ -10,29 +10,8 @@ import { toast, Slide } from 'react-toastify';
 
 const Preparation = () => {
   const [ status, setStatus ] = useState(["ready", "preparing"]);
-  const { loading, orders, allOrderItems } = useFetchOrders(status);
-  const [ message, setMessage ] = useState(localStorage.getItem("preparationMessage"));
-
-  useEffect(() => {
-    const showToast = async () => {
-      if (message) {
-        toast.success(message, {
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Slide,
-        });
-        localStorage.removeItem("preparationMessage");
-        setMessage("");
-      }
-    }
-    showToast();
-  }, []);
+  const [ data, setData ] = useState(null);
+  const { loading, orders, allOrderItems } = useFetchOrders(status, data);
 
   const orderCardComponents = [];
   for (const order of orders) {
@@ -45,7 +24,7 @@ const Preparation = () => {
       user={order.username}
       total={order.total_amount}
       statusName={order.status_name}
-      setMessage={setMessage}
+      setData={setData}
     />);
   }
 

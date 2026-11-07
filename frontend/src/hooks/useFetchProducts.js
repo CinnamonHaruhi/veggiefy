@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function useFetchProducts() {
+export default function useFetchProducts(data = null) {
   const [ products, setProducts ] = useState([]);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function useFetchProducts() {
       }
     }
     fetchProducts();
-  }, []);
+  }, [data]);
 
   return  { products };
 }

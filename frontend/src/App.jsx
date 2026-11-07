@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate} from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import axios from 'axios';
 import Home from './pages/Home.jsx';
@@ -40,7 +40,7 @@ function App() {
       <div>Loading...</div>
     );
   }
-
+  
   return (
     <UserContext.Provider value={user}>
       <Router>

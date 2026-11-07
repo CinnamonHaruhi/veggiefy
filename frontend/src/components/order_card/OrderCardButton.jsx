@@ -1,14 +1,26 @@
-import { React, useEffect, useState } from 'react';
+import { React } from 'react';
 import axios from 'axios';
+import { toast, Slide } from 'react-toastify';
 
-const OrderCardButton = ({ setMessage, ...props }) => {
+const OrderCardButton = ({ setData, ...props }) => {
   const completedStatusId = 4;
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     try {
-      axios.put(`http://localhost:5000/admin/orders/${props.orderId}?statusId=${completedStatusId}`);
-      localStorage.setItem("preparationMessage", "Order completed");
-      window.location.reload(); 
+      const res = await axios.put(`http://localhost:5000/admin/orders/${props.orderId}?statusId=${completedStatusId}`);
+      toast.success("Order Completed", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Slide,
+      });
+      setData(res.data);
+
     } catch (err) {
       console.log(err);
     }

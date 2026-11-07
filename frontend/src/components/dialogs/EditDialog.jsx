@@ -1,22 +1,35 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import './dialog.css'
 import axios from 'axios'
+import { toast, Slide } from 'react-toastify'
 
-const EditDialog = ({ setProduct, product, setMessage }) => {
+const EditDialog = ({ setProduct, product, setData }) => {
+  const dialog = useRef(null);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.put(`http://localhost:5000/admin/products/${product.product_id}`, product);
-      console.log(res.data);
-      localStorage.setItem("message", "Item updated successfully");
-      window.location.reload();
+      toast.success("Item updated successfully", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Slide,
+        });
+      setData(res.data);
+      dialog.current.close();
     } catch (err) {
       console.error(err);
     }
   } 
 
   return (
-    <dialog className="dialog" id="productDialog" aria-labelledby="dialogTitle">
+    <dialog ref={dialog} className="dialog" id="productDialog" aria-labelledby="dialogTitle">
       <form id="dialogForm" onSubmit={handleSubmit} noValidate>
         <h2 id="dialogTitle">Product</h2>
 

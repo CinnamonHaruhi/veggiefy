@@ -10,35 +10,14 @@ import { toast, Slide } from 'react-toastify';
 
 const Products = () => {
   const [ loading, setLoading ] = useState(false);
-  const { products } = useFetchProducts();
+  const [ data, setData ] = useState(null); //This is just so that the products page re renders after an edit
+  const { products } = useFetchProducts(data);
   const [ product, setProduct ] = useState({
     product_name: "",
     unit: "",
     price: "",
     quantity: ""
   });  
-  const [ message, setMessage ] = useState(localStorage.getItem("message"));
-
-  useEffect(() => {
-    const showToast = () => {
-      if (message) {
-        toast.success(message, {
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Slide,
-        });
-        localStorage.removeItem("message");
-        setMessage("");
-      }
-    }
-    showToast();
-  }, [])
 
   if (loading) {
     return <div>Loading...</div>
@@ -99,7 +78,7 @@ const Products = () => {
         </div>
       </div>
 
-      <EditDialog setProduct={setProduct} product={product} />
+      <EditDialog setProduct={setProduct} product={product} setData={setData}/>
     </>
   )
 }
