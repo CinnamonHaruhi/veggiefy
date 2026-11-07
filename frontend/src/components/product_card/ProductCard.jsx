@@ -16,11 +16,11 @@ const ProductCard = (props) => {
       </div>
 
       <ProductCardDialog dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}
+        productId={props.productId}
         productName={props.productName}
         price={props.price}
-        quantity={props.quantity}
-        unit={props.unit}
         stock={props.quantity}
+        unit={props.unit}
       />
     </>
   )

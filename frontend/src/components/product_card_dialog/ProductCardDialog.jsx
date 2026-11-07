@@ -2,12 +2,13 @@ import { React, useContext, useRef, useState } from 'react';
 import './product-card-dialog.css';
 import { CartContext } from '../../contexts/cartContext.jsx';
 
-const ProductCardDialog = ({ setDialogOpen, ...props }) => {
+const ProductCardDialog = ({ setDialogOpen, setStock, ...props }) => {
   const dialog = useRef(null);
   const [ quantity, setQuantity ] = useState(1);
   const cartContext = useContext(CartContext);
   const setCartItems = cartContext.setCartItems;
   const cartItems = cartContext.cartItems;
+  const [ errorMessage, setErrorMessage ] = useState("");
 
   if (dialog.current) {
     if (props.dialogOpen) {
@@ -18,7 +19,29 @@ const ProductCardDialog = ({ setDialogOpen, ...props }) => {
   } 
 
   const addToCart = () => {
-    
+    const index = cartItems.findIndex((item) => {
+      return item.id == props.productId;
+    });
+
+    if (index == -1) {
+      setCartItems([{
+        id: props.productId,
+        productName: props.productName,
+        quantity: quantity,
+        price: props.price,
+        unit: props.unit
+      }, ...cartItems]);
+    } else {
+      //if a product is already in the cart we simply modify the quantity
+      const qtyInCart = cartItems[index].quantity;
+      if ((qtyInCart + quantity ) > props.stock) {
+        setErrorMessage(`Quantity cannot exceed available stock. You already have ${qtyInCart} in your cart`);
+        return;
+      }
+      cartItems[index].quantity += quantity;
+    }
+    dialog.current.close();
+    setDialogOpen(false);
   }
 
   const increaseQty =   () => {
@@ -29,7 +52,7 @@ const ProductCardDialog = ({ setDialogOpen, ...props }) => {
   }
 
   const decreaseQty = () => {
-        if (quantity === 1) {
+    if (quantity === 1) {
       return;
     }
     setQuantity(quantity - 1);
@@ -48,13 +71,14 @@ const ProductCardDialog = ({ setDialogOpen, ...props }) => {
             <p className="po-detail-price" id="poDetailPrice">₱{props.price} per {props.unit}</p>
           </div>
        </div>
-        <p className="po-detail-stock">Available Stock: <strong id="poDetailStock">{props.quantity} {props.unit}</strong></p>
+        <p className="po-detail-stock">Available Stock: <strong id="poDetailStock">{props.stock} {props.unit}</strong></p>
 
         <div className="po-qty" aria-label="Quantity">
           <button type="button" className="po-qty-btn" onClick={decreaseQty}>&minus;</button>
           <span className="po-qty-num" id="poDetailQty" aria-live="polite">{quantity}</span>
           <button type="button" className="po-qty-btn" onClick={increaseQty}>+</button>
         </div>
+        <p className="po-detail-error" id="poDetailError">{errorMessage}</p>
 
         <button type="button" className="po-btn dialog-btn dialog-btn-dark" id="poDetailAdd" onClick={addToCart}>Add</button>
     </dialog>

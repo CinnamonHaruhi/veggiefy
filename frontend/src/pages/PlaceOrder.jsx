@@ -16,23 +16,16 @@ const PlaceOrder = () => {
     {
       id: 1,
       productName: "Tomato",
-      quantity: 5,
+      quantity: 3,
       price: 50,
       unit: "kg"
     }, 
     {
       id: 2,
-      productName: "Potato",
-      quantity: 12,
+      productName: "Carrot",
+      quantity: 2,
       price: 25,
       unit: "ml (it's not. just testing)" 
-    },
-    {
-      id: 3,
-      productName: "Asparagus",
-      quantity: 1,
-      price: 23,
-      unit: "inch lol" 
     }
   ]);
 
@@ -54,6 +47,7 @@ const PlaceOrder = () => {
                 {products.map((product) => {
                   return <ProductCard 
                     key={product.product_id}
+                    productId={product.product_id}
                     productName={product.product_name}
                     price={product.price}
                     quantity={product.quantity}
