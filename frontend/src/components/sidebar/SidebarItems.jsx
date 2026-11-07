@@ -34,19 +34,19 @@ const SidebarItems = (props) => {
 
   return (
       <>
-        <SidebarItem path="" class="sidebar-nav-item" label="Home">
+        <SidebarItem path="/home" class="sidebar-nav-item" label="Home">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path className="products-fill" d="M3 11.5 12 3l9 8.5V21a1 1 0 0 1-1 1h-5.5v-7h-5v7H4a1 1 0 0 1-1-1Z"/></svg>
         </SidebarItem>
 
-        <SidebarItem path="" class="sidebar-nav-item" label="Place Order">
+        <SidebarItem path="/place-order" class="sidebar-nav-item" label="Place Order">
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="18" rx="2"/><path d="M9 2h6v4H9zM9 11h6M9 15h6"/></svg>
         </SidebarItem>
 
-        <SidebarItem path="" class="sidebar-nav-item" label="My Orders">
+        <SidebarItem path="/my-orders" class="sidebar-nav-item" label="My Orders">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h3l2.5 12h11L21 7H6"/><circle className="products-fill" cx="9" cy="20" r="1.5"/><circle className="products-fill" cx="17" cy="20" r="1.5"/></svg>
         </SidebarItem>
 
-        <SidebarItem path="/admin/customers" class="sidebar-nav-item" label="Profile">
+        <SidebarItem path="/profile" class="sidebar-nav-item" label="Profile">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path className="products-fill" d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4.4 0-8 2.2-8 5v2h16v-2c0-2.8-3.6-5-8-5Z"/></svg>
         </SidebarItem>
       </>

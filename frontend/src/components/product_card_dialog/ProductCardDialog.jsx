@@ -1,8 +1,13 @@
-import { React, useEffect, useRef } from 'react';
+import { React, useContext, useRef, useState } from 'react';
 import './product-card-dialog.css';
+import { CartContext } from '../../contexts/cartContext.jsx';
 
 const ProductCardDialog = ({ setDialogOpen, ...props }) => {
   const dialog = useRef(null);
+  const [ quantity, setQuantity ] = useState(1);
+  const cartContext = useContext(CartContext);
+  const setCartItems = cartContext.setCartItems;
+  const cartItems = cartContext.cartItems;
 
   if (dialog.current) {
     if (props.dialogOpen) {
@@ -11,6 +16,24 @@ const ProductCardDialog = ({ setDialogOpen, ...props }) => {
       dialog.current.close();
     }
   } 
+
+  const addToCart = () => {
+    
+  }
+
+  const increaseQty =   () => {
+    if (props.stock === quantity) {
+      return;
+    }
+    setQuantity(quantity + 1);
+  }
+
+  const decreaseQty = () => {
+        if (quantity === 1) {
+      return;
+    }
+    setQuantity(quantity - 1);
+  }
 
   return (
     <dialog ref={dialog} className="po-dialog po-dialog-detail dialog" id="poDetailDialog" aria-labelledby="poDetailName">
@@ -28,12 +51,12 @@ const ProductCardDialog = ({ setDialogOpen, ...props }) => {
         <p className="po-detail-stock">Available Stock: <strong id="poDetailStock">{props.quantity} {props.unit}</strong></p>
 
         <div className="po-qty" aria-label="Quantity">
-          <button type="button" className="po-qty-btn" id="poDetailMinus" aria-label="Decrease quantity">&minus;</button>
-          <span className="po-qty-num" id="poDetailQty" aria-live="polite">1</span>
-          <button type="button" className="po-qty-btn" id="poDetailPlus" aria-label="Increase quantity">+</button>
+          <button type="button" className="po-qty-btn" onClick={decreaseQty}>&minus;</button>
+          <span className="po-qty-num" id="poDetailQty" aria-live="polite">{quantity}</span>
+          <button type="button" className="po-qty-btn" onClick={increaseQty}>+</button>
         </div>
 
-        <button type="button" className="po-btn dialog-btn dialog-btn-dark" id="poDetailAdd">Add</button>
+        <button type="button" className="po-btn dialog-btn dialog-btn-dark" id="poDetailAdd" onClick={addToCart}>Add</button>
     </dialog>
   )
 }

@@ -1,7 +1,11 @@
-import { React, useRef } from 'react';
+import { React, useContext, useRef } from 'react';
 import './cart-dialog.css';
+import { CartContext } from '../../contexts/cartContext';
 
 const CartDialog = ({setCartDialogOpen, children, ...props}) => {
+  const cartContext = useContext(CartContext);
+  const setCartItems = cartContext.setCartItems;
+
   const cartDialog = useRef(null);
   if (cartDialog.current) {
     if (props.cartDialogOpen) {
@@ -16,7 +20,7 @@ const CartDialog = ({setCartDialogOpen, children, ...props}) => {
       <div className="po-basket-head">
         <h2 id="dialogTitle">In basket</h2>
         <div className="po-basket-head-right">
-          <button type="button" className="po-reset" id="poReset">Reset</button>
+          <button type="button" className="po-reset" id="poReset" onClick={() => {setCartItems([])}}>Reset</button>
           <button type="button" className="po-close" data-close aria-label="Close basket" onClick={() => {setCartDialogOpen(false)}}>&times;</button>
         </div>
       </div>

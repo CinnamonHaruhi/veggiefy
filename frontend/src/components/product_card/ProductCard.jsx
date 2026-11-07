@@ -1,4 +1,4 @@
-import { React, useRef, useState } from 'react';
+import { React, useContext, useState } from 'react';
 import './product-card.css';
 import ProductCardDialog from '../product_card_dialog/ProductCardDialog';
 
@@ -20,6 +20,7 @@ const ProductCard = (props) => {
         price={props.price}
         quantity={props.quantity}
         unit={props.unit}
+        stock={props.quantity}
       />
     </>
   )
