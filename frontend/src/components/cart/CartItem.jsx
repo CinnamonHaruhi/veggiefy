@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './cart-item.css';
 import { CartContext } from '../../contexts/cartContext';
 
@@ -10,6 +10,11 @@ const CartItem = (props) => {
   const index = cartItems.findIndex((item) => {
     return item.id == props.productId;
   });
+
+  useEffect(() => {
+    setQuantity(props.quantity);
+  }, 
+  [props.quantity]);
 
   const removeItem = () => {
     setCartItems(cartItems.filter((cartItem) => {

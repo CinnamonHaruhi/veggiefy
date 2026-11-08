@@ -14,7 +14,7 @@ const Preparation = () => {
   const { loading, orders, allOrderItems } = useFetchOrders(status, data);
 
   const orderCards = orders.map((order) => {
-    <OrderCard
+    return <OrderCard
       key={order.order_id}
       orderId={order.order_id}
       orderNo={order.order_no}

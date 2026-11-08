@@ -13,10 +13,11 @@ const PlaceOrder = () => {
   const { products } = useFetchProducts();
   const [ cartDialogOpen, setCartDialogOpen ] = useState(false);
   const [ cartItems, setCartItems ] = useState([]);
+  const [ totalPrice, setTotalPrice ] = useState(0);
 
   return (
     <>
-      <CartContext.Provider value={{cartItems, setCartItems}}>
+      <CartContext.Provider value={{cartItems, setCartItems, totalPrice, setTotalPrice}}>
         <FontLinks/>
         <div className="main-page">
           <div className="main-app">

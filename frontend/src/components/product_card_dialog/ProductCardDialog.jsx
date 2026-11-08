@@ -8,7 +8,10 @@ const ProductCardDialog = ({ setDialogOpen, setStock, ...props }) => {
   const cartContext = useContext(CartContext);
   const setCartItems = cartContext.setCartItems;
   const cartItems = cartContext.cartItems;
+  const totalPrice = cartContext.totalPrice;
+  const setTotalPrice = cartContext.setTotalPrice;
   const [ errorMessage, setErrorMessage ] = useState("");
+  
 
   if (dialog.current) {
     if (props.dialogOpen) {
@@ -32,6 +35,7 @@ const ProductCardDialog = ({ setDialogOpen, setStock, ...props }) => {
         unit: props.unit,
         stock: props.stock
       }, ...cartItems]);
+      updateTotal(props.price, quantity);
     } else {
       //if a product is already in the cart we simply modify the quantity
       const qtyInCart = cartItems[index].quantity;
@@ -39,10 +43,22 @@ const ProductCardDialog = ({ setDialogOpen, setStock, ...props }) => {
         setErrorMessage(`Quantity cannot exceed available stock. You already have ${qtyInCart} in your cart`);
         return;
       }
-      cartItems[index].quantity += quantity;
+      //cartItems[index].quantity += quantity;
+      //I'm doing this instead so the cart items rerender :/ i'm too fried for this shit rn
+      const updatedCartItems = cartItems.map((item) => {
+        if (item.id == props.productId) {
+          item.quantity += quantity;
+        }
+        return item;
+      });
+      setCartItems(updatedCartItems);
     }
     dialog.current.close();
     setDialogOpen(false);
+  }
+
+  const updateTotal = (price, quantity) => {
+    setTotalPrice(totalPrice + (price * quantity));
   }
 
   const increaseQty = () => {
