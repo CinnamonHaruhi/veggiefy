@@ -22,29 +22,6 @@ const Products = () => {
   if (loading) {
     return <div>Loading...</div>
   }
-  
-  const productComponents = [];
-  for (const product of products) {
-    productComponents.push(<Product 
-      key={product.product_id} 
-      id={product.product_id} 
-      name={product.product_name} 
-      unit={product.unit} 
-      price={product.price} 
-      image={null} 
-      quantity={product.quantity}
-      showModal={() => {
-        document.getElementById("productDialog").showModal();
-        setProduct({
-          product_id: product.product_id,
-          product_name: product.product_name,
-          unit: product.unit,
-          price: product.price,
-          quantity: product.quantity
-        });
-      }}
-      />);
-  }
 
   return (
     <>
@@ -69,7 +46,27 @@ const Products = () => {
                   </tr>
                 </thead>
                 <tbody id="productBody">
-                  {productComponents}
+                  {products.map((product) => {
+                    return (<Product 
+                    key={product.product_id} 
+                    id={product.product_id} 
+                    name={product.product_name} 
+                    unit={product.unit} 
+                    price={product.price} 
+                    image={null} 
+                    quantity={product.quantity}
+                    showModal={() => {
+                      document.getElementById("productDialog").showModal();
+                      setProduct({
+                        product_id: product.product_id,
+                        product_name: product.product_name,
+                        unit: product.unit,
+                        price: product.price,
+                        quantity: product.quantity
+                      });
+                    }}
+                    />)
+                  })}
                 </tbody>
               </table>
             </div>

@@ -7,7 +7,6 @@ import OrderCardButton from './OrderCardButton';
 const OrderCard = ({ setData, ...props }) => {
   const [ items, setItems ] = useState([]); 
   const [ loading, setLoading ] = useState(true);
-  const [ itemComponents, setItemComponents] = useState([]);
   const [ allItemsReady, setAllItemsReady ] = useState(false);
 
   const setButtonState = useCallback(
@@ -36,25 +35,6 @@ const OrderCard = ({ setData, ...props }) => {
     fetchItems(props.orderId);
   }, []);
 
-  useEffect(() => {
-    const addItemComponents = () => {
-      const itemComponents =[];
-      for (const item of items) {
-        itemComponents.push(<OrderCardItem
-          key={item.order_item_id}
-          orderId={item.order_id}
-          orderItemId={item.order_item_id}
-          productName={item.product_name}
-          quantity={item.quantity}
-          statusId={item.status_id}
-          setButtonState={setButtonState}
-        />);
-      }
-      setItemComponents(itemComponents);
-    }
-    addItemComponents();
-  }, [items]);
-
   return (
     <article className="order-card">
       <div className="order-head">
@@ -66,7 +46,17 @@ const OrderCard = ({ setData, ...props }) => {
         <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4.400 0-8 2.200-8 5v1h16v-1c0-2.800-3.600-5-8-5Z"/></svg>{props.user}</span>
       </div>
       <ul className="items">
-        {loading ? <div>Loading...</div> : itemComponents}
+        {items.map((item) => {
+          return (<OrderCardItem
+            key={item.order_item_id}
+            orderId={item.order_id}
+            orderItemId={item.order_item_id}
+            productName={item.product_name}
+            quantity={item.quantity}
+            statusId={item.status_id}
+            setButtonState={setButtonState}
+          />)
+        })}
       </ul>
       <div className="order-foot">
         <span className="order-total">₱{props.total}</span>

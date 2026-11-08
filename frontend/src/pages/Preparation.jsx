@@ -13,20 +13,18 @@ const Preparation = () => {
   const [ data, setData ] = useState(null);
   const { loading, orders, allOrderItems } = useFetchOrders(status, data);
 
-  const orderCardComponents = [];
-  for (const order of orders) {
-    const date = new Date(order.order_date);
-    orderCardComponents.push(<OrderCard
+  const orderCards = orders.map((order) => {
+    <OrderCard
       key={order.order_id}
       orderId={order.order_id}
       orderNo={order.order_no}
-      date={date.toLocaleDateString()}
+      date={new Date(order.order_date).toLocaleDateString()}
       user={order.username}
       total={order.total_amount}
       statusName={order.status_name}
       setData={setData}
-    />);
-  }
+    />
+  });
 
   return (
     <>
@@ -43,7 +41,7 @@ const Preparation = () => {
             </div>
 
           <section className="orders-grid" id="ordersGrid">
-            {orderCardComponents.length === 0 ? <p>No orders</p> : orderCardComponents}
+            {orderCards.length === 0 ? <p>No orders</p> : orderCards}
           </section>
     
           </main>

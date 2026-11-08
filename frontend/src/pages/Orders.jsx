@@ -18,16 +18,13 @@ const Orders = () => {
   if (loading) {
     return <div>Loading...</div>
   }
-  
-  const orderComponents = [];
-  for (const order of orders) {
-    const date = new Date(order.order_date);
-    const completedDate = new Date(order.completed_date);
-    orderComponents.push(<Order
+
+  const orderComponents = orders.map((order) => {
+    return <Order
       key={order.order_id}
       orderNo={order.order_no}
-      orderDate={date.toLocaleDateString()}
-      completedDate={completedDate.toLocaleDateString()}
+      orderDate={new Date(order.order_date).toLocaleDateString()}
+      completedDate={new Date(order.completed_date).toLocaleDateString()}
       totalAmount={order.total_amount}
       status={order.status_name}
       username={order.username}
@@ -39,8 +36,8 @@ const Orders = () => {
         });
         setOrderItems(items);
       }}
-    />);
-  }
+    />
+  });
 
   return (
     <>

@@ -12,15 +12,6 @@ const ItemsDialog = ({ orderItems, setData }) => {
     orderStatus = items[0].status_name.toLowerCase();
   }
 
-  const itemComponents = [];
-  for (const item of items) {
-    itemComponents.push(
-      <div  key={item.order_item_id}>
-        <p>{item.product_name} x{item.quantity}</p>
-      </div>
-    )
-  }
-
   const handleStartPreparing = async () => {
     const preparingStatusId = 2;
     const res = await axios.put(`http://localhost:5000/admin/orders/${items[0].order_id}?statusId=${preparingStatusId}`);
@@ -44,7 +35,12 @@ const ItemsDialog = ({ orderItems, setData }) => {
       <form>
         <h2 id="dialogTitle">Order items</h2>
         <div className="dialogFields">
-          {itemComponents}
+          {items.map((item) => {
+            return(
+            <div key={item.order_item_id}>
+              <p>{item.product_name} x{item.quantity}</p>
+            </div>)
+          })}
         </div>
         <div className='dialog-actions'>
           <button type="button" className="dialog-btn dialog-btn-light" id="dialogCancel" onClick={() => {document.getElementById("itemsDialog").close()}}>Close</button>
