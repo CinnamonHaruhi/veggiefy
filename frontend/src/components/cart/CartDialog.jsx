@@ -1,12 +1,9 @@
 import { React, useContext, useRef } from 'react';
 import './cart-dialog.css';
-import { CartContext } from '../../contexts/cartContext';
+import useHandleCart from '../../hooks/useHandleCart';
 
-const CartDialog = ({setCartDialogOpen, children, ...props}) => {
-  const cartContext = useContext(CartContext);
-  const setCartItems = cartContext.setCartItems;
-  const totalPrice = cartContext.totalPrice;
-  const setTotalPrice = cartContext.setTotalPrice;
+const CartDialog = ({setCartDialogOpen, children, ...props}) => {  
+  const { resetCart } = useHandleCart();
 
   const cartDialog = useRef(null);
   if (cartDialog.current) {
@@ -17,17 +14,12 @@ const CartDialog = ({setCartDialogOpen, children, ...props}) => {
     }
   }
 
-  const emptyCart = () => {
-    setCartItems([]);
-    setTotalPrice(0);
-  }
-
   return (
     <dialog ref={cartDialog} className="po-dialog po-dialog-basket" id="poBasketDialog" aria-labelledby="poBasketTitle">
       <div className="po-basket-head">
         <h2 id="dialogTitle">In basket</h2>
         <div className="po-basket-head-right">
-          <button type="button" className="po-reset" id="poReset" onClick={emptyCart}>Reset</button>
+          <button type="button" className="po-reset" id="poReset" onClick={resetCart}>Reset</button>
           <button type="button" className="po-close" data-close aria-label="Close basket" onClick={() => {setCartDialogOpen(false)}}>&times;</button>
         </div>
       </div>
@@ -43,7 +35,7 @@ const CartDialog = ({setCartDialogOpen, children, ...props}) => {
 
       <div className="po-basket-total">
         <span>Total</span>
-        <strong id="poTotal">₱{totalPrice.toFixed(2)}</strong>
+        <strong id="poTotal">₱0</strong>
       </div>
 
       <div className="po-basket-actions">

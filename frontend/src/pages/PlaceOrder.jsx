@@ -7,17 +7,15 @@ import Cart from '../components/cart/Cart';
 import useFetchProducts from '../hooks/useFetchProducts';
 import CartDialog from '../components/cart/CartDialog.jsx';
 import CartItem from '../components/cart/CartItem.jsx';
-import { CartContext } from '../contexts/cartContext.jsx';
+import useHandleCart from '../hooks/useHandleCart.js';
 
 const PlaceOrder = () => {
   const { products } = useFetchProducts();
   const [ cartDialogOpen, setCartDialogOpen ] = useState(false);
-  const [ cartItems, setCartItems ] = useState([]);
-  const [ totalPrice, setTotalPrice ] = useState(0);
+  const { cartItems } = useHandleCart();
 
   return (
     <>
-      <CartContext.Provider value={{cartItems, setCartItems, totalPrice, setTotalPrice}}>
         <FontLinks/>
         <div className="main-page">
           <div className="main-app">
@@ -48,8 +46,8 @@ const PlaceOrder = () => {
         <CartDialog cartDialogOpen={cartDialogOpen} setCartDialogOpen={setCartDialogOpen}>
             {cartItems.map((cartItem) => {
               return <CartItem 
-                  key={cartItem.id}
-                  productId={cartItem.id}
+                  key={cartItem.productId}
+                  productId={cartItem.productId}
                   productName={cartItem.productName}
                   quantity={cartItem.quantity}
                   price={cartItem.price}
@@ -58,9 +56,8 @@ const PlaceOrder = () => {
                 />;
             })}
         </CartDialog>
-      </CartContext.Provider>
     </>
-  )
+  ) 
 }
 
 export default PlaceOrder

@@ -13,6 +13,7 @@ import Orders from './pages/Orders.jsx';
 import Preparation from './pages/Preparation.jsx';
 import PlaceOrder from './pages/PlaceOrder.jsx';
 import { UserContext } from './contexts/authContext.jsx';
+import { CartContextProvider } from './contexts/cartContext.jsx';
 
 axios.defaults.withCredentials = true;
 
@@ -43,6 +44,7 @@ function App() {
   
   return (
     <UserContext.Provider value={user}>
+    <CartContextProvider>
       <Router>
         <Routes>
           <Route path='/' element={<Home/>}/>
@@ -61,6 +63,7 @@ function App() {
         </Routes>
         <ToastContainer/>
       </Router>
+    </CartContextProvider>
     </UserContext.Provider>
   )
 }

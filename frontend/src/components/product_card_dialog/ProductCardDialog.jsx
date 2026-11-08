@@ -1,18 +1,13 @@
 import { React, useContext, useRef, useState } from 'react';
 import './product-card-dialog.css';
-import { CartContext } from '../../contexts/cartContext.jsx';
+import useHandleCart from '../../hooks/useHandleCart.js';
 
 const ProductCardDialog = ({ setDialogOpen, setStock, ...props }) => {
   const dialog = useRef(null);
   const [ quantity, setQuantity ] = useState(1);
-  const cartContext = useContext(CartContext);
-  const setCartItems = cartContext.setCartItems;
-  const cartItems = cartContext.cartItems;
-  const totalPrice = cartContext.totalPrice;
-  const setTotalPrice = cartContext.setTotalPrice;
   const [ errorMessage, setErrorMessage ] = useState("");
+  const { addToCart, addExistingToCart, cartItems } = useHandleCart();
   
-
   if (dialog.current) {
     if (props.dialogOpen) {
       dialog.current.showModal();
@@ -21,6 +16,7 @@ const ProductCardDialog = ({ setDialogOpen, setStock, ...props }) => {
     }
   } 
 
+  /*
   const addToCart = () => {
     const index = cartItems.findIndex((item) => {
       return item.id == props.productId;
@@ -52,6 +48,33 @@ const ProductCardDialog = ({ setDialogOpen, setStock, ...props }) => {
         return item;
       });
       setCartItems(updatedCartItems);
+    }
+    dialog.current.close();
+    setDialogOpen(false);
+  }
+  */
+ 
+  const addToCartWrapper = () => {
+    const product = {
+      productId: props.productId,
+      productName: props.productName,
+      quantity: quantity,
+      price: props.price,
+      unit: props.unit,
+      stock: props.stock
+    }
+    const index = cartItems.findIndex((item) => {
+      return item.productId == props.productId;
+    });
+    if (index == -1) {
+      addToCart(product);
+    } else {
+      const qtyInCart = cartItems[index].quantity;
+      if ((qtyInCart + product.quantity) > cartItems[index].stock) {
+        setErrorMessage(`Quantity cannot exceed available stock. You already have ${qtyInCart} in your cart`);
+        return;
+      }
+      addExistingToCart(product);
     }
     dialog.current.close();
     setDialogOpen(false);
@@ -97,7 +120,7 @@ const ProductCardDialog = ({ setDialogOpen, setStock, ...props }) => {
         </div>
         <p className="po-detail-error" id="poDetailError">{errorMessage}</p>
 
-        <button type="button" className="po-btn dialog-btn dialog-btn-dark" id="poDetailAdd" onClick={addToCart}>Add</button>
+        <button type="button" className="po-btn dialog-btn dialog-btn-dark" id="poDetailAdd" onClick={addToCartWrapper}>Add</button>
     </dialog>
   )
 }

@@ -4,6 +4,7 @@ import { CartContext } from '../../contexts/cartContext';
 
 const Cart = ({ setCartDialogOpen }) => {
   const cartContext = useContext(CartContext);
+  const totalPrice = cartContext.totalPrice;
   const cartItems = cartContext.cartItems;
   const [ countBadge, setCountBadge ] = useState(5);
 

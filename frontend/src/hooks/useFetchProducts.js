@@ -15,7 +15,7 @@ export default function useFetchProducts(data = null) {
       }
     }
     fetchProducts();
-  }, [data]);
+  }, [data  ]);
 
   return  { products };
 }
