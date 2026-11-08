@@ -12,22 +12,7 @@ import { CartContext } from '../contexts/cartContext.jsx';
 const PlaceOrder = () => {
   const { products } = useFetchProducts();
   const [ cartDialogOpen, setCartDialogOpen ] = useState(false);
-  const [ cartItems, setCartItems ] = useState([
-    {
-      id: 1,
-      productName: "Tomato",
-      quantity: 3,
-      price: 50,
-      unit: "kg"
-    }, 
-    {
-      id: 2,
-      productName: "Carrot",
-      quantity: 2,
-      price: 25,
-      unit: "ml (it's not. just testing)" 
-    }
-  ]);
+  const [ cartItems, setCartItems ] = useState([]);
 
   return (
     <>
@@ -63,10 +48,12 @@ const PlaceOrder = () => {
             {cartItems.map((cartItem) => {
               return <CartItem 
                   key={cartItem.id}
+                  productId={cartItem.id}
                   productName={cartItem.productName}
                   quantity={cartItem.quantity}
                   price={cartItem.price}
                   unit={cartItem.unit}
+                  stock={cartItem.stock}
                 />;
             })}
         </CartDialog>

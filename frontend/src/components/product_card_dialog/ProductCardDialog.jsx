@@ -29,7 +29,8 @@ const ProductCardDialog = ({ setDialogOpen, setStock, ...props }) => {
         productName: props.productName,
         quantity: quantity,
         price: props.price,
-        unit: props.unit
+        unit: props.unit,
+        stock: props.stock
       }, ...cartItems]);
     } else {
       //if a product is already in the cart we simply modify the quantity
@@ -44,7 +45,7 @@ const ProductCardDialog = ({ setDialogOpen, setStock, ...props }) => {
     setDialogOpen(false);
   }
 
-  const increaseQty =   () => {
+  const increaseQty = () => {
     if (props.stock === quantity) {
       return;
     }
