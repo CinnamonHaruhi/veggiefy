@@ -80,10 +80,6 @@ const ProductCardDialog = ({ setDialogOpen, setStock, ...props }) => {
     setDialogOpen(false);
   }
 
-  const updateTotal = (price, quantity) => {
-    setTotalPrice(totalPrice + (price * quantity));
-  }
-
   const increaseQty = () => {
     if (props.stock === quantity) {
       return;

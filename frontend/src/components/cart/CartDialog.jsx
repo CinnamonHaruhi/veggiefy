@@ -3,7 +3,7 @@ import './cart-dialog.css';
 import useHandleCart from '../../hooks/useHandleCart';
 
 const CartDialog = ({setCartDialogOpen, children, ...props}) => {  
-  const { resetCart } = useHandleCart();
+  const { resetCart, totalAmount } = useHandleCart();
 
   const cartDialog = useRef(null);
   if (cartDialog.current) {
@@ -35,7 +35,7 @@ const CartDialog = ({setCartDialogOpen, children, ...props}) => {
 
       <div className="po-basket-total">
         <span>Total</span>
-        <strong id="poTotal">₱0</strong>
+        <strong id="poTotal">₱{totalAmount / 100}</strong>
       </div>
 
       <div className="po-basket-actions">

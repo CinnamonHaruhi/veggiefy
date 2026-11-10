@@ -4,15 +4,20 @@ export const CartContext = createContext();
 
 export const CartContextProvider = ({ children }) => {
   const [ cartItems, setCartItems ] = useState([]);
-  const [ totalAmount, setTotalAmount ] = useState();
+  const [ totalAmount, setTotalAmount ] = useState(0);
 
   const resetCart = () => {
     setCartItems([]);
+    setTotalAmount(0);
   }
 
   const removeItem = (productId) => {
     setCartItems(cartItems.filter((item) => {
-      return item.productId != productId;
+      if (item.productId != productId) {
+        return true;
+      } else {
+        subtractFromTotal(item.price, item.quantity);
+      }
     }));
   }
 
@@ -20,6 +25,7 @@ export const CartContextProvider = ({ children }) => {
     setCartItems(cartItems.map((item) => {
     if (item.productId == productId && item.quantity < item.stock) {
       item.quantity += 1;
+      addToTotal(item.price, 1);
     }
     return item;
     }));
@@ -29,6 +35,7 @@ export const CartContextProvider = ({ children }) => {
     setCartItems(cartItems.map((item) => {
     if (item.productId == productId && item.quantity > 1) {
       item.quantity -= 1;
+      subtractFromTotal(item.price, 1);
     }
     return item;
     }));
@@ -36,6 +43,7 @@ export const CartContextProvider = ({ children }) => {
 
   const addToCart = (product) => {
     setCartItems([product, ...cartItems]);
+    addToTotal(product.price, product.quantity);
   }
 
   const addExistingToCart = (product) => {
@@ -45,6 +53,19 @@ export const CartContextProvider = ({ children }) => {
       }
       return item;
     }));
+    addToTotal(product.price, product.quantity);
+  }
+
+  const addToTotal = (price, quantity) => {
+    price = price * 100;
+
+    setTotalAmount(totalAmount + ( Number(price) * Number(quantity) ));
+  }
+
+  const subtractFromTotal = (price, quantity) => {
+    price = price * 100;
+
+    setTotalAmount(totalAmount - ( Number(price) * Number(quantity) ));
   }
 
   return (
