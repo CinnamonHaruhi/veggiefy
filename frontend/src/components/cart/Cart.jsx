@@ -1,23 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './cart.css';
-import { CartContext } from '../../contexts/cartContext';
+import useHandleCart from '../../hooks/useHandleCart';
 
 const Cart = ({ setCartDialogOpen }) => {
-  const cartContext = useContext(CartContext);
-  const totalPrice = cartContext.totalPrice;
-  const cartItems = cartContext.cartItems;
-  const [ countBadge, setCountBadge ] = useState(5);
-
-  useEffect(() => {
-    const getCount = () => {
-      let count = 0; 
-      cartItems.forEach((item) => {
-        count += item.quantity;
-      });
-      setCountBadge(count);
-    }
-    getCount();
-  }, [cartItems]);
+  const { countBadge } = useHandleCart();
 
   return (  
     <button type="button" className="po-cart-btn" id="poCartBtn" aria-label="Open basket" onClick={() => {setCartDialogOpen(true)}}>

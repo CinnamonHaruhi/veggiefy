@@ -24,7 +24,7 @@ const CartDialog = ({setCartDialogOpen, children, ...props}) => {
         </div>
       </div>
 
-      {children ? 
+      {children.length !== 0 ? 
         <ul className="po-basket-list" id="poBasketList">
           {children}
         </ul>
