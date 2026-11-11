@@ -4,11 +4,12 @@ import Product from '../components/Product';
 import Sidebar from '../components/sidebar/Sidebar';
 import Searchbar from '../components/searchbar/Searchbar';
 import FontLinks from  '../components/FontLinks';
-import EditDialog from '../components/dialogs/EditDialog';
+import ProductDialog from '../components/dialogs/ProductDialog';
 import useFetchProducts from '../hooks/useFetchProducts';
 
 const Products = () => {
   const [ openEditDialog, setOpenEditDialog ] = useState(false);
+  const [ openAddDialog, setOpenAddDialog ] = useState(false);
   const [ loading, setLoading ] = useState(false);
   const [ data, setData ] = useState(null); //This is just so that the products page re renders after an edit
   const { products } = useFetchProducts(data);
@@ -31,8 +32,10 @@ const Products = () => {
           <Sidebar/>
           <main className="main-content">
             <h1 className="main-title">Product Catalog</h1>
-            <Searchbar/>
-
+            <div className="products-toolbar">
+              <Searchbar/>
+              <button onClick={() => {setOpenAddDialog(true)}} className="dialog-btn dialog-btn-dark" id="add-product-btn">Add</button>
+            </div>
             <div className="main-table-wrap" id="tableWrap">
               <table className="main-table">
                 <thead>
@@ -74,13 +77,19 @@ const Products = () => {
         </div>
       </div>
 
-      <EditDialog 
-        product_name={products.name} 
-        unit={products.unit} 
-        price={products.price} 
-        quantity={products.quantity}
-        openEditDialog={openEditDialog}
-        setOpenEditDialog={setOpenEditDialog}
+      <ProductDialog
+        action={"add"}
+        openDialog={openAddDialog}
+        setOpenDialog={setOpenAddDialog}
+        prefillData={prefillData}
+        setPrefillData={setPrefillData}
+        setData={setData}
+      />
+
+      <ProductDialog 
+        action={"edit"}
+        openDialog={openEditDialog}
+        setOpenDialog={setOpenEditDialog}
         prefillData={prefillData}
         setPrefillData={setPrefillData}
         setData={setData}

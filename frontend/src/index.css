@@ -430,4 +430,5 @@ img { max-width: 100%; display: block; }
   grid-template-columns: repeat(3, minmax(0, 1fr)); 
   gap: 22px; 
 }
-.po-toolbar { display: flex; align-items: flex-start;}
+.po-toolbar, .products-toolbar { display: flex; align-items: flex-start;}
+#add-product-btn { margin-left: auto;}

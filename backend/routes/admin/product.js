@@ -4,7 +4,7 @@ import { isAdmin } from '../../middleware/auth.js';
 
 const router = express.Router();
 
-router.post('/add', async (req, res) => {
+router.post('/', async (req, res) => {
     const { product_name, unit, price, quantity } = req.body;
     
     if (!product_name || !unit || !price || !quantity) {

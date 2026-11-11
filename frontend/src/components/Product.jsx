@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import EditDialog from './dialogs/EditDialog';
+import ProductDialog from './dialogs/ProductDialog';
 
 const Product = ({ setOpenEditDialog, setPrefillData, ...props }) => {
   return (

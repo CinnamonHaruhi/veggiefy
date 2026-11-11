@@ -4,19 +4,19 @@ import axios from 'axios'
 import { toast, Slide } from 'react-toastify'
 import { useForm } from 'react-hook-form'
 
-const EditDialog = ({ setData, openEditDialog, prefillData, setPrefillData, setOpenEditDialog, ...props }) => {
-  const editDialog = useRef(null);
+const ProductDialog = ({ action, setData, openDialog, prefillData, setPrefillData, setOpenDialog }) => {
+  const dialog = useRef(null);
 
   useEffect(() => {
-    if (editDialog.current) {
-      if (openEditDialog) {
-        editDialog.current.showModal();
+    if (dialog.current) {
+      if (openDialog) {
+        dialog.current.showModal();
       } else {
-        editDialog.current.close();
+        dialog.current.close();
         setPrefillData({});
       }
     }
-  }, [openEditDialog]);
+  }, [openDialog]);
 
   const { 
     register, 
@@ -33,9 +33,17 @@ const EditDialog = ({ setData, openEditDialog, prefillData, setPrefillData, setO
 
 
   const onSubmit = async (data) => {
+    if (action == "edit") {
+      onSubmitEdit(data);
+    } else if (action == "add") {
+      onSubmitAdd(data);
+    }
+  } 
+
+  const onSubmitEdit = async (data) => {
     try {
       const res = await axios.put(`http://localhost:5000/admin/products/${prefillData.product_id}`, data);
-      toast.success("Item updated successfully", {
+      toast.success("Product updated successfully", {
           position: "bottom-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -48,14 +56,36 @@ const EditDialog = ({ setData, openEditDialog, prefillData, setPrefillData, setO
         });
       setData(res.data);
       console.log(res.data);
-      setOpenEditDialog(false);
+      setOpenDialog(false);
     } catch (err) {
-      console.error(err);
+      console.error(err.response.data);
     }
-  } 
+  }
+
+  const onSubmitAdd = async (data) => {
+    try {
+      const res = await axios.post("http://localhost:5000/admin/products/", data);
+      toast.success("Product addedd successfully", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Slide,
+        });
+      setData(res.data);
+      console.log(res);
+      setOpenDialog(false);
+    } catch (err) {
+      console.error(err.response.data);
+    }
+  }
 
   return (
-    <dialog ref={editDialog} className="dialog" id="productDialog" aria-labelledby="dialogTitle">
+    <dialog ref={dialog} className="dialog" id="productDialog" aria-labelledby="dialogTitle">
       <form id="dialogForm" onSubmit={handleSubmit(onSubmit)} noValidate>
         <h2 id="dialogTitle">Product</h2>
 
@@ -145,7 +175,7 @@ const EditDialog = ({ setData, openEditDialog, prefillData, setPrefillData, setO
         <p id="dialogError" className="dialog-error" role="alert"></p>
 
         <div className="dialog-actions">
-          <button type="button" className="dialog-btn dialog-btn-light" id="dialogCancel" onClick={() => {setOpenEditDialog(false)}}>Cancel</button>
+          <button type="button" className="dialog-btn dialog-btn-light" id="dialogCancel" onClick={() => {setOpenDialog(false)}}>Cancel</button>
           <button type="submit" className="dialog-btn dialog-btn-dark" id="dialogSubmit">Save</button>
         </div>
       </form>
@@ -153,4 +183,4 @@ const EditDialog = ({ setData, openEditDialog, prefillData, setPrefillData, setO
   )
 }
 
-export default EditDialog
+export default ProductDialog
