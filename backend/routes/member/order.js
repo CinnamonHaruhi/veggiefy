@@ -1,6 +1,7 @@
 import express from 'express';
 import pool from '../../config/db.js';
 import { getOrderTotalAmount, updateQuantities } from '../../utils/calc.js';
+import generateOrderNumber from '../../utils/generateOrderNumber.js';
 
 const router = express.Router();
 
@@ -47,9 +48,10 @@ router.put('/:id', async (req, res) => {
 router.post('/confirm', async (req, res) => {
     const { order_items } = req.body;
     const user_id = req.user.user_id;
+    const orderNum = generateOrderNumber();
 
     const orderData = await pool.query("INSERT INTO orders (order_no, total_amount, user_id) VALUES ($1, $2, $3) RETURNING order_id", 
-        ["TEMP_ORD_NO", 0, user_id]);
+        [orderNum, 0, user_id]);
     const orderId = orderData.rows[0].order_id;
 
     const orderItemsWithOrderId = order_items.map(v => ({...v, order_id: orderId}));

@@ -14,6 +14,7 @@ import Preparation from './pages/Preparation.jsx';
 import PlaceOrder from './pages/PlaceOrder.jsx';
 import { UserContext } from './contexts/authContext.jsx';
 import { CartContextProvider } from './contexts/cartContext.jsx';
+import ConfirmOrder from './pages/ConfirmOrder.jsx';
 
 axios.defaults.withCredentials = true;
 
@@ -52,6 +53,7 @@ function App() {
           <Route path='/register' element={<Register/>}/>
           <Route path='/registerSuccess' element={<RegisterSuccess/>}/>
           <Route path='/place-order' element={<PlaceOrder />}/>
+          <Route path='/confirm-order' element={<ConfirmOrder />}/>
 
           <Route element={<ProtectedRoutes user={user}/>}>
               <Route path='/admin/dashboard' element={ <AdminDashboard/>}/>

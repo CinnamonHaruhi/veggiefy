@@ -1,9 +1,12 @@
 import { React, useContext, useRef } from 'react';
 import './cart-dialog.css';
 import useHandleCart from '../../hooks/useHandleCart';
+import { toast, Slide } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const CartDialog = ({setCartDialogOpen, children, ...props}) => {  
-  const { resetCart, totalAmount } = useHandleCart();
+  const navigate = useNavigate();
+  const { cartItems, resetCart, totalAmount } = useHandleCart();
 
   const cartDialog = useRef(null);
   if (cartDialog.current) {
@@ -12,6 +15,24 @@ const CartDialog = ({setCartDialogOpen, children, ...props}) => {
     } else {
       cartDialog.current.close();
     }
+  }
+
+  const handlePlaceOrder = () => {
+    if (cartItems.length == 0) {
+      toast.error("Your basket is empty!", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Slide,
+        });
+      return;
+    }
+    navigate("/confirm-order");
   }
 
   return (
@@ -40,7 +61,7 @@ const CartDialog = ({setCartDialogOpen, children, ...props}) => {
 
       <div className="po-basket-actions">
         <button type="button" className="po-btn dialog-btn dialog-btn-light" onClick={() => {setCartDialogOpen(false)}}>Close</button>
-        <button type="button" className="po-btn dialog-btn dialog-btn-dark" id="poPlaceOrder">Place order</button>
+        <button type="button" className="po-btn dialog-btn dialog-btn-dark" id="poPlaceOrder" onClick={handlePlaceOrder}>Place order</button>
       </div>
     </dialog>
   )
