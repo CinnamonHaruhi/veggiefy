@@ -14,7 +14,6 @@ const PlaceOrder = () => {
   const [ cartDialogOpen, setCartDialogOpen ] = useState(false);
   const { cartItems } = useHandleCart();
 
-
   return (
     <>
         <FontLinks/>
@@ -57,6 +56,8 @@ const PlaceOrder = () => {
                 />;
             })}
         </CartDialog>
+
+
     </>
   ) 
 }

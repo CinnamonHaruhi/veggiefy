@@ -96,6 +96,7 @@ img { max-width: 100%; display: block; }
 }
 .error-msg:empty { display: none; }
 .hint {
+  font-weight: lighter;
   display: block;
   margin: 5px 6px 0;
   font-size: 0.72rem;

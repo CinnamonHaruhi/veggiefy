@@ -1,15 +1,40 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './dialog.css'
 import axios from 'axios'
 import { toast, Slide } from 'react-toastify'
+import { useForm } from 'react-hook-form'
 
-const EditDialog = ({ setProduct, product, setData }) => {
-  const dialog = useRef(null);
+const EditDialog = ({ setData, openEditDialog, prefillData, setPrefillData, setOpenEditDialog, ...props }) => {
+  const editDialog = useRef(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    if (editDialog.current) {
+      if (openEditDialog) {
+        editDialog.current.showModal();
+      } else {
+        editDialog.current.close();
+        setPrefillData({});
+      }
+    }
+  }, [openEditDialog]);
+
+  const { 
+    register, 
+    handleSubmit, 
+    formState: {errors} } = 
+  useForm({
+    values: {
+      product_name: prefillData.product_name,
+      unit: prefillData.unit,
+      price: prefillData.price,
+      quantity: prefillData.quantity
+    }
+  });
+
+
+  const onSubmit = async (data) => {
     try {
-      const res = await axios.put(`http://localhost:5000/admin/products/${product.product_id}`, product);
+      const res = await axios.put(`http://localhost:5000/admin/products/${prefillData.product_id}`, data);
       toast.success("Item updated successfully", {
           position: "bottom-center",
           autoClose: 5000,
@@ -22,41 +47,97 @@ const EditDialog = ({ setProduct, product, setData }) => {
           transition: Slide,
         });
       setData(res.data);
-      dialog.current.close();
+      console.log(res.data);
+      setOpenEditDialog(false);
     } catch (err) {
       console.error(err);
     }
   } 
 
   return (
-    <dialog ref={dialog} className="dialog" id="productDialog" aria-labelledby="dialogTitle">
-      <form id="dialogForm" onSubmit={handleSubmit} noValidate>
+    <dialog ref={editDialog} className="dialog" id="productDialog" aria-labelledby="dialogTitle">
+      <form id="dialogForm" onSubmit={handleSubmit(onSubmit)} noValidate>
         <h2 id="dialogTitle">Product</h2>
 
         <div id="dialogFields">
           <label>Product Name
-            <input type="text" id="fName" 
-            value={product.product_name}
-            onChange={(e) => setProduct({...product, product_name: e.target.value})}
+            <input {...register("product_name", {
+              required: "Product name is required",
+              pattern: {
+                value: /^[A-Za-z]+$/,
+                message: "Product name cannot contain numbers"
+              },
+              minLength: {
+                value: 2, 
+                message: "Product name must have at least 2 characters"
+              },
+              maxLength: {
+                value: 50,
+                message: "Product name cannot exceed 50 characters"
+              }
+            })}
+            type="text" id="fName" 
             />
+            {errors.product_name && <div className='error-msg'>{errors.product_name.message}</div>}
           </label>
           <label>Unit
-            <input type="text" id="fUnit"
-            value={product.unit}
-            onChange={(e) => setProduct({...product, unit: e.target.value})}
+            <input 
+            {...register("unit", {
+              required: "Unit is required",
+              pattern: {
+                value: /^[A-Za-z]+$/,
+                message: "Unit cannot contain numbers"
+              },
+              maxLength: {
+                value: 3,
+                message: "Unit cannot exceed 3 characters"
+              }
+            })}
+            type="text" id="fUnit"
             />
+            {errors.unit && <div className='error-msg'>{errors.unit.message}</div>}
           </label>
           <label>Price (₱)
-            <input type="number" id="fPrice" step="0.01" min="0"
-            value={product.price}
-            onChange={(e) => setProduct({...product, price: e.target.value})}
+            <input 
+            {...register("price", {
+              required: "Price is required",
+              pattern: {
+                value:  /^\d+\.\d{2}$/,
+                message: "Price must be in a two decimal format"
+              },
+              min: {
+                value: 0.10,
+                message: "Price cannot be zero" 
+              },
+              max: {
+                value: 9999.99,
+                message: "Price cannot exceed 9999.99"
+              }
+            })}
+            type="number" id="fPrice"
             />
+            {errors.price && <div className='error-msg'>{errors.price.message}</div>}
           </label>
           <label>Quantity
-            <input type="number" id="fQuantity" step="1" min="0"
-            value={product.quantity}
-            onChange={(e) => setProduct({...product, quantity: e.target.value})}           
+            <input
+            {...register("quantity", {
+              required: "Quantity is required",
+              pattern: {
+                value: /^[0-9]+$/,
+                message: "Quantity cannot contain letters or symbols"
+              },
+              min: {
+                value: 0,
+                message: "Quantity cannot be less than 0"
+              },
+              max: {
+                value: 9999999,
+                message: "Quantity cannot exceed 9999999"
+              }
+            })}
+            type="number" id="fQuantity"
             />
+            {errors.quantity && <div className='error-msg'>{errors.quantity.message}</div>}
           </label>
         </div>
 
@@ -64,7 +145,7 @@ const EditDialog = ({ setProduct, product, setData }) => {
         <p id="dialogError" className="dialog-error" role="alert"></p>
 
         <div className="dialog-actions">
-          <button type="button" className="dialog-btn dialog-btn-light" id="dialogCancel" onClick={() => {document.getElementById("productDialog").close()}}>Cancel</button>
+          <button type="button" className="dialog-btn dialog-btn-light" id="dialogCancel" onClick={() => {setOpenEditDialog(false)}}>Cancel</button>
           <button type="submit" className="dialog-btn dialog-btn-dark" id="dialogSubmit">Save</button>
         </div>
       </form>

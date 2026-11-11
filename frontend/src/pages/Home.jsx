@@ -8,10 +8,8 @@ const Home = ({ user }) => {
       navigate("/login");
     } else {
       if (user.role_id == 1) {
-        navigate("admin/dashboard");
-      }
-
-      if (user.role_id == 2) {
+        navigate("/admin/dashboard");
+      } else if (user.role_id == 2) {
         navigate("/my-dashboard");
       }
     }

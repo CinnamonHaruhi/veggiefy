@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { RouterProvider, Routes, Route, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import axios from 'axios';
 import Home from './pages/Home.jsx';
@@ -43,30 +43,33 @@ function App() {
       <div>Loading...</div>
     );
   }
+
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <>
+        <Route path='/' element={<Home user={user}/>}/>
+        <Route path='/login' element={<Login setUser={setUser}/>}/>
+        <Route path='/register' element={<Register/>}/>
+        <Route path='/registerSuccess' element={<RegisterSuccess/>}/>
+        <Route path='/my-dashboard' element={<MyDashboard />}/>
+        <Route path='/place-order' element={<PlaceOrder />}/>
+        <Route path='/confirm-order' element={<ConfirmOrder />}/>
+
+        <Route element={<ProtectedRoutes user={user}/>}>
+            <Route path='/admin/dashboard' element={ <AdminDashboard/>}/>
+            <Route path='/admin/products' element={ <Products/> }/>
+            <Route path='/admin/orders' element={<Orders />}/>
+            <Route path='/admin/preparation' element={<Preparation />}/>
+        </Route>
+      </>
+    )
+  );
   
   return (
     <UserContext.Provider value={user}>
     <CartContextProvider>
-      <Router>
-        <Routes>
-          <Route path='/' element={<Home user={user}/>}/>
-          <Route path='/login' element={<Login setUser={setUser}/>}/>
-          <Route path='/register' element={<Register/>}/>
-          <Route path='/registerSuccess' element={<RegisterSuccess/>}/>
-          <Route path='/my-dashboard' element={<MyDashboard />}/>
-          <Route path='/place-order' element={<PlaceOrder />}/>
-          <Route path='/confirm-order' element={<ConfirmOrder />}/>
-
-          <Route element={<ProtectedRoutes user={user}/>}>
-              <Route path='/admin/dashboard' element={ <AdminDashboard/>}/>
-              <Route path='/admin/products' element={ <Products/> }/>
-              <Route path='/admin/orders' element={<Orders />}/>
-              <Route path='/admin/preparation' element={<Preparation />}/>
-          </Route>
-          
-        </Routes>
+        <RouterProvider router={router}/>
         <ToastContainer/>
-      </Router>
     </CartContextProvider>
     </UserContext.Provider>
   )

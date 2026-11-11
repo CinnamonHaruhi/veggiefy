@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,  } from 'react'
 import axios from 'axios';
 import Product from '../components/Product';
 import Sidebar from '../components/sidebar/Sidebar';
@@ -6,13 +6,13 @@ import Searchbar from '../components/searchbar/Searchbar';
 import FontLinks from  '../components/FontLinks';
 import EditDialog from '../components/dialogs/EditDialog';
 import useFetchProducts from '../hooks/useFetchProducts';
-import { toast, Slide } from 'react-toastify';
 
 const Products = () => {
+  const [ openEditDialog, setOpenEditDialog ] = useState(false);
   const [ loading, setLoading ] = useState(false);
   const [ data, setData ] = useState(null); //This is just so that the products page re renders after an edit
   const { products } = useFetchProducts(data);
-  const [ product, setProduct ] = useState({
+  const [ prefillData, setPrefillData ] = useState({
     product_name: "",
     unit: "",
     price: "",
@@ -55,27 +55,36 @@ const Products = () => {
                     price={product.price} 
                     image={null} 
                     quantity={product.quantity}
-                    showModal={() => {
-                      document.getElementById("productDialog").showModal();
-                      setProduct({
+                    setOpenEditDialog={setOpenEditDialog}
+                    setPrefillData={() => {
+                      setPrefillData({
                         product_id: product.product_id,
                         product_name: product.product_name,
                         unit: product.unit,
                         price: product.price,
                         quantity: product.quantity
-                      });
+                      })
                     }}
                     />)
                   })}
                 </tbody>
               </table>
             </div>
-            <p name="products-no-results" id="noResults" hidden>No products found</p>
           </main>
         </div>
       </div>
 
-      <EditDialog setProduct={setProduct} product={product} setData={setData}/>
+      <EditDialog 
+        product_name={products.name} 
+        unit={products.unit} 
+        price={products.price} 
+        quantity={products.quantity}
+        openEditDialog={openEditDialog}
+        setOpenEditDialog={setOpenEditDialog}
+        prefillData={prefillData}
+        setPrefillData={setPrefillData}
+        setData={setData}
+      />
     </>
   )
 }
