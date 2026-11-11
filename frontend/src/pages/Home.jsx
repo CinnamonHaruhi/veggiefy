@@ -1,14 +1,24 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const Home = () => {
+const Home = ({ user }) => {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate("/login");
+    if (user == null) {
+      navigate("/login");
+    } else {
+      if (user.role_id == 1) {
+        navigate("admin/dashboard");
+      }
+
+      if (user.role_id == 2) {
+        navigate("/my-dashboard");
+      }
+    }
   }, []);
 
   return (
-    <div>Home</div>
+    <div></div>
   )
 }
 

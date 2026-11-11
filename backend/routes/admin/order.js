@@ -39,7 +39,7 @@ router.get('/items', async (req, res) => {
 
     if (Array.isArray(status)) {
         const items = await pool.query(`
-            SELECT order_item_id, order_items.order_id, product_name, order_items.quantity, status_name
+            SELECT order_item_id, order_items.order_id, product_name, products.price, order_items.quantity, status_name
             FROM order_items INNER JOIN products ON order_items.product_id = products.product_id
             INNER JOIN orders ON order_items.order_id = orders.order_id
             INNER JOIN statuses ON orders.status_id = statuses.status_id
@@ -50,7 +50,7 @@ router.get('/items', async (req, res) => {
 
     if (!status) {
         const items = await pool.query(`
-            SELECT order_item_id, order_items.order_id, product_name, order_items.quantity, status_name
+            SELECT order_item_id, order_items.order_id, product_name, products.price, order_items.quantity, status_name
             FROM order_items INNER JOIN products ON order_items.product_id = products.product_id
             INNER JOIN orders ON order_items.order_id = orders.order_id
             INNER JOIN statuses ON orders.status_id = statuses.status_id`);
@@ -58,7 +58,7 @@ router.get('/items', async (req, res) => {
     }
 
     const items = await pool.query(`
-        SELECT order_item_id, order_items.order_id, product_name, order_items.quantity, status_name
+        SELECT order_item_id, order_items.order_id, product_name, products.price, order_items.quantity, status_name
         FROM order_items INNER JOIN products ON order_items.product_id = products.product_id
         INNER JOIN orders ON order_items.order_id = orders.order_id
         INNER JOIN statuses ON orders.status_id = statuses.status_id

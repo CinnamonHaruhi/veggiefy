@@ -38,7 +38,7 @@ const ItemsDialog = ({ orderItems, setData }) => {
           {items.map((item) => {
             return(
             <div key={item.order_item_id}>
-              <p>{item.product_name} x{item.quantity}</p>
+              <p>{item.product_name} ₱({item.price}) x{item.quantity}</p>
             </div>)
           })}
         </div>

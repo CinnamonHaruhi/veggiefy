@@ -34,7 +34,7 @@ const SidebarItems = (props) => {
 
   return (
       <>
-        <SidebarItem path="/home" class="sidebar-nav-item" label="Home">
+        <SidebarItem path="/my-dashboard" class="sidebar-nav-item" label="Dashboard">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path className="products-fill" d="M3 11.5 12 3l9 8.5V21a1 1 0 0 1-1 1h-5.5v-7h-5v7H4a1 1 0 0 1-1-1Z"/></svg>
         </SidebarItem>
 

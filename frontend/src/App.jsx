@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import axios from 'axios';
 import Home from './pages/Home.jsx';
@@ -15,6 +15,7 @@ import PlaceOrder from './pages/PlaceOrder.jsx';
 import { UserContext } from './contexts/authContext.jsx';
 import { CartContextProvider } from './contexts/cartContext.jsx';
 import ConfirmOrder from './pages/ConfirmOrder.jsx';
+import MyDashboard from './pages/MyDashboard.jsx';
 
 axios.defaults.withCredentials = true;
 
@@ -48,10 +49,11 @@ function App() {
     <CartContextProvider>
       <Router>
         <Routes>
-          <Route path='/' element={<Home/>}/>
+          <Route path='/' element={<Home user={user}/>}/>
           <Route path='/login' element={<Login setUser={setUser}/>}/>
           <Route path='/register' element={<Register/>}/>
           <Route path='/registerSuccess' element={<RegisterSuccess/>}/>
+          <Route path='/my-dashboard' element={<MyDashboard />}/>
           <Route path='/place-order' element={<PlaceOrder />}/>
           <Route path='/confirm-order' element={<ConfirmOrder />}/>
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FontLinks from '../components/FontLinks';
 import Sidebar from '../components/sidebar/Sidebar';
 import Searchbar from '../components/searchbar/Searchbar';
@@ -13,6 +13,7 @@ const PlaceOrder = () => {
   const { products } = useFetchProducts();
   const [ cartDialogOpen, setCartDialogOpen ] = useState(false);
   const { cartItems } = useHandleCart();
+
 
   return (
     <>
