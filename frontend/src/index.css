@@ -6,6 +6,7 @@
   --muted: #444444;
   --error: #c62828;
   --success: #1b5e20;
+  --green: #7ab51d;
   --font-body: "Montserrat", Arial, sans-serif;
   --font-brand: "Rozha One", Georgia, serif;
   --products-th-bg: "gray";
@@ -432,3 +433,25 @@ img { max-width: 100%; display: block; }
 }
 .po-toolbar, .products-toolbar { display: flex; align-items: flex-start;}
 #add-product-btn { margin-left: auto;}
+
+#confirm-ord-title {
+  margin: 0px;
+}
+
+#confirm-ord-sub {
+  margin-top: 2px;
+}
+
+#confirm-ord-total {
+  font-size: 1.2rem;
+  color: var(--green);
+}
+
+#confirm-ord-btns {
+  margin-top: 15px;
+  display: flex;
+}
+
+#confirm-ord-btn {
+  margin-left: auto;
+}

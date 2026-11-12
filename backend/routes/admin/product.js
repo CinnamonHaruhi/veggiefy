@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
         [product_name]);
 
     if (productExists.rows.length > 0) {
-        return res.status(400).json({ message: 'Product already exists' });
+        return res.status(400).json({ subject: "product_name", message: 'Product already exists' });
     }
 
     pool.query('INSERT INTO products (product_name, unit, price, quantity) VALUES ($1, $2, $3, $4)',
@@ -53,6 +53,13 @@ const editProduct = async (req, res) => {
     }
 
     const { product_name, unit, price, quantity } = req.body;
+
+    const productDuplicate = await pool.query("SELECT * FROM products WHERE product_name ILIKE $1 AND NOT product_id = $2",
+        [product_name, parsedId]);
+    if (productDuplicate.rows.length !== 0) {
+        return res.status(400).json({ subject: "product_name", message: "Product already exists" });
+    }
+
     pool.query("UPDATE products SET product_name = $1, unit = $2, price = $3, quantity = $4 WHERE product_id = $5", 
         [product_name, unit, price, quantity, parsedId]);
 

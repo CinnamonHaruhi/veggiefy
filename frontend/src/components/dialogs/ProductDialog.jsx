@@ -21,7 +21,8 @@ const ProductDialog = ({ action, setData, openDialog, prefillData, setPrefillDat
   const { 
     register, 
     handleSubmit, 
-    formState: {errors} } = 
+    setError,
+    formState: { errors, isSubmitting } } = 
   useForm({
     values: {
       product_name: prefillData.product_name,
@@ -58,7 +59,11 @@ const ProductDialog = ({ action, setData, openDialog, prefillData, setPrefillDat
       console.log(res.data);
       setOpenDialog(false);
     } catch (err) {
-      console.error(err.response.data);
+      const subjectOfError = err.response.data.subject;
+      const errorMessage = err.response.data.message;
+      setError(subjectOfError, {
+        message: errorMessage
+      });
     }
   }
 
@@ -80,7 +85,11 @@ const ProductDialog = ({ action, setData, openDialog, prefillData, setPrefillDat
       console.log(res);
       setOpenDialog(false);
     } catch (err) {
-      console.error(err.response.data);
+      const subjectOfError = err.response.data.subject;
+      const errorMessage = err.response.data.message;
+      setError(subjectOfError, {
+        message: errorMessage
+      });
     }
   }
 
@@ -176,7 +185,9 @@ const ProductDialog = ({ action, setData, openDialog, prefillData, setPrefillDat
 
         <div className="dialog-actions">
           <button type="button" className="dialog-btn dialog-btn-light" id="dialogCancel" onClick={() => {setOpenDialog(false)}}>Cancel</button>
-          <button type="submit" className="dialog-btn dialog-btn-dark" id="dialogSubmit">Save</button>
+          <button disabled={isSubmitting} type="submit" className="dialog-btn dialog-btn-dark" id="dialogSubmit">
+            {isSubmitting ? "Loading..." : action == "add" ? "Add" : "Save"}
+          </button>
         </div>
       </form>
     </dialog>
