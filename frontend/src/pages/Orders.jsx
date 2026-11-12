@@ -14,6 +14,7 @@ const Orders = () => {
   const [ status, setStatus ] = useState(["pending"]);
   const [ data, setData ] = useState(null);
   const { loading, orders, allOrderItems } = useFetchOrders(status, data);
+  console.log(allOrderItems);
 
   if (loading) {
     return <div>Loading...</div>

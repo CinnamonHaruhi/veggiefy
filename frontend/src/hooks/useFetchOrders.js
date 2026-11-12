@@ -21,7 +21,6 @@ export default function useFetchOrders(statuses, data = null) {
             status: statuses
           }
         });
-        console.log(orderItems.data);
         setAllOrderItems(orderItems.data);
       } catch (err) {
         console.log(err);
