@@ -3,16 +3,39 @@ import useHandleCart from '../hooks/useHandleCart'
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/sidebar/Sidebar';
 import FontLinks from '../components/FontLinks';
+import axios from 'axios';
 
 const OrderSummary = () => {
   const navigate = useNavigate();
   const { cartItems, totalAmount } = useHandleCart();
+  console.log(cartItems);
 
   useEffect(() => {
     if (cartItems.length == 0) {
       navigate("/place-order");
     }
   }, [])
+
+  const handleConfirm = async () => {
+    try {
+      const orderData = {
+        total_amount: (totalAmount / 100),
+        order_items: 
+          cartItems.map((cartItem) => {
+            return {
+              product_id: cartItem.productId,
+              quantity: cartItem.quantity,
+              price_at_order: cartItem.price
+            }
+          })
+      };
+      console.log(orderData);
+      const res = await axios.post("http://localhost:5000/orders/confirm", orderData);
+      console.log(res);
+    } catch (err) {
+      console.log(err.response.data);
+    }
+  }
   
   return (
     <>
@@ -54,7 +77,7 @@ const OrderSummary = () => {
 
             <div id="confirm-ord-btns">
               <button className="dialog-btn dialog-btn-light" onClick={() => {navigate("/place-order")}}>Back</button>
-              <button className="dialog-btn dialog-btn-dark" id="confirm-ord-btn">Confirm Order</button>
+              <button className="dialog-btn dialog-btn-dark" id="confirm-ord-btn" onClick={handleConfirm}>Confirm Order</button>
             </div>
           </main>
         </div>
