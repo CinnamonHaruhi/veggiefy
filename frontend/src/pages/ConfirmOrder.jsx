@@ -23,13 +23,12 @@ const OrderSummary = () => {
         order_items: 
           cartItems.map((cartItem) => {
             return {
-              product_id: cartItem.productId,
+              product_id: cartItem.product_id,
               quantity: cartItem.quantity,
               price_at_order: cartItem.price
             }
           })
       };
-      console.log(orderData);
       const res = await axios.post("http://localhost:5000/orders/confirm", orderData);
       console.log(res);
     } catch (err) {
@@ -58,8 +57,8 @@ const OrderSummary = () => {
                 <tbody>
                   {cartItems.map((cartItem) => {
                     return (
-                      <tr key={cartItem.productId}>
-                        <td>{cartItem.productName} (₱{cartItem.price} per {cartItem.unit})</td>
+                      <tr key={cartItem.product_id}>
+                        <td>{cartItem.product_name} (₱{cartItem.price} per {cartItem.unit})</td>
                         <td>{cartItem.quantity}</td>
                         <td>₱{((cartItem.price * 100) * cartItem.quantity) / 100}</td>
                       </tr>

@@ -4,18 +4,9 @@ import useHandleCart from '../../hooks/useHandleCart';
 import { toast, Slide } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
-const CartDialog = ({setCartDialogOpen, children, ...props}) => {  
+const CartDialog = ({setCartDialogOpen, children, ref, ...props}) => {  
   const navigate = useNavigate();
   const { cartItems, resetCart, totalAmount } = useHandleCart();
-
-  const cartDialog = useRef(null);
-  if (cartDialog.current) {
-    if (props.cartDialogOpen) {
-      cartDialog.current.showModal();
-    } else {
-      cartDialog.current.close();
-    }
-  }
 
   const handlePlaceOrder = () => {
     if (cartItems.length == 0) {
@@ -36,11 +27,11 @@ const CartDialog = ({setCartDialogOpen, children, ...props}) => {
   }
 
   return (
-    <dialog ref={cartDialog} className="po-dialog po-dialog-basket" id="poBasketDialog" aria-labelledby="poBasketTitle">
+    <dialog ref={ref} className="po-dialog-basket" id="poBasketDialog" aria-labelledby="poBasketTitle">
       <div className="po-basket-head">
         <h2 id="dialogTitle">In basket</h2>
         <div className="po-basket-head-right">
-          <button type="button" className="po-reset" id="poReset" onClick={resetCart}>Reset</button>
+          <button disabled={cartItems.length == 0} type="button" className="po-reset" id="poReset" onClick={resetCart}>Reset</button>
           <button type="button" className="po-close" data-close aria-label="Close basket" onClick={() => {setCartDialogOpen(false)}}>&times;</button>
         </div>
       </div>
@@ -61,7 +52,7 @@ const CartDialog = ({setCartDialogOpen, children, ...props}) => {
 
       <div className="po-basket-actions">
         <button type="button" className="po-btn dialog-btn dialog-btn-light" onClick={() => {setCartDialogOpen(false)}}>Close</button>
-        <button type="button" className="po-btn dialog-btn dialog-btn-dark" id="poPlaceOrder" onClick={handlePlaceOrder}>Place order</button>
+        <button disabled={cartItems.length == 0} type="button" className="po-btn dialog-btn dialog-btn-dark" id="poPlaceOrder" onClick={handlePlaceOrder}>Place order</button>
       </div>
     </dialog>
   )

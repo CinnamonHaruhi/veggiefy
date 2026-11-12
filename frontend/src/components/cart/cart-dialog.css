@@ -1,4 +1,4 @@
-.po-dialog-basket { width: min(92vw, 380px); padding: 0; overflow: hidden; }
+.po-dialog-basket { width: min(92vw, 380px); padding: 0; overflow: hidden; border-radius: 10px; border: 1px solid #999; }
 
 .po-dialog-basket[open] { display: flex; flex-direction: column; }
 .po-basket-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 18px 20px 10px; }
@@ -6,7 +6,7 @@
 .po-basket-head .po-close { position: static; font-size: 1.6rem; }
 .po-basket-head h2 { font-size: 1.1rem; font-weight: 800; }
 .po-reset { background: var(--white); border: 1px solid var(--black); border-radius: 6px; font: inherit; font-size: 0.72rem; padding: 3px 12px; cursor: pointer; }
-.po-reset:disabled { background: #eee; color: #888; border-color: #bbb; }
+.po-reset:disabled { background: #eee; color: #888; border-color: #bbb; cursor: not-allowed; }
 .po-basket-list { list-style: none; margin: 0 14px; padding: 0; max-height: 240px; overflow-y: auto; }
 .po-basket-item {
   display: flex; justify-content: space-between; align-items: center; gap: 10px;

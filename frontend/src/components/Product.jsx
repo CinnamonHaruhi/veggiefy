@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import ProductDialog from './dialogs/ProductDialog';
 
-const Product = ({ setOpenEditDialog, setPrefillData, ...props }) => {
+const Product = ({ setDialogOpen, setPrefillData, ...props }) => {
   return (
     <>
     <tr>
@@ -11,7 +11,7 @@ const Product = ({ setOpenEditDialog, setPrefillData, ...props }) => {
       <td>₱{props.price}</td>
       <td>{props.quantity}</td>
       <td>
-        <button type="button" aria-haspopup="menu" onClick={() => {setOpenEditDialog(true); setPrefillData();}}>Edit</button>
+        <button type="button" aria-haspopup="menu" onClick={() => {setDialogOpen(true); setPrefillData();}}>Edit</button>
         <button type="button" aria-haspopup="menu">Delete</button>
       </td>
     </tr>

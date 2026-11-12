@@ -26,5 +26,6 @@ export const getQuantities = async (orderId) => {
         WHERE order_id = $1`,
     [orderId]);
 
+    console.log(JSON.stringify(quantitiesLeft.rows));
     return JSON.stringify(quantitiesLeft.rows);
 }

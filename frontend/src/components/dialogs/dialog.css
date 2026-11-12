@@ -41,6 +41,7 @@
   border: 1.5px solid var(--black);
   cursor: pointer;
 }
+.dialog-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 .dialog-btn-dark { background: var(--black); color: var(--white); }
 .dialog-btn-dark:hover { background: #28344E; }
 .dialog-btn-light { background: var(--white); color: var(--black); }

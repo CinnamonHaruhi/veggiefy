@@ -4,20 +4,7 @@ import axios from 'axios'
 import { toast, Slide } from 'react-toastify'
 import { useForm } from 'react-hook-form'
 
-const ProductDialog = ({ action, setData, openDialog, prefillData, setPrefillData, setOpenDialog }) => {
-  const dialog = useRef(null);
-
-  useEffect(() => {
-    if (dialog.current) {
-      if (openDialog) {
-        dialog.current.showModal();
-      } else {
-        dialog.current.close();
-        setPrefillData({});
-      }
-    }
-  }, [openDialog]);
-
+const ProductDialog = ({ ref, action, setData, dialogOpen, setDialogOpen, prefillData, setPrefillData }) => {
   const { 
     register, 
     handleSubmit, 
@@ -31,6 +18,12 @@ const ProductDialog = ({ action, setData, openDialog, prefillData, setPrefillDat
       quantity: prefillData.quantity
     }
   });
+
+  useEffect(() => {
+    if (action != "edit") {
+      setPrefillData("");
+    }
+  }, []);
 
 
   const onSubmit = async (data) => {
@@ -57,7 +50,7 @@ const ProductDialog = ({ action, setData, openDialog, prefillData, setPrefillDat
         });
       setData(res.data);
       console.log(res.data);
-      setOpenDialog(false);
+      setDialogOpen(false);
     } catch (err) {
       const subjectOfError = err.response.data.subject;
       const errorMessage = err.response.data.message;
@@ -83,7 +76,7 @@ const ProductDialog = ({ action, setData, openDialog, prefillData, setPrefillDat
         });
       setData(res.data);
       console.log(res);
-      setOpenDialog(false);
+      setDialogOpen(false);
     } catch (err) {
       const subjectOfError = err.response.data.subject;
       const errorMessage = err.response.data.message;
@@ -94,7 +87,7 @@ const ProductDialog = ({ action, setData, openDialog, prefillData, setPrefillDat
   }
 
   return (
-    <dialog ref={dialog} className="dialog" id="productDialog" aria-labelledby="dialogTitle">
+    <dialog ref={ref} className="dialog" id="productDialog" aria-labelledby="dialogTitle">
       <form id="dialogForm" onSubmit={handleSubmit(onSubmit)} noValidate>
         <h2 id="dialogTitle">Product</h2>
 
@@ -184,7 +177,7 @@ const ProductDialog = ({ action, setData, openDialog, prefillData, setPrefillDat
         <p id="dialogError" className="dialog-error" role="alert"></p>
 
         <div className="dialog-actions">
-          <button type="button" className="dialog-btn dialog-btn-light" id="dialogCancel" onClick={() => {setOpenDialog(false)}}>Cancel</button>
+          <button type="button" className="dialog-btn dialog-btn-light" id="dialogCancel" onClick={() => {setDialogOpen(false)}}>Cancel</button>
           <button disabled={isSubmitting} type="submit" className="dialog-btn dialog-btn-dark" id="dialogSubmit">
             {isSubmitting ? "Loading..." : action == "add" ? "Add" : "Save"}
           </button>
