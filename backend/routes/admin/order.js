@@ -1,54 +1,54 @@
 import express from 'express';
 import pool from '../../config/db.js';
+import { validateStatusId, validateStatus } from '../../utils/validators.js';
+import { query, validationResult, matchedData } from 'express-validator';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-    const status = req.query["status[]"];
+router.get('/', validateStatus(["pending", "preparing", "ready", "completed", "pending cancellation", "cancelled"]), async (req, res) => {
+    const errors = validationResult(req);
 
-    //This basically checks if there is more than one status
-    if (Array.isArray(status)) {
-        const orders = await pool.query(`
-            SELECT order_id, order_no, order_date, completed_date, total_amount, status_name, username
-            FROM orders INNER JOIN statuses ON orders.status_id = statuses.status_id
-            INNER JOIN users ON orders.user_id = users.user_id
-            WHERE LOWER(status_name) = ANY($1);`,
-        [status]);
-        return res.status(200).json(orders.rows);
-    }
+    if (errors.isEmpty()) {
+        const data = matchedData(req);
+        const status = data.status;
 
-    if (!status) {
+        if (status) {
+            const orders = await pool.query(`
+                SELECT order_id, order_no, order_date, completed_date, total_amount, status_name, username
+                FROM orders INNER JOIN statuses ON orders.status_id = statuses.status_id
+                INNER JOIN users ON orders.user_id = users.user_id
+                WHERE LOWER(status_name) = ANY($1);`,
+            [status]);
+            return res.status(200).json(orders.rows);
+        }
+
         const orders = await pool.query(`
             SELECT order_id, order_no, order_date, completed_date, total_amount, status_name, username
             FROM orders INNER JOIN statuses ON orders.status_id = statuses.status_id
             INNER JOIN users ON orders.user_id = users.user_id;`);
         return res.status(200).json(orders.rows);
     }
-    
-    const orders = await pool.query(`
-            SELECT order_id, order_no, order_date, completed_date, total_amount, status_name, username
-            FROM orders INNER JOIN statuses ON orders.status_id = statuses.status_id
-            INNER JOIN users ON orders.user_id = users.user_id
-            WHERE status_name ILIKE $1;`,
-        [status]);
-    return res.status(200).json(orders.rows);
+
+    return res.status(400).json(errors);
 });
 
-router.get('/items', async (req, res) => {    
-    const status = req.query["status[]"];
+router.get('/items', validateStatus(["preparing", "ready"]), async (req, res) => {    
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        const data = matchedData(req);
+        const status = data.status;
 
-    if (Array.isArray(status)) {
-        const items = await pool.query(`
-            SELECT order_item_id, order_items.order_id, product_name, products.price, price_at_order, order_items.quantity, status_name
-            FROM order_items INNER JOIN products ON order_items.product_id = products.product_id
-            INNER JOIN orders ON order_items.order_id = orders.order_id
-            INNER JOIN statuses ON orders.status_id = statuses.status_id
-            WHERE LOWER(status_name) = ANY ($1);`, 
-        [status]);
-        return res.status(200).json(items.rows);  
-    }
+        if (status) {
+            const items = await pool.query(`
+                SELECT order_item_id, order_items.order_id, product_name, products.price, price_at_order, order_items.quantity, status_name
+                FROM order_items INNER JOIN products ON order_items.product_id = products.product_id
+                INNER JOIN orders ON order_items.order_id = orders.order_id
+                INNER JOIN statuses ON orders.status_id = statuses.status_id
+                WHERE LOWER(status_name) = ANY ($1);`, 
+            [status]);
+            return res.status(200).json(items.rows);  
+        }
 
-    if (!status) {
         const items = await pool.query(`
             SELECT order_item_id, order_items.order_id, product_name, products.price, price_at_order, order_items.quantity, status_name
             FROM order_items INNER JOIN products ON order_items.product_id = products.product_id
@@ -57,14 +57,7 @@ router.get('/items', async (req, res) => {
         return res.status(200).json(items.rows);  
     }
 
-    const items = await pool.query(`
-        SELECT order_item_id, order_items.order_id, product_name, products.price, price_at_order, order_items.quantity, status_name
-        FROM order_items INNER JOIN products ON order_items.product_id = products.product_id
-        INNER JOIN orders ON order_items.order_id = orders.order_id
-        INNER JOIN statuses ON orders.status_id = statuses.status_id
-        WHERE status_name ILIKE $1`, 
-        [status]);
-    return res.status(200).json(items.rows);  
+    return res.status(400).json(errors);
 });
 
 router.get('/:id', async (req, res) => {
@@ -74,20 +67,27 @@ router.get('/:id', async (req, res) => {
     return res.status(200).json(order.rows[0]);
 })
 
-router.put('/:id', async (req, res) => {
-    const orderId = req.params.id;
-    const statusId = req.query.statusId;
+router.put('/:id', validateStatusId([1, 2, 3, 4, 5, 6]), async (req, res) => {
+    const errors = validationResult(req);
 
-    if (statusId == 4) {
-        const date = new Date();
-        const orderData = await pool.query("UPDATE orders SET status_id = $1, completed_date = $2 WHERE order_id = $3 RETURNING *", 
-        [statusId, date, orderId]);
+    if (errors.isEmpty()) {
+        const data = matchedData(req);
+        const orderId = req.params.id;
+        const statusId = data.statusId;
+        
+        if (statusId == 4) {
+            const date = new Date();
+            const orderData = await pool.query("UPDATE orders SET status_id = $1, completed_date = $2 WHERE order_id = $3 RETURNING *", 
+            [statusId, date, orderId]);
+            return res.status(200).json(orderData.rows);
+        }
+
+        const orderData = await pool.query("UPDATE orders SET status_id = $1 WHERE order_id = $2 RETURNING *", 
+            [statusId, orderId]);
         return res.status(200).json(orderData.rows);
     }
 
-    const orderData = await pool.query("UPDATE orders SET status_id = $1 WHERE order_id = $2 RETURNING *", 
-        [statusId, orderId]);
-    return res.status(200).json(orderData.rows);
+    return res.status(400).json(errors);
 });
 
 router.get('/:id/items', async (req, res) => {
@@ -112,12 +112,21 @@ router.get('/:id/items/ready', async (req, res) => {
     return res.status(200).json(false);
 });
 
-router.put('/:id/items/:itemId', (req, res) => {
-    const itemId = req.params.itemId;
-    const statusId = req.query.statusId;
+router.put('/:id/items/:itemId', validateStatusId([2, 3]), (req, res) => {
+    const errors = validationResult(req);
 
-    pool.query("UPDATE order_items SET status_id = $1 WHERE order_item_id = $2", [statusId, itemId]);
-    return res.status(200).json({ message: "Item status updated succesfully" });
+    if (errors.isEmpty()) {
+        const data = matchedData(req);
+        const statusId = data.statusId;
+        const itemId = req.params.itemId;
+        console.log(statusId);
+        console.log(itemId);
+
+        pool.query("UPDATE order_items SET status_id = $1 WHERE order_item_id = $2", [statusId, itemId]);
+        return res.status(200).json({ message: "Item status updated succesfully" });
+    }
+
+    return res.status(400).json(errors);
 });
 
 

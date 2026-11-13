@@ -65,7 +65,7 @@ router.post('/confirm', async (req, res) => {
         [total_amount, orderId]);
 
     updateQuantities(orderId);    
-    res.status(200).json({ message: 'Order placed successfully'});
+    res.status(200).json({ message: 'Order placed successfully', order_no: orderNum });
 });
 
 export default router;

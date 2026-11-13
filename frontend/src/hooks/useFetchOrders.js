@@ -12,14 +12,16 @@ export default function useFetchOrders(statuses, data = null) {
         const orders = await axios.get("http://localhost:5000/admin/orders", {
           params: {
             status: statuses
-          }
+          },
+          paramsSerializer: { indexes: null }
         });
         setOrders(orders.data);
 
         const orderItems = await axios.get("http://localhost:5000/admin/orders/items", {
           params: {
             status: statuses
-          }
+          }, 
+          paramsSerializer: { indexes: null }
         });
         setAllOrderItems(orderItems.data);
       } catch (err) {
