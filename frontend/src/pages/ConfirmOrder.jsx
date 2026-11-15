@@ -8,7 +8,6 @@ import axios from 'axios';
 const OrderSummary = () => {
   const navigate = useNavigate();
   const { cartItems, totalAmount } = useHandleCart();
-  console.log(cartItems);
 
   useEffect(() => {
     if (cartItems.length == 0) {
@@ -31,6 +30,13 @@ const OrderSummary = () => {
       };
       const res = await axios.post("http://localhost:5000/orders/confirm", orderData);
       console.log(res);
+      navigate("/order-placed", {
+        state: {
+          order_no: res.data.order_no,
+          order_date: res.data.order_date,
+          total_amount: res.data.total_amount
+        }
+      });
     } catch (err) {
       console.log(err.response.data);
     }

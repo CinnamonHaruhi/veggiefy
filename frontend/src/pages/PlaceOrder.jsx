@@ -65,17 +65,17 @@ const PlaceOrder = () => {
         </div>
 
         <CartDialog ref={cartDialog} cartDialogOpen={cartDialogOpen} setCartDialogOpen={setCartDialogOpen}>
-            {cartItems.map((cartItem) => {
-              return <CartItem 
-                  key={cartItem.product_id}
-                  productId={cartItem.product_id}
-                  productName={cartItem.product_name}
-                  quantity={cartItem.quantity}
-                  price={cartItem.price}
-                  unit={cartItem.unit}
-                  stock={cartItem.stock}
-                />;
-            })}
+          {cartItems.map((cartItem) => {
+            return <CartItem 
+                key={cartItem.product_id}
+                productId={cartItem.product_id}
+                productName={cartItem.product_name}
+                quantity={cartItem.quantity}
+                price={cartItem.price}
+                unit={cartItem.unit}
+                stock={cartItem.stock}
+              />;
+          })}
 
         </CartDialog>
 

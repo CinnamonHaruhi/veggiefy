@@ -1,9 +1,7 @@
-import pool from "../config/db.js";
-
-export const updateQuantities = async (orderId) => {
+export const updateQuantities = async (orderId, client) => {
     try {
-        const quantitiesLeft = await getQuantities(orderId);
-        pool.query(
+        const quantitiesLeft = await getQuantities(orderId, client);
+        await client.query(
             `UPDATE products
             SET quantity = data.quantity_left
             FROM (
@@ -19,13 +17,12 @@ export const updateQuantities = async (orderId) => {
     }
 }
 
-export const getQuantities = async (orderId) => {
-    const quantitiesLeft = await pool.query(
+export const getQuantities = async (orderId, client) => {
+    const quantitiesLeft = await client.query(
         `SELECT products.product_id, (products.quantity - order_items.quantity) AS quantity_left
         FROM products INNER JOIN order_items ON products.product_id = order_items.product_id
         WHERE order_id = $1`,
     [orderId]);
 
-    console.log(JSON.stringify(quantitiesLeft.rows));
     return JSON.stringify(quantitiesLeft.rows);
 }

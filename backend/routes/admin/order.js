@@ -32,7 +32,7 @@ router.get('/', validateStatus(["pending", "preparing", "ready", "completed", "p
     return res.status(400).json(errors);
 });
 
-router.get('/items', validateStatus(["preparing", "ready"]), async (req, res) => {    
+router.get('/items', validateStatus(["pending", "preparing", "ready", "completed"]), async (req, res) => {    
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         const data = matchedData(req);

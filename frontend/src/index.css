@@ -455,3 +455,82 @@ img { max-width: 100%; display: block; }
 #confirm-ord-btn {
   margin-left: auto;
 }
+
+.page-placed { background: var(--white); }
+
+.placed-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+}
+
+.placed-card {
+  width: 100%;
+  max-width: 390px;
+  padding: 40px 24px 28px;
+  background: var(--white);
+  border: 1px solid var(--black);
+  border-radius: 10px;
+}
+
+.placed-title {
+  margin: 0 0 6px;
+  text-align: center;
+  font-family: var(--font-body);
+  font-weight: 900;
+  font-size: 1.7rem;
+  line-height: 1.15;
+  letter-spacing: -1px;
+}
+.placed-sub {
+  margin: 0 0 22px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.placed-details { margin: 0 0 22px; padding: 0 4px; }
+.placed-details dt {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+}
+.placed-details dd {
+  margin: 2px 0 10px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: var(--black);
+}
+.placed-details dd:last-child { margin-bottom: 0; }
+
+.placed-actions { display: flex; flex-direction: column; gap: 14px; }
+
+.btn-receipt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 62px;
+  padding: 0 20px;
+  background: var(--white);
+  color: var(--black);
+  border: 1px solid var(--black);
+  border-radius: 20px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+}
+.btn-receipt:hover { background: var(--black); color: var(--white); }
+.btn-receipt:active { transform: translateY(1px); }
+.btn-receipt:focus-visible { outline: 3px solid rgba(0, 0, 0, 0.35); outline-offset: 2px; }
+
+@media (max-width: 400px) {
+  .placed-title { font-size: 1.45rem; }
+  .btn-receipt { height: 54px; }
+}
