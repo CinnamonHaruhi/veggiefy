@@ -1,14 +1,19 @@
 import React from 'react'
-import { useReactTable, getCoreRowModel, flexRender, getPaginationRowModel, getSortedRowModel } from '@tanstack/react-table'
+import { useReactTable, getCoreRowModel, flexRender, getPaginationRowModel, getSortedRowModel, getFilteredRowModel } from '@tanstack/react-table'
 
 
-const Table = ({data, columns}) => {
+const Table = ({data, columns, globalFilter, setGlobalFilter}) => {
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel:getCoreRowModel(),
-    getPaginationRowModel:getPaginationRowModel(),
-    getSortedRowModel:getSortedRowModel()
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      globalFilter: globalFilter
+    },
+    onGlobalFilterChange: setGlobalFilter,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel()
   });
 
   return (

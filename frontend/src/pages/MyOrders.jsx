@@ -3,7 +3,6 @@ import Sidebar from '../components/sidebar/Sidebar'
 import Searchbar from '../components/searchbar/Searchbar'
 import FontLinks from '../components/FontLinks'
 import axios from 'axios'
-import { useReactTable, getCoreRowModel, flexRender, getPaginationRowModel, getSortedRowModel } from '@tanstack/react-table'
 import Table from '../components/Table'
 
 const MyOrders = () => {
@@ -13,9 +12,11 @@ const MyOrders = () => {
     order_id: "",
     order_no: "",
     status_id: "",
+    status_name: "",
     total_amount: "",
-    user_id: "  "
+    user_id: ""
   }]);
+  const [ globalFilter, setGlobalFilter ] = useState(""); 
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -25,7 +26,7 @@ const MyOrders = () => {
     }
     fetchOrders();
   }, []);
-  
+
   const columns = [
     {
       accessorKey: "order_no",
@@ -41,6 +42,11 @@ const MyOrders = () => {
       accessorKey: "total_amount",
       header: "Total amount",
       cell: (props) => <p>₱{props.getValue()}</p>
+    }, 
+    {
+      accessorKey: "status_name",
+      header: "Status",
+      cell: (props) => <p>{props.getValue()}</p>
     }
   ]
 
@@ -54,8 +60,8 @@ const MyOrders = () => {
 
           <main className="main-content">
             <h1 className="main-title">Orders</h1>
-            <Searchbar/>
-            <Table columns={columns} data={orders}/>
+            <Searchbar globalFilter={globalFilter} setGlobalFilter={setGlobalFilter}/>
+            <Table columns={columns} data={orders} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter}/>
           </main>
         </div>
       </div>

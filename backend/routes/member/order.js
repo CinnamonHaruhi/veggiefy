@@ -7,8 +7,10 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     const userId = req.user.user_id;
-    const orders = await pool.query("SELECT * FROM orders WHERE user_id = $1", 
-        [userId]);
+    const orders = await pool.query(`SELECT order_id, order_no, order_date, total_amount, orders.status_id, status_name, completed_date, user_id 
+        FROM orders INNER JOIN statuses ON orders.status_id = statuses.status_id
+        WHERE user_id = $1;`, 
+    [userId]);
 
     return res.status(200).json(orders.rows);
 })
