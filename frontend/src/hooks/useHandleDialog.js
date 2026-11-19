@@ -8,8 +8,7 @@ export default function useHandleDialog(dialogRef) {
     }
 
     dialogRef.addEventListener("close", () => setDialogOpen(false));
-    console.log(dialogRef);
-
+    
     return () => {
       dialogRef.removeEventListener("close", () => setDialogOpen(false));
     }

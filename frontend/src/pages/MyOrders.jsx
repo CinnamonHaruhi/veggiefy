@@ -4,6 +4,7 @@ import Searchbar from '../components/searchbar/Searchbar'
 import FontLinks from '../components/FontLinks'
 import axios from 'axios'
 import Table from '../components/Table'
+import { createColumnHelper } from '@tanstack/react-table'
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([{
@@ -27,27 +28,24 @@ const MyOrders = () => {
     fetchOrders();
   }, []);
 
-  const columns = [
-    {
-      accessorKey: "order_no",
+  const columnHelper = createColumnHelper();
+  const columns = [ 
+    columnHelper.accessor ("order_no", {
       header: "Order no",
       cell: (props) => <p>{props.getValue()}</p>
-    },
-    {
-      accessorKey: "order_date",
+    }),
+    columnHelper.accessor ("order_date", {
       header: "Order date",
       cell: (props) => <p>{new Date(props.getValue()).toLocaleDateString()}</p>
-    },
-    {
-      accessorKey: "total_amount",
+    }),
+    columnHelper.accessor ("total_amount", {
       header: "Total amount",
       cell: (props) => <p>₱{props.getValue()}</p>
-    }, 
-    {
-      accessorKey: "status_name",
+    }),
+    columnHelper.accessor ("status_name", {
       header: "Status",
       cell: (props) => <p>{props.getValue()}</p>
-    }
+    })
   ]
 
   return (

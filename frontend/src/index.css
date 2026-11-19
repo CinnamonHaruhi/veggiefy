@@ -362,6 +362,11 @@ img { max-width: 100%; display: block; }
   font-size: 0.78rem;
 }
 
+thead tr th div {
+  display: flex;
+  justify-content: center;
+}
+
 .main-table th {
   background: var(--main-th-bg);
   font-size: 0.66rem;

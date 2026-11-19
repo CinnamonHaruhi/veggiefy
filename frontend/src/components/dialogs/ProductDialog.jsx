@@ -23,7 +23,7 @@ const ProductDialog = ({ ref, action, setData, dialogOpen, setDialogOpen, prefil
     if (action != "edit") {
       setPrefillData("");
     }
-  }, []);
+  }, [dialogOpen]);
 
 
   const onSubmit = async (data) => {

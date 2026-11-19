@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState,  } from 'react'
-import axios from 'axios';
-import Product from '../components/Product';
 import Sidebar from '../components/sidebar/Sidebar';
 import Searchbar from '../components/searchbar/Searchbar';
 import FontLinks from  '../components/FontLinks';
 import ProductDialog from '../components/dialogs/ProductDialog';
 import useFetchProducts from '../hooks/useFetchProducts';
 import useHandleDialog from '../hooks/useHandleDialog';
+import { createColumnHelper } from '@tanstack/react-table';
+import Table from '../components/Table';
 
 const Products = () => {
   const editDialog = useRef(null);
@@ -16,17 +16,61 @@ const Products = () => {
   const [ loading, setLoading ] = useState(false);
   const [ data, setData ] = useState(null); //This is just so that the products page re renders after an edit
   const { products } = useFetchProducts(data);
+  const [ globalFilter, setGlobalFilter ] = useState("");
   const [ prefillData, setPrefillData ] = useState({
     product_name: "",
     unit: "",
     price: "",
     quantity: ""
   });  
-
   
   if (loading) {
     return <div>Loading...</div>
   }
+
+  const columnHelper = createColumnHelper();
+  const columns = [
+    columnHelper.display({
+      id: "image",
+      header: "Image",
+      cell: <div className="img-ph" role="img" aria-label="No image"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="2.2"/><path d="M2 21 9 11l4 5 3-3 6 8Z"/></svg></div>
+    }),
+    columnHelper.accessor("product_name", {
+      header: "Name",
+      cell: (props) => <p>{props.getValue()}</p>
+    }),
+    columnHelper.accessor("unit", {
+      header: "Unit",
+      cell: (props) => <p>{props.getValue()}</p>
+    }),
+    columnHelper.accessor("price", {
+      header: "Price",
+      cell: (props) => <p>₱{props.getValue()}</p>
+    }),
+    columnHelper.accessor("quantity", {
+      header: "Quantity",
+      cell: (props) => <p>{props.getValue()}</p>
+    }),
+    columnHelper.display({
+      id: "actions",
+      header: "Actions",
+      cell: row => {
+        return <>
+          <button type="button" aria-haspopup="menu" onClick={() => {
+            setEditDialogOpen(true); 
+            setPrefillData({
+              product_id: row.row.original.product_id,
+              product_name: row.row.original.product_name,
+              unit: row.row.original.unit,
+              price: row.row.original.price,
+              quantity: row.row.original.quantity
+            });
+          }}>Edit</button>
+          <button type="button">Delete</button>
+        </>
+      }
+    })
+  ]
 
   return (
     <>
@@ -37,46 +81,10 @@ const Products = () => {
           <main className="main-content">
             <h1 className="main-title">Product Catalog</h1>
             <div className="products-toolbar">
-              <Searchbar/>
+              <Searchbar globalFilter={globalFilter} setGlobalFilter={setGlobalFilter}/>
               <button onClick={() => {setAddDialogOpen(true)}} className="dialog-btn dialog-btn-dark" id="add-product-btn">Add</button>
             </div>
-            <div className="main-table-wrap" id="tableWrap">
-              <table className="main-table">
-                <thead>
-                  <tr>
-                    <th scope="col">Image</th>
-                    <th scope="col">Product Name</th>
-                    <th scope="col">Unit</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody id="productBody">
-                  {products.map((product) => {
-                    return (<Product 
-                    key={product.product_id} 
-                    id={product.product_id} 
-                    name={product.product_name} 
-                    unit={product.unit} 
-                    price={product.price} 
-                    image={null} 
-                    quantity={product.quantity}
-                    setDialogOpen={setEditDialogOpen}
-                    setPrefillData={() => {
-                      setPrefillData({
-                        product_id: product.product_id,
-                        product_name: product.product_name,
-                        unit: product.unit,
-                        price: product.price,
-                        quantity: product.quantity
-                      })
-                    }}
-                    />)
-                  })}
-                </tbody>
-              </table>
-            </div>
+            <Table columns={columns} data={products} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
           </main>
         </div>
       </div>

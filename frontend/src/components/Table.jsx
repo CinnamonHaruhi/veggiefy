@@ -15,7 +15,7 @@ const Table = ({data, columns, globalFilter, setGlobalFilter}) => {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel()
   });
-
+  
   return (
     <div className="main-table-wrap" id="tableWrap">
       <table className="main-table">
@@ -23,14 +23,18 @@ const Table = ({data, columns, globalFilter, setGlobalFilter}) => {
           {table.getHeaderGroups().map(headerGroup => <tr key={headerGroup.id}>
             {headerGroup.headers.map(
               header => <th key={header.id}>
-                {header.column.columnDef.header}
-                {
-                  header.column.getCanSort() && <p
-                    onClick={
-                      header.column.getToggleSortingHandler()
-                    }
-                  >sort</p>
-                }
+                <div>
+                  {header.column.columnDef.header}
+                  {
+                    header.column.getCanSort() && 
+                    <div onClick={ header.column.getToggleSortingHandler()}>
+                      <svg class="sort-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path class="arrow-up" d="M12 4l-6 6h12z" />
+                        <path class="arrow-down" d="M12 20l6-6H6z" />
+                      </svg>
+                    </div>
+                  }
+              </div>
               </th>
             )}
           </tr>)}
