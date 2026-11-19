@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import Sidebar from '../components/sidebar/Sidebar.jsx'
 import FontLinks from '../components/FontLinks.jsx';
-import Order from '../components/Order.jsx';
 import Searchbar from '../components/searchbar/Searchbar.jsx';
 import ItemsDialog from '../components/dialogs/ItemsDialog.jsx';
 import useFetchOrders from '../hooks/useFetchOrders.js';
@@ -17,7 +16,7 @@ const Orders = () => {
   const { loading, orders, allOrderItems } = useFetchOrders(status, data);
   const [ globalFilter, setGlobalFilter ] = useState("");
   const itemsDialog = useRef(null);
-  const { setDialogOpen, dialogOpen } = useHandleDialog(itemsDialog.current);
+  const { setDialogOpen } = useHandleDialog(itemsDialog.current);
 
   if (loading) {
     return <div>Loading...</div>
@@ -44,10 +43,6 @@ const Orders = () => {
     columnHelper.accessor("total_amount" ,{
       header: "Total amount",
       cell: (props) => <p>₱{props.getValue()}</p>
-    }),
-    columnHelper.accessor("status_name" ,{
-      header: "Status",
-      cell: (props) => <p>{props.getValue()}</p>
     }),
     columnHelper.accessor("username" ,{
       header: "User",
