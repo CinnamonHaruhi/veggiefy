@@ -386,6 +386,14 @@ thead tr th div {
 }
 .main-table tbody tr:hover { background: #fafafa; }
 
+.table-pages {
+  margin-top: 10px;
+}
+
+.table-pages span {
+  margin: 10px;
+}
+
 .img-ph {
   width: 30px;
   height: 28px;

@@ -1,7 +1,6 @@
 import React from 'react'
 import { useReactTable, getCoreRowModel, flexRender, getPaginationRowModel, getSortedRowModel, getFilteredRowModel } from '@tanstack/react-table'
 
-
 const Table = ({data, columns, globalFilter, setGlobalFilter}) => {
   const table = useReactTable({
     data,
@@ -28,9 +27,9 @@ const Table = ({data, columns, globalFilter, setGlobalFilter}) => {
                   {
                     header.column.getCanSort() && 
                     <div onClick={ header.column.getToggleSortingHandler()}>
-                      <svg class="sort-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                        <path class="arrow-up" d="M12 4l-6 6h12z" />
-                        <path class="arrow-down" d="M12 20l6-6H6z" />
+                      <svg className="sort-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path className="arrow-up" d="M12 4l-6 6h12z" />
+                        <path className="arrow-down" d="M12 20l6-6H6z" />
                       </svg>
                     </div>
                   }
@@ -54,10 +53,7 @@ const Table = ({data, columns, globalFilter, setGlobalFilter}) => {
           }
         </tbody>
       </table>
-      <p>
-        Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
-      </p>
-      <div>
+      <div className="table-pages">
         <button 
           onClick={ 
             ()=> table.previousPage()
@@ -65,7 +61,8 @@ const Table = ({data, columns, globalFilter, setGlobalFilter}) => {
           disabled={
             !table.getCanPreviousPage()
           }
-          >{"<"}</button>
+        >{"<"}</button>
+        <span>Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}</span>
         <button onClick={
           () => table.nextPage()
           }

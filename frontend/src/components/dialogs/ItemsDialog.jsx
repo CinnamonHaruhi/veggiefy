@@ -3,8 +3,7 @@ import './dialog.css';
 import axios from 'axios';
 import { toast, Slide } from 'react-toastify';
 
-const ItemsDialog = ({ orderItems, setData }) => {
-  const dialog = useRef(null);
+const ItemsDialog = ({ ref, orderItems, setData, setDialogOpen }) => {
   const items = orderItems;
   let orderStatus = "";
   
@@ -27,11 +26,11 @@ const ItemsDialog = ({ orderItems, setData }) => {
       transition: Slide,
     });
     setData(res.data);
-    dialog.current.close();
+    setDialogOpen(false);
   }
 
   return (
-    <dialog ref={dialog} className="dialog" id='itemsDialog'>
+    <dialog ref={ref} className="dialog" id='itemsDialog'>
       <form>
         <h2 id="dialogTitle">Order items</h2>
         <div className="dialogFields">
@@ -43,7 +42,7 @@ const ItemsDialog = ({ orderItems, setData }) => {
           })}
         </div>
         <div className='dialog-actions'>
-          <button type="button" className="dialog-btn dialog-btn-light" id="dialogCancel" onClick={() => {document.getElementById("itemsDialog").close()}}>Close</button>
+          <button type="button" className="dialog-btn dialog-btn-light" id="dialogCancel" onClick={() => {setDialogOpen(false)}}>Close</button>
           {orderStatus == "pending" && 
           <button type="button" className="dialog-btn dialog-btn-dark" onClick={handleStartPreparing}>Start preparing</button>}
         </div>

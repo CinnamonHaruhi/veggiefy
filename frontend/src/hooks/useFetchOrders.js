@@ -16,7 +16,7 @@ export default function useFetchOrders(statuses, data = null) {
           paramsSerializer: { indexes: null }
         });
         setOrders(orders.data);
-
+        
         const orderItems = await axios.get("http://localhost:5000/admin/orders/items", {
           params: {
             status: statuses
