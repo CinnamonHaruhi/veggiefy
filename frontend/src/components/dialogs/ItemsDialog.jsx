@@ -1,14 +1,18 @@
-import { React, useRef } from 'react'
+import { React, useRef, useContext } from 'react'
 import './dialog.css';
 import axios from 'axios';
 import { toast, Slide } from 'react-toastify';
+import { UserContext } from '../../contexts/authContext';
 
 const ItemsDialog = ({ ref, orderItems, setData, setDialogOpen }) => {
+  const user = useContext(UserContext);
+  const isAdmin = user.role_id == 1;
   const items = orderItems;
   let orderStatus = "";
-  
+  console.log(items);
+
   if (items.length !== 0) {
-    orderStatus = items[0].status_name.toLowerCase();
+    orderStatus = items[0].status_name?.toLowerCase();
   }
 
   const handleStartPreparing = async () => {
@@ -43,7 +47,7 @@ const ItemsDialog = ({ ref, orderItems, setData, setDialogOpen }) => {
         </div>
         <div className='dialog-actions'>
           <button type="button" className="dialog-btn dialog-btn-light" id="dialogCancel" onClick={() => {setDialogOpen(false)}}>Close</button>
-          {orderStatus == "pending" && 
+          {orderStatus == "pending" && isAdmin &&
           <button type="button" className="dialog-btn dialog-btn-dark" onClick={handleStartPreparing}>Start preparing</button>}
         </div>
       </form>

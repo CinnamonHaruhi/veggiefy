@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Sidebar from '../components/sidebar/Sidebar'
 import Searchbar from '../components/searchbar/Searchbar'
 import FontLinks from '../components/FontLinks'
 import axios from 'axios'
 import Table from '../components/Table'
 import { createColumnHelper } from '@tanstack/react-table'
+import ItemsDialog from '../components/dialogs/ItemsDialog'
+import useHandleDialog from '../hooks/useHandleDialog'
 
 const MyOrders = () => {
+  const itemsDialog = useRef(null);
+  const { setDialogOpen } = useHandleDialog(itemsDialog.current);
   const [orders, setOrders] = useState([{
     completed_date:"",
     order_date: "",
@@ -18,15 +22,20 @@ const MyOrders = () => {
     user_id: ""
   }]);
   const [ globalFilter, setGlobalFilter ] = useState(""); 
+  const [ orderItems, setOrderItems ] = useState([]);
 
   useEffect(() => {
     const fetchOrders = async () => {
       const res = await axios.get("http://localhost:5000/orders");
-      console.log(res.data);
       setOrders(res.data);
     }
     fetchOrders();
   }, []);
+
+  const fetchOrderItems = async (orderId) => {
+    const orderItems =  await axios.get(`http://localhost:5000/orders/${orderId}/items`);
+    setOrderItems(orderItems.data);
+  }
 
   const columnHelper = createColumnHelper();
   const columns = [ 
@@ -45,6 +54,15 @@ const MyOrders = () => {
     columnHelper.accessor ("status_name", {
       header: "Status",
       cell: (props) => <p>{props.getValue()}</p>
+    }),
+    columnHelper.display({
+      header: "Actions",
+      cell: row => {
+        return <button onClick={() => {
+          fetchOrderItems(row.row.original.order_id);
+          setDialogOpen(true);
+        }}>View</button>
+      }
     })
   ]
 
@@ -63,6 +81,8 @@ const MyOrders = () => {
           </main>
         </div>
       </div>
+
+      <ItemsDialog ref={itemsDialog} orderItems={orderItems} setDialogOpen={setDialogOpen}/>
     </>
   )
 }

@@ -27,8 +27,11 @@ router.get('/:id', async (req, res) => {
 router.get('/:id/items', async (req, res) => {
     const parsedId = parseInt(req.params.id);
 
-    const orderItems = await pool.query("SELECT * FROM order_items WHERE order_id = $1",
-        [parsedId]);
+    const orderItems = await pool.query( 
+        `SELECT order_item_id, order_id, product_name, order_items.quantity, order_items.status_id, price_at_order
+        FROM order_items INNER JOIN products ON order_items.product_id = products.product_id
+        WHERE order_id = $1`,
+    [parsedId]);
 
     return res.status(200).json(orderItems.rows);
 });
