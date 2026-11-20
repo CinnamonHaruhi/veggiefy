@@ -1,7 +1,6 @@
 import './product-card.css';
 
 const ProductCard = ({ onClick, ...props }) => {
-
   return (
     <>
       <div className="po-card">

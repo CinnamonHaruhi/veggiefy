@@ -74,7 +74,7 @@ router.put('/:id', validateStatusId([1, 2, 3, 4, 5, 6]), async (req, res) => {
         const data = matchedData(req);
         const orderId = req.params.id;
         const statusId = data.statusId;
-        
+
         if (statusId == 4) {
             const date = new Date();
             const orderData = await pool.query("UPDATE orders SET status_id = $1, completed_date = $2 WHERE order_id = $3 RETURNING *", 
