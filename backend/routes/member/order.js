@@ -36,18 +36,18 @@ router.get('/:id/items', async (req, res) => {
     return res.status(200).json(orderItems.rows);
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id/cancel', async (req, res) => {
     const parsedId = parseInt(req.params.id);
-    const pendingCancellationId = 5;
+    const cancelledStatusId = 6;
 
     if (isNaN(parsedId)) {
         return res.status(400).json({ message: 'Bad request. Invalid ID' });;
     }
 
-    pool.query("UPDATE orders SET status_id = $1 WHERE order_id = $2", 
-        [pendingCancellationId, parsedId]);
+    const data = await pool.query("UPDATE orders SET status_id = $1 WHERE order_id = $2 RETURNING order_no", 
+        [cancelledStatusId, parsedId]);
     
-    return res.status(200).json({ message: "Cancellation request sent" });
+    return res.status(200).json({ message: "Order cancelled", order_no: data.rows[0].order_no});
 });
 
 router.post('/confirm', async (req, res) => {

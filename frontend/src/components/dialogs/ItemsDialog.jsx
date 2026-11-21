@@ -9,7 +9,6 @@ const ItemsDialog = ({ ref, orderItems, setData, setDialogOpen }) => {
   const isAdmin = user.role_id == 1;
   const items = orderItems;
   let orderStatus = "";
-  console.log(items);
 
   if (items.length !== 0) {
     orderStatus = items[0].status_name?.toLowerCase();
